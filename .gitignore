@@ -1,0 +1,8 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.tif
+rgeedim.Rproj
+inst/doc
+.github/*.html

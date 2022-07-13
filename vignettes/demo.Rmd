@@ -1,0 +1,84 @@
+---
+title: "`rgeedim` Demo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{`rgeedim` Demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  # only run vignette if modules available
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette shows how to extract a Google Earth Engine asset by name for an arbitrary extent and visualize it in R.
+
+First, we load {rgeedim} and call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
+
+```{r setup}
+library(rgeedim)
+gd_initialize()
+```
+
+Perhaps the _simplest_ way to specify the target extent is using the xmin/xmax/ymin/ymax arguments to `gd_bbox()`. This function returns a Python object equivalent to _GeoJSON_, which is interchangeably represented as a simple `list` object in **R** using {reticulate}. 
+
+## Determine Target Region
+
+```{r bbox}
+r <- gd_bbox(
+  xmin = -121,
+  xmax = -120.5,
+  ymin = 38.5,
+  ymax = 39
+)
+```
+
+As is standard for _GeoJSON_, coordinates of the bounding box are expressed in WGS84 decimal degrees (`"OGC:CRS84"`). Note that longitude, latitude (X, Y) coordinate pair order is implied.
+
+## Access by ID
+
+We can find IDs of assets of interest using the Google Earth Engine data catalog: <https://developers.google.com/earth-engine/datasets/catalog>
+
+To obtain an R object reference to the asset we pass the `"id"` to `gd_image_from_id()`. For example here we use [Global SRTM Topographic Diversity](https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_Global_SRTM_topoDiversity):
+
+```{r image-from-id}
+x <- gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
+```
+
+Depending on the resource `gd_image_from_id()` will either return a `geedim.mask.MaskedImage` or `geedim.mask.MaskedCollection` object
+
+Now, we pass the image result to `gd_download()`. We can specify output `filename` and target area as `region` arguments. See `gd_bbox()` for examples of making a region argument from bounding coordinates or a {terra} `SpatExtent` object.
+
+Other options that can be passed to the `BaseImage.download()` method include `scale` which allows warping of the result to a target resolution. Try modifying this example to use `scale=90` (~native SRTM resolution):
+
+```{r download}
+img <- gd_download(x, filename = 'image.tif',
+                   region = r, scale = 900,
+                   overwrite = TRUE, silent = FALSE
+                  )
+```
+
+`gd_download()` (invisibly) returns the `filename` on successful download, which helps to "pipe" into functions that might read the result.
+
+So we can use the {terra} ` rast()` function to read the GeoTIFF `gd_download()` result. 
+
+```{r terrarast, fig.align='center', fig.width=4}
+library(terra)
+f <- rast(img)
+```
+
+```{r inspect}
+par(mar=c(1,1,1,1))
+plot(f[[1]])
+
+# inspect object
+f
+```
+
+```{r include=FALSE}
+unlink("image.tif")
+```
