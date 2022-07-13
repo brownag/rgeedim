@@ -20,7 +20,7 @@ Calls geedim Initialize() method"><!-- mathjax --><script src="https://cdnjs.clo
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9001</span>
       </span>
     </div>
 
@@ -38,7 +38,13 @@ Calls geedim Initialize() method"><!-- mathjax --><script src="https://cdnjs.clo
       <a href="../articles/demo.html">`rgeedim` Demo</a>
     </li>
   </ul></li>
-      </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
+      </ul><ul class="nav navbar-nav navbar-right"><li>
+  <a href="https://github.com/brownag/rgeedim/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
@@ -49,7 +55,7 @@ Calls geedim Initialize() method"><!-- mathjax --><script src="https://cdnjs.clo
     <div class="page-header">
     <h1>Initialize <code>geedim</code>
 Calls <code>geedim</code> <code>Initialize()</code> method</h1>
-    
+    <small class="dont-index">Source: <a href="https://github.com/brownag/rgeedim/blob/HEAD/R/hello.R" class="external-link"><code>R/hello.R</code></a></small>
     <div class="hidden name"><code>gd_initialize.Rd</code></div>
     </div>
 
@@ -59,18 +65,25 @@ Calls <code>geedim</code> <code>Initialize()</code> method</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gd_initialize</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gd_initialize</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div id="arguments">
+    <h2>Arguments</h2>
+    <dl><dt>quiet</dt>
+<dd><p>Suppress error messages on load? Default: <code>TRUE</code></p></dd>
+
+</dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>try-error (invisibly) on error</p>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">gd_initialize</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> ee.ee_exception.EEException: Please authorize access to your Earth Engine account by running</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> earthengine authenticate</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> in your command line, and then retry.</span>
 </code></pre></div>
     </div>
   </div>

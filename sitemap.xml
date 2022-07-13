@@ -25,6 +25,9 @@
     <loc>/reference/gd.html</loc>
   </url>
   <url>
+    <loc>/reference/gd_authenticate.html</loc>
+  </url>
+  <url>
     <loc>/reference/gd_bbox.html</loc>
   </url>
   <url>
@@ -35,5 +38,8 @@
   </url>
   <url>
     <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rgeedim-package.html</loc>
   </url>
 </urlset>
