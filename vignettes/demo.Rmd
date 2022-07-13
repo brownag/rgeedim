@@ -9,7 +9,7 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  # only run vignette if modules available
+  eval = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
