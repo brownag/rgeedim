@@ -4,15 +4,19 @@
 #'
 #' @param x character. ID.
 #'
-#' @return an object referencing a Python `MaskedImage` or `MaskedCollection`
+#' @return an object referencing a Python `MaskedImage` or `MaskedCollection`, or `try-error` on error
 #' @export
 #' @rdname from_id
 gd_image_from_id <- function(x) {
-  geedim_module$MaskedImage$from_id(x)
+  y <- try(geedim_module$MaskedImage$from_id(x), silent = FALSE)
+  if (inherits(y, 'try-error')) return(invisible(y))
+  y
 }
 
 #' @export
 #' @rdname from_id
 gd_collection_from_id <- function(x) {
-  geedim_module$MaskedCollection$from_id(x)
+  y <- try(geedim_module$MaskedCollection$from_id(x), silent = FALSE)
+  if (inherits(y, 'try-error')) return(invisible(y))
+  y
 }

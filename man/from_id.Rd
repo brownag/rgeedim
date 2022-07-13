@@ -13,7 +13,7 @@ gd_collection_from_id(x)
 \item{x}{character. ID.}
 }
 \value{
-an object referencing a Python \code{MaskedImage} or \code{MaskedCollection}
+an object referencing a Python \code{MaskedImage} or \code{MaskedCollection}, or \code{try-error} on error
 }
 \description{
 Calls \code{geedim.mask.MaskedImage.from_id()} or \code{geedim.mask.MaskedCollection.from_id()}, respectively.

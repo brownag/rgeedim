@@ -63,17 +63,15 @@ r <- gd_bbox(
 
 # US NED CHILI (Continuous Heat-Insolation Load Index)
 # https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI
-x <- gd_image_from_id('CSP/ERGo/1_0/US/CHILI')
-
-
-res <- gd_download(
-  x,
-  filename = 'image.tif',
-  region = r,
-  scale = 10, # scale=10: request ~10m resolution (result in native CRS)
-  overwrite = TRUE,
-  silent = FALSE
-)
+res <- 'CSP/ERGo/1_0/US/CHILI' |>
+  gd_image_from_id() |>
+  gd_download(
+    filename = 'image.tif',
+    region = r,
+    scale = 10, # scale=10: request ~10m resolution (result in native CRS)
+    overwrite = TRUE,
+    silent = FALSE
+  )
 ```
 
 ```{r inspect}

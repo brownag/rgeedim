@@ -9,7 +9,7 @@
 #' @param silent Silence errors? Default: `TRUE`
 #' @param ... Additional arguments (e.g. `scale`) to `geedim.download.BaseImage$download(...)`
 #'
-#' @return (invisibly) path to downloaded image
+#' @return (invisibly) path to downloaded image, or `try-error` on error
 #' @export
 gd_download <- function(x,
                      filename = tempfile(fileext = ".tif"),
@@ -25,6 +25,10 @@ gd_download <- function(x,
   }
   if (file.exists(filename) && !inherits(res, 'try-error')) {
     return(filename)
+  } else if (inherits(res, 'try-error')) {
+    if (!silent) message(res[1])
+    return(invisible(res))
+  } else {
+    return(invisible(NULL))
   }
-  invisible(NULL)
 }

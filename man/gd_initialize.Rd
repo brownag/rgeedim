@@ -5,7 +5,13 @@
 \title{Initialize \code{geedim}
 Calls \code{geedim} \code{Initialize()} method}
 \usage{
-gd_initialize()
+gd_initialize(quiet = TRUE)
+}
+\arguments{
+\item{quiet}{Suppress error messages on load? Default: \code{TRUE}}
+}
+\value{
+try-error (invisibly) on error
 }
 \description{
 Initialize \code{geedim}

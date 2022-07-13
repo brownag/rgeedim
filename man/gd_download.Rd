@@ -27,7 +27,7 @@ gd_download(
 \item{...}{Additional arguments (e.g. \code{scale}) to \code{geedim.download.BaseImage$download(...)}}
 }
 \value{
-(invisibly) path to downloaded image
+(invisibly) path to downloaded image, or \code{try-error} on error
 }
 \description{
 Download Google Earth Engine Image/ImageCollection

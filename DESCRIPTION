@@ -1,14 +1,17 @@
 Package: rgeedim
 Type: Package
-Title: Search, composite, and download Google Earth Engine imagery with the Python module 'geedim'
-Version: 0.0.0.9000
+Title: Search, Composite, and Download Google Earth Engine Imagery with the Python Module 'geedim'
+Version: 0.0.0.9001
 Author: Andrew G. Brown
 Maintainer: Andrew G. Brown <brown.andrewg@gmail.com>
+URL: https://humus.rocks/rgeedim/, https://github.com/brownag/rgeedim
+BugReports: https://github.com/brownag/rgeedim/issues
 Description: Search, composite, and download Google Earth Engine imagery with 'reticulate' bindings for the Python module 'geedim'.
 Config/reticulate:
   list(
     packages = list(
       list(package = "collections"),
+      list(package = "ee"),
       list(package = "geedim")
     )
   )
