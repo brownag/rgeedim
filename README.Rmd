@@ -32,15 +32,30 @@ You can install the development version of {rgeedim} using {remotes}:
 remotes::install_github("brownag/rgeedim")
 ```
 
-### External Dependencies
+## Dependencies
 
-You will need Python, and the `geedim` module, installed on your computer in order to successfully use {rgeedim}.
+You will need Python, the `geedim` module, and associated dependencies, installed to use {rgeedim}.
 
-You can install `geedim` with `pip`, for example:
+#### Using Miniconda
 
-```sh
+If you do not have a Python environment set up, an option that {reticulate} provides is `reticulate::install_miniconda()`. Once you install Miniconda, you can install packages into a conda environment. Customize the `envname` argument to create or add to a specific environment.
+
+``` r
+reticulate::install_miniconda()
+reticulate::py_install("geedim")
+```
+
+#### Using `pip`
+
+Alternately you can install `geedim` with `pip`, for example:
+
+``` sh
 python -m pip install geedim
 ```
+
+This shell command assumes you have a Python 3 executable named (or aliased) as `python` on your PATH.
+
+### External Dependencies
 
 There are numerous dependencies that may need to be satisfied. Perhaps the most demanding are those for `rasterio`/GDAL. 
 
@@ -52,8 +67,23 @@ This example shows how to extract a Google Earth Engine asset by name for an arb
 
 ```{r example}
 library(rgeedim)
-gd_initialize()
+```
 
+If this is your first time using any Google Earth Engine tools, authenticate with `gd_authenticate()`. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is `auth_mode="notebook"` in that does not rely on an existing `GOOGLE_APPLICATION_CREDENTIALS` file nor an installation of the `gcloud` CLI tools. However, the other options are better for non-interactive use.
+
+``` r
+gd_authenticate(auth_mode = "notebook")
+```
+
+In each R session you will need to initialize the Earth Engine library
+
+```{r}
+gd_initialize()
+```
+
+`gd_bbox()` is a simple function for specifying extents to rgeedim functions like `gd_download()`:
+
+``` {r}
 r <- gd_bbox(
   xmin = -120.6032,
   xmax = -120.5377,

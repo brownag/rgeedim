@@ -3,11 +3,19 @@
 \name{gd_initialize}
 \alias{gd_initialize}
 \title{Initialize \code{geedim}
-Calls \code{geedim} \code{Initialize()} method}
+Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.}
 \usage{
-gd_initialize(quiet = TRUE)
+gd_initialize(
+  private_key_file = NULL,
+  opt_url = "https://earthengine-highvolume.googleapis.com",
+  quiet = TRUE
+)
 }
 \arguments{
+\item{private_key_file}{Optional: Path to JSON file containing client information and private key.}
+
+\item{opt_url}{Base URL for API requests; defaults to "High Volume": \code{"https://earthengine-highvolume.googleapis.com"}}
+
 \item{quiet}{Suppress error messages on load? Default: \code{TRUE}}
 }
 \value{
@@ -15,8 +23,13 @@ try-error (invisibly) on error
 }
 \description{
 Initialize \code{geedim}
-Calls \code{geedim} \code{Initialize()} method
+Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.
 }
 \examples{
+\dontrun{
 gd_initialize()
+}
+}
+\seealso{
+\code{gd_authenticate()}
 }
