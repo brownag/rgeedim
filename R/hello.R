@@ -3,7 +3,7 @@
 #'
 #' @param private_key_file Optional: Path to JSON file containing client information and private key.
 #' @param opt_url Base URL for API requests; defaults to "High Volume": `"https://earthengine-highvolume.googleapis.com"`
-#' @param quiet Suppress error messages on load? Default: `TRUE`
+#' @param quiet Suppress error messages on load? Default: `FALSE`
 #'
 #' @return try-error (invisibly) on error
 #' @export
@@ -14,7 +14,7 @@
 #' \dontrun{
 #' gd_initialize()
 #' }
-gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengine-highvolume.googleapis.com', quiet = TRUE) {
+gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengine-highvolume.googleapis.com', quiet = FALSE) {
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
 

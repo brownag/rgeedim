@@ -8,7 +8,7 @@ Calls \code{geedim} \code{Initialize()} method. This method should be called at 
 gd_initialize(
   private_key_file = NULL,
   opt_url = "https://earthengine-highvolume.googleapis.com",
-  quiet = TRUE
+  quiet = FALSE
 )
 }
 \arguments{
@@ -16,7 +16,7 @@ gd_initialize(
 
 \item{opt_url}{Base URL for API requests; defaults to "High Volume": \code{"https://earthengine-highvolume.googleapis.com"}}
 
-\item{quiet}{Suppress error messages on load? Default: \code{TRUE}}
+\item{quiet}{Suppress error messages on load? Default: \code{FALSE}}
 }
 \value{
 try-error (invisibly) on error
