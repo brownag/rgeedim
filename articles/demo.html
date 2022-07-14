@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
       </span>
     </div>
 
@@ -108,10 +108,10 @@
 <h2 id="access-by-id">Access by ID<a class="anchor" aria-label="anchor" href="#access-by-id"></a>
 </h2>
 <p>We can find IDs of assets of interest using the Google Earth Engine data catalog: <a href="https://developers.google.com/earth-engine/datasets/catalog" class="external-link uri">https://developers.google.com/earth-engine/datasets/catalog</a></p>
-<p>To obtain an R object reference to the asset we pass the <code>"id"</code> to <code><a href="../reference/from_id.html">gd_image_from_id()</a></code>. For example here we use <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_Global_SRTM_topoDiversity" class="external-link">Global SRTM Topographic Diversity</a>:</p>
+<p>To obtain an R object reference to the asset we pass the <code>"id"</code> to <code><a href="../reference/from.html">gd_image_from_id()</a></code>. For example here we use <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_Global_SRTM_topoDiversity" class="external-link">Global SRTM Topographic Diversity</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/from_id.html">gd_image_from_id</a></span><span class="op">(</span><span class="st">'CSP/ERGo/1_0/Global/SRTM_topoDiversity'</span><span class="op">)</span></span></code></pre></div>
-<p>Depending on the resource <code><a href="../reference/from_id.html">gd_image_from_id()</a></code> will either return a <code>geedim.mask.MaskedImage</code> or <code>geedim.mask.MaskedCollection</code> object</p>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="st">'CSP/ERGo/1_0/Global/SRTM_topoDiversity'</span><span class="op">)</span></span></code></pre></div>
+<p>Depending on the resource <code><a href="../reference/from.html">gd_image_from_id()</a></code> will either return a <code>geedim.mask.MaskedImage</code> or <code>geedim.mask.MaskedCollection</code> object</p>
 <p>Now, we pass the image result to <code><a href="../reference/gd_download.html">gd_download()</a></code>. We can specify output <code>filename</code> and target area as <code>region</code> arguments. See <code><a href="../reference/gd_bbox.html">gd_bbox()</a></code> for examples of making a region argument from bounding coordinates or a {terra} <code>SpatExtent</code> object.</p>
 <p>Other options that can be passed to the <code>BaseImage.download()</code> method include <code>scale</code> which allows warping of the result to a target resolution. Try modifying this example to use <code>scale=90</code> (~native SRTM resolution):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">

@@ -19,10 +19,10 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/reference/from_id.html</loc>
+    <loc>/reference/earthengine.html</loc>
   </url>
   <url>
-    <loc>/reference/gd.html</loc>
+    <loc>/reference/from.html</loc>
   </url>
   <url>
     <loc>/reference/gd_authenticate.html</loc>
@@ -35,6 +35,12 @@
   </url>
   <url>
     <loc>/reference/gd_initialize.html</loc>
+  </url>
+  <url>
+    <loc>/reference/geedim.html</loc>
+  </url>
+  <url>
+    <loc>/reference/get_projection.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
