@@ -37,10 +37,19 @@
     <loc>/reference/gd_initialize.html</loc>
   </url>
   <url>
-    <loc>/reference/geedim.html</loc>
+    <loc>/reference/gd_projection.html</loc>
   </url>
   <url>
-    <loc>/reference/get_projection.html</loc>
+    <loc>/reference/gd_properties.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gd_region.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gd_search.html</loc>
+  </url>
+  <url>
+    <loc>/reference/geedim.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
