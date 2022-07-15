@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{gd_download}
 \alias{gd_download}
-\title{Download Google Earth Engine Image/ImageCollection}
+\title{Download a Google Earth Engine Image}
 \usage{
 gd_download(
   x,
@@ -14,11 +14,11 @@ gd_download(
 )
 }
 \arguments{
-\item{x, }{ID, or a reference to \code{geedim.download.BaseImage}}
+\item{x, }{ID, or a reference to an object inheriting from \code{geedim.download.BaseImage}}
 
-\item{filename}{path to file, defaults to temporary GeoTIFF file}
+\item{filename}{path to output file, defaults to temporary GeoTIFF file path}
 
-\item{region}{Default \code{NULL} Python object describing region}
+\item{region}{a GeoJSON-like list, or other R spatial object describing region of interest, see \code{gd_region()} and \code{gd_bbox()} for details}
 
 \item{overwrite}{Overwrite existing file? Default: \code{TRUE}}
 
@@ -27,8 +27,11 @@ gd_download(
 \item{...}{Additional arguments (e.g. \code{scale}) to \code{geedim.download.BaseImage$download(...)}}
 }
 \value{
-(invisibly) path to downloaded image, or \code{try-error} on error
+Invisible path to downloaded image, or \code{try-error} on error
 }
 \description{
-Download Google Earth Engine Image/ImageCollection
+Download a Google Earth Engine Image
+}
+\seealso{
+\code{gd_region()} \code{gd_bbox()}
 }

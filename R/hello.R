@@ -1,4 +1,5 @@
 #' Initialize `geedim`
+#'
 #' Calls `geedim` `Initialize()` method. This method should be called at the beginning of each session.
 #'
 #' @param private_key_file Optional: Path to JSON file containing client information and private key.

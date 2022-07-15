@@ -2,8 +2,7 @@
 % Please edit documentation in R/hello.R
 \name{gd_initialize}
 \alias{gd_initialize}
-\title{Initialize \code{geedim}
-Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.}
+\title{Initialize \code{geedim}}
 \usage{
 gd_initialize(
   private_key_file = NULL,
@@ -22,7 +21,6 @@ gd_initialize(
 try-error (invisibly) on error
 }
 \description{
-Initialize \code{geedim}
 Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.
 }
 \examples{

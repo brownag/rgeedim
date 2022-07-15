@@ -7,7 +7,7 @@
 #'
 #' @return `ee.Projection` object
 #' @export
-get_projection <- function(x) {
+gd_projection <- function(x) {
   if (!inherits(x, "ee.image.Image")) {
     if (inherits(x, 'geedim.download.BaseImage')) {
       gd$utils$get_projection(x$ee_image)

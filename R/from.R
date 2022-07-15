@@ -1,10 +1,11 @@
 #' Reference Google Earth Engine Image or Image Collection by ID or Name
 #'
-#' Create references to Images or Image Collections based on IDs and names, or combine image references into collections.
+#' Create references to a Google Earth Engine Image or Image Collection based on IDs or names, or combine Images into Image Collections.
 #'
-#' @param x character. ID.
+#' @param x character. `id` of Image, `name` of Image Collection, or a vector of Image `id` to create a new Image Collection
 #'
-#' @return reference to `geedim.MaskedImage` or `geedimMaskedCollection` object, or `try-error` on error
+#' @return `geedim.MaskedImage` or `geedim.MaskedCollection` object, or `try-error` on error
+#'
 #' @export
 #' @rdname from
 gd_image_from_id <- function(x) {

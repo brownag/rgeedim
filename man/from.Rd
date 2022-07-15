@@ -13,11 +13,11 @@ gd_collection_from_name(x)
 gd_collection_from_list(x)
 }
 \arguments{
-\item{x}{character. ID.}
+\item{x}{character. \code{id} of Image, \code{name} of Image Collection, or a vector of Image \code{id} to create a new Image Collection}
 }
 \value{
-reference to \code{geedim.MaskedImage} or \code{geedimMaskedCollection} object, or \code{try-error} on error
+\code{geedim.MaskedImage} or \code{geedim.MaskedCollection} object, or \code{try-error} on error
 }
 \description{
-Create references to Images or Image Collections based on IDs and names, or combine image references into collections.
+Create references to a Google Earth Engine Image or Image Collection based on IDs or names, or combine Images into Image Collections.
 }

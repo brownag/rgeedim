@@ -7,19 +7,22 @@
 gd_bbox(...)
 }
 \arguments{
-\item{...}{either a single terra \code{SpatExtent} object or \emph{named} arguments \code{xmin}/\code{ymin}/\code{xmax}/\code{ymax}}
+\item{...}{Either a single terra \code{SpatExtent} object or arguments: \code{xmin}/\code{ymax}/\code{xmax}/\code{ymin}. If the four bounding arguments are not named they should be in order.}
 }
 \value{
-a \emph{list} object describing a GeoJSON bounding rectangular polygon suitable for use as \code{regions} argument to \code{download()}
+a \emph{list} object describing a GeoJSON bounding rectangular polygon suitable for use as \code{regions} argument to \code{gd_download()} or \code{gd_search()}
 }
 \description{
-Create a bounding box polygon Python object for use with \code{download()}. The coordinates of the bounding box are expressed in WGS84 decimal degrees (\code{"OGC:CRS84"}).
+Create a bounding box polygon Python object for use with \code{gd_download()}. The coordinates of the bounding box are expressed in WGS84 decimal degrees (\code{"OGC:CRS84"}).
+}
+\details{
+Expecting total of 4 bounding box arguments, If arguments are unnamed they should be in the following order: "xmin", "ymax", "xmax", "ymin".
 }
 \examples{
 gd_bbox(
   xmin = 5.744140,
+  ymax = 50.18162,
   xmax = 6.528252,
-  ymin = 49.44781,
-  ymax = 50.18162
+  ymin = 49.44781
 )
 }
