@@ -10,7 +10,7 @@ gd_region(x)
 \item{x}{either a WKT string (character), a {terra} SpatRaster/SpatVector, an {sf} object, a {sp} Spatial* object or a {raster} RasterLayer/Stack.}
 }
 \value{
-result methods as
+am R list representing a bounding box extent in GeoJSON
 }
 \description{
 Creates a suitable input for the \code{region} argument to \verb{gd_download(<Image>)} or \code{gd_search()} for Image Collections.

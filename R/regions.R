@@ -46,7 +46,8 @@ gd_bbox <- function(...) {
 #'
 #' @param x either a WKT string (character), a {terra} SpatRaster/SpatVector, an {sf} object, a {sp} Spatial* object or a {raster} RasterLayer/Stack.
 #' @seealso `gd_bbox()`
-#' @return result methods as
+#' @return am R list representing a bounding box extent in GeoJSON
+#' @importFrom  methods as
 #' @export
 gd_region <- function(x) {
 
