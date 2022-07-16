@@ -18,25 +18,31 @@
 #' )
 gd_bbox <- function(...) {
   .gdal_projwin <- c("xmin", "ymax", "xmax", "ymin")
-  args <- list(...)
+  .args <- list(...)
+  
+  .mbbox <- function(x) {
+    matrix(c(x[["xmin"]], x[["ymin"]],
+             x[["xmin"]], x[["ymax"]],
+             x[["xmax"]], x[["ymax"]],
+             x[["xmax"]], x[["ymin"]]),
+           ncol = 2, byrow = TRUE)
+  }
   # TODO: bbox around all args for multiple SpatExtent?
-  if (inherits(args[[1]], 'SpatExtent')) {
-    m <- do.call('cbind', args[[1]]@ptr$as.points())
-  } else if (all(.gdal_projwin %in% names(args))) {
-    m <- matrix(c(args[["xmin"]], args[["ymin"]],
-                  args[["xmin"]], args[["ymax"]],
-                  args[["xmax"]], args[["ymax"]],
-                  args[["xmax"]], args[["ymin"]]),
-                ncol = 2, byrow = TRUE)
+  if (inherits(.args[[1]], 'SpatExtent')) {
+    stopifnot(requireNamespace("terra", quietly = TRUE))
+    m <- do.call('cbind', .args[[1]]@ptr$as.points())
+  } else if (all(.gdal_projwin %in% names(.args))) {
+    m <- .mbbox(.args)
   } else {
-    if (!length(args) == 4)
-      stop('Expecting total of 4 bounding box arguments, If arguments are unnamed they should be in the following order: "xmin", "ymax", "xmax", "ymin".')
-    names(args) <- .gdal_projwin
+    if (!length(.args) == 4) {
+      stop('Expecting total of 4 bounding box arguments, If arguments are unnamed they should be in the following order: "xmin", "ymax", "xmax", "ymin".', call. = FALSE)
+    }
+    names(.args) <- .gdal_projwin
+    m <- .mbbox(.args)
   }
   m <- rbind(m, m[1,])
   m <- m[rev(1:nrow(m)),]
-  list(type = "Polygon",
-       coordinates = list(apply(m, 1, c, simplify = FALSE)))
+  list(type = "Polygon", coordinates = list(apply(m, 1, c, simplify = FALSE)))
 }
 
 
