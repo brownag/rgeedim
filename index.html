@@ -78,7 +78,8 @@
 <div class="page-header"><h1 id="rgeedim">{rgeedim}<a class="anchor" aria-label="anchor" href="#rgeedim"></a>
 </h1></div>
 <!-- badges: start -->
-<p>{rgeedim} supports search and download of Google Earth Engine imagery with Python <code>geedim</code>.</p>
+<p>{rgeedim} supports search and download of Google Earth Engine imagery with Python module <a href="https://github.com/dugalh/geedim" class="external-link"><code>geedim</code></a>. This package provides wrapper functions that make it more convenient to use <code>geedim</code> from R. The <a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim manual</a> describes the R API. See the <a href="https://geedim.readthedocs.io/" class="external-link">geedim manual</a> for more information on Python API and command line interface.</p>
+<p>By using <code>geedim</code> images larger than the <a href="https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl" class="external-link"><code>Image.getDownloadURL()</code> size limit</a> are split and downloaded as separate tiles, then re-assembled into a single GeoTIFF.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -90,11 +91,11 @@
 <div class="section level2">
 <h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
 </h2>
-<p>You will need Python, the <code>geedim</code> module, and associated dependencies, installed to use {rgeedim}.</p>
+<p>You will need Python and the <code>geedim</code> module installed to use {rgeedim}.</p>
 <div class="section level4">
 <h4 id="using-miniconda">Using Miniconda<a class="anchor" aria-label="anchor" href="#using-miniconda"></a>
 </h4>
-<p>If you do not have a Python environment set up, an option that {reticulate} provides is <code><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">reticulate::install_miniconda()</a></code>. Once you install Miniconda, you can install packages into a conda environment. Customize the <code>envname</code> argument to create or add to a specific environment.</p>
+<p>If you do not have a Python environment set up, an option that {reticulate} provides is <code><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">reticulate::install_miniconda()</a></code>. Once you install Miniconda, you can install packages into a conda environment such as <code>"r-reticulate"</code> (default). Customize the <code>envname</code> argument to create or add to a specific environment.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">install_miniconda</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="st">"geedim"</span><span class="op">)</span></span></code></pre></div>
@@ -105,13 +106,12 @@
 </h4>
 <p>Alternately you can install <code>geedim</code> with <code>pip</code>, for example:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">python</span> -m pip install geedim</span></code></pre></div>
-<p>This shell command assumes you have a Python 3 executable named (or aliased) as <code>python</code> on your PATH.</p>
+<p>This shell command assumes you have a Python 3 executable named (or aliased) as <code>python</code> on your PATH, or the command is being called from within an active Python virtual environment.</p>
 </div>
 <div class="section level3">
-<h3 id="external-dependencies">External Dependencies<a class="anchor" aria-label="anchor" href="#external-dependencies"></a>
+<h3 id="troubleshooting-dependencies">Troubleshooting Dependencies<a class="anchor" aria-label="anchor" href="#troubleshooting-dependencies"></a>
 </h3>
-<p>There are numerous dependencies that may need to be satisfied. Perhaps the most demanding are those for <code>rasterio</code>/GDAL.</p>
-<p>If you have trouble compiling the packages yourself on Windows, you can take advantage of the unofficial <code>pip</code> wheels (binaries) prepared by by <a href="https://www.cgohlke.com/" class="external-link">Christoph Gohlke</a>: <a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" class="external-link uri">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>. <em>Note the specific version of Python you are installing for.</em> Download the desired package/version and then call <code>pip install your-package.whl</code>.</p>
+<p>If you have trouble compiling dependency packages yourself on Windows, you can take advantage of the unofficial <code>pip</code> wheels (binaries) prepared by by <a href="https://www.cgohlke.com/" class="external-link">Christoph Gohlke</a>: <a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" class="external-link uri">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>. <em>Note the name of the package and the specific version of Python you are installing for.</em> Download the desired package/version and then call <code>pip install your-package.whl</code>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -126,7 +126,7 @@
 <p>In each R session you will need to initialize the Earth Engine library</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="reference/gd_bbox.html">gd_bbox()</a></code> is a simple function for specifying extents to rgeedim functions like <code><a href="reference/gd_download.html">gd_download()</a></code>:</p>
+<p><code><a href="reference/gd_bbox.html">gd_bbox()</a></code> is a simple function for specifying extents to {rgeedim} functions like <code><a href="reference/gd_download.html">gd_download()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.6032</span>,</span>
@@ -148,14 +148,13 @@
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.6.1</span></span>
+<span><span class="co">#&gt; terra 1.5.48</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-inspect-1.png" width="100%"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">f</span></span>
+<code class="sourceCode R"><span><span class="va">f</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
 <span><span class="co">#&gt; dimensions  : 264, 730, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 8.983153e-05, 8.983153e-05  (x, y)</span></span>
@@ -204,6 +203,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/brownag/rgeedim/actions" class="external-link"><img src="https://github.com/brownag/rgeedim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://humus.rocks/rgeedim/" class="external-link"><img src="https://camo.githubusercontent.com/f7ba98e46ecd14313e0e8a05bec3f92ca125b8f36302a5b1679d4a949bccbe31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f63732d48544d4c2d696e666f726d6174696f6e616c" alt="HTML Docs"></a></li>
+<li><a href="https://codecov.io/gh/brownag/rgeedim/" class="external-link"><img src="https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3" alt="codecov"></a></li>
 </ul>
 </div>
 
