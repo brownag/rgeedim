@@ -10,7 +10,6 @@ Description: Search, composite, and download Google Earth Engine imagery with 'r
 Config/reticulate:
   list(
     packages = list(
-      list(package = "collections"),
       list(package = "ee"),
       list(package = "geedim")
     )
