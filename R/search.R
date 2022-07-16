@@ -24,9 +24,11 @@ gd_search <- function(x, region, start_date = '2020-01-01', end_date = as.charac
 gd_properties <- function(x) {
   y <- strsplit(x$properties_table, "\n")[[1]]
 
+  h <- as.character(read.table(text = y[1], header = FALSE)[1,])[-(1:2)]
+  
   # skip header and delimiter, read date/time separately
   z <- read.table(text = y[!grepl("^---", y)][-1], header = FALSE)
-  colnames(z) <- c("id", "date", "time", "fill")
+  colnames(z) <- c("id", "date", "time", tolower(h))
 
   # recombine date as object
   z$date <- as.POSIXct(as.Date(paste(trimws(z$date), trimws(z$time))), tz = "UTC")
