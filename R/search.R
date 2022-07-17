@@ -36,3 +36,17 @@ gd_properties <- function(x) {
 
   return(z)
 }
+
+#' Get Names of Layers in an Earth Engine Image
+#'
+#' Calls `bandNames()` method from `ee.Image` class.
+#' 
+#' @param x a Google Earth Engine Image object, such as from `gd_image_from_id()`
+#'
+#' @return character. Vector of names of each layer in an image.
+#' @export
+gd_bandnames <- function(x) {
+  if (inherits(x, 'geedim.download.BaseImage')) {
+    x$ee_image$bandNames()$getInfo()
+  } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
+}

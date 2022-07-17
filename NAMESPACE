@@ -2,6 +2,7 @@
 
 export(earthengine)
 export(gd_authenticate)
+export(gd_bandnames)
 export(gd_bbox)
 export(gd_collection_from_list)
 export(gd_collection_from_name)
