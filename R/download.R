@@ -59,7 +59,7 @@ gd_download <- function(x,
 
 #' @noRd
 #' @keywords internal
-.gd_download_collection <- function(x, destdir, region, overwrite, silent, scale, ...) {
+.gd_download_collection <- function(x, destdir, region, scale, overwrite, silent, ...) {
   if (file.exists(destdir))
     destdir <- dirname(destdir)
 
@@ -71,7 +71,7 @@ gd_download <- function(x,
     fp <- sprintf(file.path(destdir, paste0(basename(y), "_%sm.tif")), 
                   ifelse(scale < 1000, scale, paste0(scale / 1000, "k")))
     if (!file.exists(fp)) {
-      y <- gd_download(img, fp, scale = scale,  ...)
+      y <- gd_download(img, fp, region = region, scale = scale, ...)
     }
     # update names; TODO get this fixed in geedim
     # r <- terra::rast(x)
