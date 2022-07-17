@@ -14,7 +14,7 @@ gd_download(
 )
 }
 \arguments{
-\item{x, }{ID, or a reference to an object inheriting from \code{geedim.download.BaseImage}}
+\item{x, }{ID or Name, or a reference to an object inheriting from \code{geedim.download.BaseImage} or \code{geedim.collection.MaskedCollection}}
 
 \item{filename}{path to output file, defaults to temporary GeoTIFF file path}
 
