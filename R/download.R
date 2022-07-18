@@ -17,7 +17,7 @@ gd_download <- function(x,
                         overwrite = TRUE,
                         silent = TRUE,
                         ...) {
-  
+
   if (is.character(x)) {
     xx <- try(gd_image_from_id(x), silent = TRUE)
     if (inherits(xx, 'try-error')) {
@@ -27,7 +27,7 @@ gd_download <- function(x,
       x <- xx
     } else stop("Could not create Image or Image Collection from '", x, "'", call. = FALSE)
   }
-  
+
   if (inherits(x, "geedim.download.BaseImage")) {
     if (is.null(region)) {
       res <- try(x$download(filename = filename, overwrite = overwrite, ...), silent = silent)
@@ -45,12 +45,11 @@ gd_download <- function(x,
   } else if (inherits(x, "geedim.collection.MaskedCollection")) {
     .args <- list(...)
     scale <- .args[["scale"]]
-    if (is.null(scale)) 
+    if (is.null(scale))
       stop("Downloading an Image Collection requires that the `scale` argument be set.", call. = FALSE)
     .gd_download_collection(x,
                             destdir = filename,
                             region = region,
-                            scale = scale,
                             overwrite = overwrite,
                             silent = silent,
                             ...)
@@ -63,12 +62,12 @@ gd_download <- function(x,
   if (file.exists(destdir))
     destdir <- dirname(destdir)
 
-  if (!dir.exists(destdir)) 
+  if (!dir.exists(destdir))
     dir.create(destdir, recursive = TRUE)
-  
+
   sapply(gd_properties(x)$id, function(y) {
     img <- gd_image_from_id(y)
-    fp <- sprintf(file.path(destdir, paste0(basename(y), "_%sm.tif")), 
+    fp <- sprintf(file.path(destdir, paste0(basename(y), "_%sm.tif")),
                   ifelse(scale < 1000, scale, paste0(scale / 1000, "k")))
     if (!file.exists(fp)) {
       y <- gd_download(img, fp, region = region, scale = scale, silent = silent, overwrite = overwrite, ...)
