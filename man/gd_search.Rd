@@ -7,7 +7,7 @@
 gd_search(
   x,
   region,
-  start_date = "2020-01-01",
+  start_date = "2000-01-01",
   end_date = as.character(Sys.Date()),
   ...
 )

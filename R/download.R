@@ -3,17 +3,20 @@
 #' Download a Google Earth Engine Image
 #'
 #' @param x, ID or Name, or a reference to an object inheriting from `geedim.download.BaseImage` or `geedim.collection.MaskedCollection`
-#' @param filename path to output file, defaults to temporary GeoTIFF file path
-#' @param region a GeoJSON-like list, or other R spatial object describing region of interest, see `gd_region()` and `gd_bbox()` for details
+#' @param filename path to output file, defaults to temporary GeoTIFF file path; if `composite=FALSE` then this path should be to a parent directory. File names will be calculated from the internal name of the image and the requested scale.
+#' @param region a GeoJSON-like list, or other R spatial object describing region of interest, see `gd_region()` and `gd_bbox()` for details. `NULL` region (default) will download the whole image.
+#' @param composite logical. Composite Image Collection into single image for download? Default: `TRUE`
 #' @param overwrite Overwrite existing file? Default: `TRUE`
 #' @param silent Silence errors? Default: `TRUE`
-#' @param ... Additional arguments (e.g. `scale`) to `geedim.download.BaseImage$download(...)`
+#' @param ... Additional arguments (e.g. `scale`) passed to `geedim.download.BaseImage$download(...)`
+#' @details The `region` argument is _optional_ for downloading images. When downloading a composite Image Collection, you must specify `region`, `scale` and `crs` arguments. When downloading an image collection as a set of GeoTIFF files (`composite=FALSE`), then `filename` is the destination directory, and `scale` must be specified.
 #' @seealso `gd_region()` `gd_bbox()`
 #' @return Invisible path to downloaded image, or `try-error` on error
 #' @export
 gd_download <- function(x,
                         filename = tempfile(fileext = ".tif"),
                         region = NULL,
+                        composite = TRUE,
                         overwrite = TRUE,
                         silent = TRUE,
                         ...) {
@@ -37,7 +40,7 @@ gd_download <- function(x,
     if (file.exists(filename) && !inherits(res, 'try-error')) {
       return(filename)
     } else if (inherits(res, 'try-error')) {
-      if (!silent) message(res[1])
+      message(res[1]) # silent only handles the actual try() blocks, messages can be suppressed if needed
       return(invisible(res))
     } else {
       return(invisible(NULL))
@@ -48,8 +51,9 @@ gd_download <- function(x,
     if (is.null(scale))
       stop("Downloading an Image Collection requires that the `scale` argument be set.", call. = FALSE)
     .gd_download_collection(x,
-                            destdir = filename,
+                            dest = filename,
                             region = region,
+                            composite = composite,
                             overwrite = overwrite,
                             silent = silent,
                             ...)
@@ -58,26 +62,52 @@ gd_download <- function(x,
 
 #' @noRd
 #' @keywords internal
-.gd_download_collection <- function(x, destdir, region, scale, overwrite, silent, ...) {
-  if (file.exists(destdir))
-    destdir <- dirname(destdir)
-
-  if (!dir.exists(destdir))
-    dir.create(destdir, recursive = TRUE)
-
-  sapply(gd_properties(x)$id, function(y) {
-    img <- gd_image_from_id(y)
-    fp <- sprintf(file.path(destdir, paste0(basename(y), "_%sm.tif")),
-                  ifelse(scale < 1000, scale, paste0(scale / 1000, "k")))
-    if (!file.exists(fp)) {
-      y <- gd_download(img, fp, region = region, scale = scale, silent = silent, overwrite = overwrite, ...)
+.gd_download_collection <- function(x, dest, region, scale, overwrite, silent, composite = TRUE, ...) {
+  stopifnot(length(dest) == 1)
+  # by default the assumption is a collection can/should be mosaiced/"composited" before download
+  # this is true for any "non-seamless" datasets e.g. satellites, 3DEP 1m, etc.
+  if (composite) {
+    y <- gd_composite(x)
+    if (inherits(y, 'try-error')) {
+      return(invisible(y))
     }
-    # update names; TODO get this fixed in geedim
-    # r <- terra::rast(x)
-    # names(r) <- gd_bandnames(img)
-    # outfile <- terra::sources(img)[1]
-    # terra::writeRaster(r, outfile)
-    # outfile
-    y
-  })
+    if (!file.exists(dest) || overwrite) {
+      return(gd_download(y, dest, region = region, scale = scale, silent = silent, overwrite = overwrite, ...))
+    }
+  # otherwise, need a search()-ed properties table, and iterate over IDs
+  } else {
+    prp <- gd_properties(x)
+    if (inherits(prp, 'try-error')) {
+      return(invisible(prp))
+    }
+    if (is.null(prp)) stop("Empty properties table; your collection may have no features; expand your search parameters with `gd_search() or use `gd_collection_from_list()` to create a collection from desired images.", call. = FALSE)
+    sapply(prp$id, function(y) {
+      if (file.exists(dest)) {
+        stop("When composite=FALSE, `filename` is a directory where multiple files will be downloaded", call. = FALSE)
+      }
+      if (!dir.exists(dest)) {
+        if (all(grepl(dest, "\\.tiff?$", ignore.case = TRUE))) {
+          message("gd_download: Dropping .tif extension from destination directory name with `composite=FALSE`")
+        }
+        dir.create(gsub("(.*)(\\.tiff?)", "\\1", dest, ignore.case = TRUE), recursive = TRUE)
+      }
+      img <- try(gd_image_from_id(y), silent = silent)
+      if (inherits(img, 'try-error')) {
+        message(img[1])
+        return(invisible(img))
+      }
+      fp <- sprintf(file.path(dest, paste0(basename(y), "_%sm.tif")),
+                    ifelse(scale < 1000, scale, paste0(scale / 1000, "k")))
+      if (!file.exists(fp)) {
+        y <- gd_download(img, fp, region = region, scale = scale, silent = silent, overwrite = overwrite, ...)
+      }
+      # update names; TODO get this fixed in geedim
+      # r <- terra::rast(x)
+      # names(r) <- gd_bandnames(img)
+      # outfile <- terra::sources(img)[1]
+      # terra::writeRaster(r, outfile)
+      # outfile
+      y
+    })
+  }
 }

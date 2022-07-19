@@ -8,6 +8,7 @@ gd_download(
   x,
   filename = tempfile(fileext = ".tif"),
   region = NULL,
+  composite = TRUE,
   overwrite = TRUE,
   silent = TRUE,
   ...
@@ -16,21 +17,26 @@ gd_download(
 \arguments{
 \item{x, }{ID or Name, or a reference to an object inheriting from \code{geedim.download.BaseImage} or \code{geedim.collection.MaskedCollection}}
 
-\item{filename}{path to output file, defaults to temporary GeoTIFF file path}
+\item{filename}{path to output file, defaults to temporary GeoTIFF file path; if \code{composite=FALSE} then this path should be to a parent directory. File names will be calculated from the internal name of the image and the requested scale.}
 
-\item{region}{a GeoJSON-like list, or other R spatial object describing region of interest, see \code{gd_region()} and \code{gd_bbox()} for details}
+\item{region}{a GeoJSON-like list, or other R spatial object describing region of interest, see \code{gd_region()} and \code{gd_bbox()} for details. \code{NULL} region (default) will download the whole image.}
+
+\item{composite}{logical. Composite Image Collection into single image for download? Default: \code{TRUE}}
 
 \item{overwrite}{Overwrite existing file? Default: \code{TRUE}}
 
 \item{silent}{Silence errors? Default: \code{TRUE}}
 
-\item{...}{Additional arguments (e.g. \code{scale}) to \code{geedim.download.BaseImage$download(...)}}
+\item{...}{Additional arguments (e.g. \code{scale}) passed to \code{geedim.download.BaseImage$download(...)}}
 }
 \value{
 Invisible path to downloaded image, or \code{try-error} on error
 }
 \description{
 Download a Google Earth Engine Image
+}
+\details{
+The \code{region} argument is \emph{optional} for downloading images. When downloading a composite Image Collection, you must specify \code{region}, \code{scale} and \code{crs} arguments. When downloading an image collection as a set of GeoTIFF files (\code{composite=FALSE}), then \code{filename} is the destination directory, and \code{scale} must be specified.
 }
 \seealso{
 \code{gd_region()} \code{gd_bbox()}
