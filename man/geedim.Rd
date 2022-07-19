@@ -2,9 +2,15 @@
 % Please edit documentation in R/AAAA.R
 \name{geedim}
 \alias{geedim}
+\alias{gd_version}
 \title{\code{Module(geedim)} - Get \code{geedim} Module Instance}
 \usage{
 geedim()
+
+gd_version()
+}
+\value{
+character. Version Number.
 }
 \description{
 Gets the \code{geedim} module instance in use by the package in current \strong{R}/\code{reticulate} session.

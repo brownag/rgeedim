@@ -2,10 +2,18 @@
 % Please edit documentation in R/AAAA.R
 \name{earthengine}
 \alias{earthengine}
-\title{\code{Module(earthengine)} - Get \code{earthengine} Module Instance}
+\alias{gd_ee_version}
+\title{Get Earth Engine \code{Module(ee)} Instance}
 \usage{
 earthengine()
+
+gd_ee_version()
+}
+\value{
+character. Version Number.
 }
 \description{
-Gets the \code{earthengine} module instance in use by the package in current \strong{R}/\code{reticulate} session.
+Gets the \code{ee} module instance in use by \code{geedim} package in current session.
+
+\code{gd_ee_version()} Gets the \code{ee} version using \code{importlib.metadata.version()}
 }

@@ -11,17 +11,37 @@ geedim <- function() {
   gd
 }
 
+#' `gd_version()`: Gets the `geedim` version
+#' @rdname geedim
+#' @return character. Version Number.
+#' @export
+#' @importFrom reticulate py_eval
+gd_version <- function() {
+  try(reticulate::py_eval("version('geedim')"), silent = TRUE)
+}
 
-#' `Module(earthengine)` - Get `earthengine` Module Instance
+#' Get Earth Engine `Module(ee)` Instance
 #'
-#' Gets the `earthengine` module instance in use by the package in current **R**/`reticulate` session.
+#' Gets the `ee` module instance in use by `geedim` package in current session.
 #'
 #' @export
 earthengine <- function() {
   ee
 }
 
+#' @description `gd_ee_version()` Gets the `ee` version using `importlib.metadata.version()`
+#'
+#' @rdname earthengine
+#' @return character. Version Number.
+#' @export
+#' @importFrom reticulate py_eval
+gd_ee_version <- function() {
+  try(reticulate::py_eval("version('ee')"), silent = TRUE)
+}
+
+
 #' @importFrom reticulate import
+#' @importFrom reticulate py_run_string
 .loadModules <-  function() {
   # TODO: store modules in package environment not global variables?
 
@@ -31,11 +51,12 @@ earthengine <- function() {
 
   if (is.null(gd)) {
     try(gd <<- reticulate::import("geedim", delay_load = TRUE), silent = TRUE)
+    if (is.null(ee)) {
+      try(ee <<- gd$utils$ee, silent = TRUE)
+    }
   }
 
-  if (is.null(ee)) {
-    try(ee <<- reticulate::import("ee", delay_load = TRUE), silent = TRUE)
-  }
+  try(reticulate::py_run_string("from importlib.metadata import version"), silent = TRUE)
 
   !is.null(gd)
 }
@@ -46,4 +67,16 @@ earthengine <- function() {
     reticulate::configure_environment(pkgname)
     .loadModules()
   }
+}
+
+#' @importFrom utils packageVersion
+.onAttach <- function(libname, pkgname) {
+  packageStartupMessage(
+    "rgeedim v",
+    utils::packageVersion("rgeedim"),
+    " -- using geedim v",
+    gd_version(),
+    " w/ ee v",
+    gd_ee_version()
+  )
 }
