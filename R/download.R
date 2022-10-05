@@ -8,8 +8,9 @@
 #' @param composite logical. Composite Image Collection into single image for download? Default: `TRUE`
 #' @param overwrite Overwrite existing file? Default: `TRUE`
 #' @param silent Silence errors? Default: `TRUE`
-#' @param ... Additional arguments (e.g. `scale`) passed to `geedim.download.BaseImage$download(...)`
+#' @param ... Additional arguments (e.g. `scale`) passed to [`geedim.mask.MaskedImage$download(...)`](https://geedim.readthedocs.io/en/latest/_generated/geedim.mask.MaskedImage.download.html) and, when `composite=TRUE`, [`geedim.collection.MaskedCollection$composite()`](https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html)
 #' @details The `region` argument is _optional_ for downloading images. When downloading a composite Image Collection, you must specify `region`, `scale` and `crs` arguments. When downloading an image collection as a set of GeoTIFF files (`composite=FALSE`), then `filename` is the destination directory, and `scale` must be specified.
+#'     The default resampling method in `geedim` is `resampling="near"` (Nearest Neighbor). Other options for `resampling` include: `"average"`, `"bicubic"`, `"bilinear"`. See `gd_resampling_methods()`.
 #' @seealso `gd_region()` `gd_bbox()`
 #' @return Invisible path to downloaded image, or `try-error` on error
 #' @export
@@ -20,6 +21,20 @@ gd_download <- function(x,
                         overwrite = TRUE,
                         silent = TRUE,
                         ...) {
+  # check additional arguments to download()/composite()
+  extra.args <- list(...)
+
+  # check `resampling` method (if undefined "near" is used)
+  rsm <- extra.args[["resampling"]]
+  if (!is.null(rsm)) {
+    rsm <- match.arg(rsm, gd_resampling_methods())
+  }
+
+  # check compositing `method` (with composite=TRUE and `x` is a maskedcollection)
+  com <- extra.args[["method"]]
+  if (!is.null(rsm)) {
+    com <- match.arg(rsm, gd_composite_methods())
+  }
 
   if (is.character(x)) {
     xx <- try(gd_image_from_id(x), silent = TRUE)
@@ -62,16 +77,19 @@ gd_download <- function(x,
 
 #' @noRd
 #' @keywords internal
-.gd_download_collection <- function(x, dest, region, scale, overwrite, silent, composite = TRUE, ...) {
+.gd_download_collection <- function(x, dest, region, scale, crs = NULL, overwrite, silent, composite = TRUE, ...) {
   stopifnot(length(dest) == 1)
   # by default the assumption is a collection can/should be mosaiced/"composited" before download
   # this is true for any "non-seamless" datasets e.g. satellites, 3DEP 1m, etc.
   if (composite) {
-    y <- gd_composite(x)
+    y <- gd_composite(x, ...)
     if (inherits(y, 'try-error')) {
       return(invisible(y))
     }
     if (!file.exists(dest) || overwrite) {
+      if (!missing(crs)) {
+        return(gd_download(y, dest, region = region, scale = scale, crs = crs, silent = silent, overwrite = overwrite, ...))
+      }
       return(gd_download(y, dest, region = region, scale = scale, silent = silent, overwrite = overwrite, ...))
     }
   # otherwise, need a search()-ed properties table, and iterate over IDs

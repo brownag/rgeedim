@@ -4,13 +4,15 @@
 \alias{gd_composite}
 \title{Composite an Image Collection}
 \usage{
-gd_composite(x)
+gd_composite(x, ...)
 }
 \arguments{
 \item{x}{an object inheriting from \code{geedim.collection.MaskedCollection}, such as from \code{gd_search()} or \code{gd_collection_from_list()}}
+
+\item{...}{\href{https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html}{additional arguments} to \code{geedim.collection.MaskedCollection$composite()}}
 }
 \value{
-a composite \code{geedim.MaskedImage} object
+a composite \code{geedim.mask.MaskedImage} object
 }
 \description{
 Mosaic the images in a collection to support processing as a single image.

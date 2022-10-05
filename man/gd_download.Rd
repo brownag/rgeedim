@@ -27,7 +27,7 @@ gd_download(
 
 \item{silent}{Silence errors? Default: \code{TRUE}}
 
-\item{...}{Additional arguments (e.g. \code{scale}) passed to \code{geedim.download.BaseImage$download(...)}}
+\item{...}{Additional arguments (e.g. \code{scale}) passed to \href{https://geedim.readthedocs.io/en/latest/_generated/geedim.mask.MaskedImage.download.html}{\code{geedim.mask.MaskedImage$download(...)}} and, when \code{composite=TRUE}, \href{https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html}{\code{geedim.collection.MaskedCollection$composite()}}}
 }
 \value{
 Invisible path to downloaded image, or \code{try-error} on error
@@ -37,6 +37,7 @@ Download a Google Earth Engine Image
 }
 \details{
 The \code{region} argument is \emph{optional} for downloading images. When downloading a composite Image Collection, you must specify \code{region}, \code{scale} and \code{crs} arguments. When downloading an image collection as a set of GeoTIFF files (\code{composite=FALSE}), then \code{filename} is the destination directory, and \code{scale} must be specified.
+The default resampling method in \code{geedim} is \code{resampling="near"} (Nearest Neighbor). Other options for \code{resampling} include: \code{"average"}, \code{"bicubic"}, \code{"bilinear"}. See \code{gd_resampling_methods()}.
 }
 \seealso{
 \code{gd_region()} \code{gd_bbox()}

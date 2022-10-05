@@ -1,13 +1,16 @@
 #' Composite an Image Collection
 #'
-#' Mosaic the images in a collection to support processing as a single image.
+#' Create a composite image from elements of an image collection.
 #'
 #' @param x an object inheriting from `geedim.collection.MaskedCollection`, such as from `gd_search()` or `gd_collection_from_list()`
-#'
-#' @return a composite `geedim.MaskedImage` object
+#' @param ... [additional arguments](https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html) to `geedim.collection.MaskedCollection$composite()`
+#' @return a composite `geedim.mask.MaskedImage` object
 #' @export
-gd_composite <- function(x) {
-  y <- try(x$composite(), silent = TRUE)
+gd_composite <- function(x, ...) {
+  if (!inherits(x, 'geedim.collection.MaskedCollection')){
+    stop("`x` should be a geedim.collection.MaskedCollection", call. = FALSE)
+  }
+  y <- try(x$composite(...), silent = TRUE)
   if (inherits(y, 'try-error')) {
     message(y[1])
     return(invisible(y))
