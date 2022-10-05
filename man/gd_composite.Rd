@@ -15,5 +15,5 @@ gd_composite(x, ...)
 a composite \code{geedim.mask.MaskedImage} object
 }
 \description{
-Mosaic the images in a collection to support processing as a single image.
+Create a composite image from elements of an image collection.
 }
