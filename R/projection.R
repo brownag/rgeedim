@@ -11,8 +11,9 @@ gd_projection <- function(x) {
   if (!inherits(x, "ee.image.Image")) {
     if (inherits(x, 'geedim.download.BaseImage')) {
       gd$utils$get_projection(x$ee_image)
+    } else {
+      gd$utils$get_projection(ee$Image(x))
     }
-    gd$utils$get_projection(ee$Image(x))
   } else {
     gd$utils$get_projection(x)
   }
