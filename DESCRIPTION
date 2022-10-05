@@ -16,7 +16,7 @@ Config/reticulate:
   )
 License: Apache License (>= 2)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Imports: methods, reticulate, jsonlite
 Suggests: terra, raster, knitr, rmarkdown, tinytest
 Depends: R (>= 4.1)
