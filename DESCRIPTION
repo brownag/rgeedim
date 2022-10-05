@@ -1,7 +1,7 @@
 Package: rgeedim
 Type: Package
 Title: Search, Composite, and Download Google Earth Engine Imagery with the Python Module 'geedim'
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Author: Andrew G. Brown
 Maintainer: Andrew G. Brown <brown.andrewg@gmail.com>
 URL: https://humus.rocks/rgeedim/, https://github.com/brownag/rgeedim
@@ -17,8 +17,8 @@ Config/reticulate:
 License: Apache License (>= 2)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
-Imports: methods, reticulate, jsonlite
-Suggests: terra, raster, knitr, rmarkdown, tinytest
+Imports: utils, methods, reticulate, jsonlite
+Suggests: terra, raster, tinytest, knitr, rmarkdown
 Depends: R (>= 4.1)
 Encoding: UTF-8
 LazyData: false
