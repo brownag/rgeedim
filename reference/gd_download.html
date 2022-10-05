@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9006</span>
       </span>
     </div>
 
@@ -35,6 +35,9 @@
       <a href="../articles/demo.html">`rgeedim` Demo</a>
     </li>
   </ul></li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/brownag/rgeedim/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
@@ -98,7 +101,7 @@
 
 
 <dt>...</dt>
-<dd><p>Additional arguments (e.g. <code>scale</code>) passed to <code>geedim.download.BaseImage$download(...)</code></p></dd>
+<dd><p>Additional arguments (e.g. <code>scale</code>) passed to <a href="https://geedim.readthedocs.io/en/latest/_generated/geedim.mask.MaskedImage.download.html" class="external-link"><code>geedim.mask.MaskedImage$download(...)</code></a> and, when <code>composite=TRUE</code>, <a href="https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html" class="external-link"><code>geedim.collection.MaskedCollection$composite()</code></a></p></dd>
 
 </dl></div>
     <div id="value">
@@ -109,7 +112,8 @@
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The <code>region</code> argument is <em>optional</em> for downloading images. When downloading a composite Image Collection, you must specify <code>region</code>, <code>scale</code> and <code>crs</code> arguments. When downloading an image collection as a set of GeoTIFF files (<code>composite=FALSE</code>), then <code>filename</code> is the destination directory, and <code>scale</code> must be specified.</p>
+    <p>The <code>region</code> argument is <em>optional</em> for downloading images. When downloading a composite Image Collection, you must specify <code>region</code>, <code>scale</code> and <code>crs</code> arguments. When downloading an image collection as a set of GeoTIFF files (<code>composite=FALSE</code>), then <code>filename</code> is the destination directory, and <code>scale</code> must be specified.
+The default resampling method in <code>geedim</code> is <code>resampling="near"</code> (Nearest Neighbor). Other options for <code>resampling</code> include: <code>"average"</code>, <code>"bicubic"</code>, <code>"bilinear"</code>. See <code><a href="enum.html">gd_resampling_methods()</a></code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

@@ -19,7 +19,13 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/news/index.html</loc>
+  </url>
+  <url>
     <loc>/reference/earthengine.html</loc>
+  </url>
+  <url>
+    <loc>/reference/enum.html</loc>
   </url>
   <url>
     <loc>/reference/from.html</loc>
@@ -41,6 +47,9 @@
   </url>
   <url>
     <loc>/reference/gd_initialize.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gd_mask_clouds.html</loc>
   </url>
   <url>
     <loc>/reference/gd_projection.html</loc>
