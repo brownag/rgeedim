@@ -1,25 +1,25 @@
 ## we are assuming gd_authenticate() has been called or otherwise set up
 
 # init modules
-expect_null(gd_initialize())
-
-gd <- geedim()
-ee <- earthengine()
-
-# custom skip function
-.modules_available <- function() {
-  sapply(c(gd, ee), inherits, "python.builtin.module")
-}
-
-.auth_available <- function() {
-  !inherits(gd_image_from_id("USGS/NED"), 'try-error')
-}
-
-# modules are loaded
-expect_equal(.modules_available(), c(TRUE, TRUE))
+gi <- gd_initialize()
 
 # only run tests if modules are available
-if (all(.modules_available())) {
+if (!inherits(gi, 'try-error')) {
+
+  gd <- geedim()
+  ee <- earthengine()
+
+  # custom skip function
+  .modules_available <- function() {
+    sapply(c(gd, ee), inherits, "python.builtin.module")
+  }
+
+  # modules are loaded
+  expect_equal(.modules_available(), c(TRUE, TRUE))
+
+  .auth_available <- function() {
+    !inherits(gd_image_from_id("USGS/NED"), 'try-error')
+  }
 
   .testbounds <- c(
     xmin = 5.744140,
@@ -46,29 +46,29 @@ if (all(.modules_available())) {
     .regionlist
   )
 
-  # module versions
-  expect_true(is.character(gd_version()))
-  expect_true(is.character(gd_ee_version()))
+  if (all(.modules_available()) && .auth_available()) {
+    # module versions
+    expect_true(is.character(gd_version()))
+    expect_true(is.character(gd_ee_version()))
 
-  # enums
-  expect_true(is.character(gd_cloud_mask_methods()))
-  expect_true(is.character(gd_composite_methods()))
-  expect_true(is.character(gd_resampling_methods()))
-  expect_true(is.character(gd_enum_names()))
-  expect_true(is.list(gd_enum_elements()))
+    # enums
+    expect_true(is.character(gd_cloud_mask_methods()))
+    expect_true(is.character(gd_composite_methods()))
+    expect_true(is.character(gd_resampling_methods()))
+    expect_true(is.character(gd_enum_names()))
+    expect_true(is.list(gd_enum_elements()))
 
-  # regions: short circuit
-  expect_equal(gd_region(.regionlist), .regionlist)
+    # regions: short circuit
+    expect_equal(gd_region(.regionlist), .regionlist)
 
-  # regions: SpatExtent input
-  ex <- terra::ext(.testbounds)
-  expect_equal(gd_region(ex), .regionlist)
+    # regions: SpatExtent input
+    ex <- terra::ext(.testbounds)
+    expect_equal(gd_region(ex), .regionlist)
 
-  # regions: SpatVector input
-  spv <- terra::as.polygons(terra::ext(.testbounds), crs = "OGC:CRS84")
-  expect_equal(gd_region(spv), .regionlist)
+    # regions: SpatVector input
+    spv <- terra::as.polygons(terra::ext(.testbounds), crs = "OGC:CRS84")
+    expect_equal(gd_region(spv), .regionlist)
 
-  if (.auth_available()) {
     # images
     img <- gd_image_from_id("USGS/NED")
     expect_true(inherits(img, "geedim.mask.MaskedImage"))
