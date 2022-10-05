@@ -32,8 +32,8 @@ gd_download <- function(x,
 
   # check compositing `method` (with composite=TRUE and `x` is a maskedcollection)
   com <- extra.args[["method"]]
-  if (!is.null(rsm)) {
-    com <- match.arg(rsm, gd_composite_methods())
+  if (!is.null(com)) {
+    com <- match.arg(com, gd_composite_methods())
   }
 
   if (is.character(x)) {
