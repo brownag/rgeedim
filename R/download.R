@@ -21,6 +21,9 @@ gd_download <- function(x,
                         overwrite = TRUE,
                         silent = TRUE,
                         ...) {
+
+  filename <- path.expand(filename)
+
   # check additional arguments to download()/composite()
   extra.args <- list(...)
 
