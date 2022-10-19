@@ -1,5 +1,8 @@
 on:
+  workflow_dispatch:
   push:
+    paths:
+      - '**.R'
     branches:
       - main
   pull_request:
