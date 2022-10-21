@@ -36,7 +36,7 @@ gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengin
     if (file.exists(ek) && grepl("\\.json$", ek[1], ignore.case = TRUE)) {
       kd <- jsonlite::read_json(ek)
     } else {
-      kd <- ek
+      kd <- jsonlite::parse_json(ek)
     }
     sac <- ee$ServiceAccountCredentials(kd[['client_email']], key_data = kd[['private_key']])
     return(invisible(try(ee$Initialize(sac, opt_url = opt_url), silent = quiet)))
