@@ -35,7 +35,20 @@ remotes::install_github("brownag/rgeedim")
 
 ## Dependencies
 
-You will need Python and the `geedim` module installed to use {rgeedim}.
+You will need Python 3 with the `geedim` module installed to use
+{rgeedim}.
+
+#### Using `pip`
+
+You can install `geedim` with `pip`, for example:
+
+``` sh
+python -m pip install geedim
+```
+
+This shell command assumes you have a Python 3 executable named (or
+aliased) as `python` on your PATH, or the command is being called from
+within an active Python virtual environment.
 
 #### Using Miniconda
 
@@ -50,23 +63,15 @@ reticulate::install_miniconda()
 reticulate::py_install("geedim")
 ```
 
-#### Using `pip`
+### Troubleshooting
 
-Alternately you can install `geedim` with `pip`, for example:
+If using Python within RStudio for the first time, you may need to set
+your default interpreter in *Tools* \>\> *Global Options…* \>\>
+*Python*.
 
-``` sh
-python -m pip install geedim
-```
-
-This shell command assumes you have a Python 3 executable named (or
-aliased) as `python` on your PATH, or the command is being called from
-within an active Python virtual environment.
-
-### Troubleshooting Dependencies
-
-If you have trouble compiling dependency packages yourself on Windows,
-you can take advantage of the unofficial `pip` wheels (binaries)
-prepared by by [Christoph Gohlke](https://www.cgohlke.com/):
+If you have trouble compiling dependency packages on Windows, you can
+take advantage of the unofficial `pip` wheels (binaries) prepared by by
+[Christoph Gohlke](https://www.cgohlke.com/):
 <https://www.lfd.uci.edu/~gohlke/pythonlibs/>. *Note the name of the
 package and the specific version of Python you are installing for.*
 Download the desired package/version and then call
@@ -80,6 +85,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
+#> rgeedim v0.0.0.9007 -- using geedim v1.5.3 w/ earthengine-api v0.1.328
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -118,6 +124,8 @@ res <- 'CSP/ERGo/1_0/US/CHILI' |>
   gd_download(
     filename = 'image.tif',
     region = r,
+    crs = "EPSG:5070",
+    resampling = "bilinear",
     scale = 10, # scale=10: request ~10m resolution (result in native CRS)
     overwrite = TRUE,
     silent = FALSE
@@ -126,7 +134,7 @@ res <- 'CSP/ERGo/1_0/US/CHILI' |>
 
 ``` r
 library(terra)
-#> terra 1.5.48
+#> terra 1.6.17
 
 f <- rast(res)
 plot(f[[1]])
@@ -135,12 +143,13 @@ plot(f[[1]])
 <img src="man/figures/README-inspect-1.png" width="100%" />
 
 ``` r
+
 f
 #> class       : SpatRaster 
-#> dimensions  : 264, 730, 2  (nrow, ncol, nlyr)
-#> resolution  : 8.983153e-05, 8.983153e-05  (x, y)
-#> extent      : -120.6032, -120.5377, 38.08066, 38.10438  (xmin, xmax, ymin, ymax)
-#> coord. ref. : lon/lat NAD83 (EPSG:4269) 
+#> dimensions  : 402, 618, 2  (nrow, ncol, nlyr)
+#> resolution  : 10, 10  (x, y)
+#> extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)
+#> coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
 #> source      : image.tif 
 #> names       : constant, FILL_MASK
 ```
