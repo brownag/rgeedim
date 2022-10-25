@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9007</span>
       </span>
     </div>
 
@@ -94,27 +94,28 @@
 <div class="section level2">
 <h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
 </h2>
-<p>You will need Python and the <code>geedim</code> module installed to use {rgeedim}.</p>
-<div class="section level4">
-<h4 id="using-miniconda">Using Miniconda<a class="anchor" aria-label="anchor" href="#using-miniconda"></a>
-</h4>
-<p>If you do not have a Python environment set up, an option that {reticulate} provides is <code><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">reticulate::install_miniconda()</a></code>. Once you install Miniconda, you can install packages into a conda environment such as <code>"r-reticulate"</code> (default). Customize the <code>envname</code> argument to create or add to a specific environment.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">install_miniconda</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="st">"geedim"</span><span class="op">)</span></span></code></pre></div>
-</div>
+<p>You will need Python 3 with the <code>geedim</code> module installed to use {rgeedim}.</p>
 <div class="section level4">
 <h4 id="using-pip">Using <code>pip</code>
 <a class="anchor" aria-label="anchor" href="#using-pip"></a>
 </h4>
-<p>Alternately you can install <code>geedim</code> with <code>pip</code>, for example:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">python</span> -m pip install geedim</span></code></pre></div>
+<p>You can install <code>geedim</code> with <code>pip</code>, for example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">python</span> -m pip install geedim</span></code></pre></div>
 <p>This shell command assumes you have a Python 3 executable named (or aliased) as <code>python</code> on your PATH, or the command is being called from within an active Python virtual environment.</p>
 </div>
+<div class="section level4">
+<h4 id="using-miniconda">Using Miniconda<a class="anchor" aria-label="anchor" href="#using-miniconda"></a>
+</h4>
+<p>If you do not have a Python environment set up, an option that {reticulate} provides is <code><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">reticulate::install_miniconda()</a></code>. Once you install Miniconda, you can install packages into a conda environment such as <code>"r-reticulate"</code> (default). Customize the <code>envname</code> argument to create or add to a specific environment.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">install_miniconda</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="st">"geedim"</span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level3">
-<h3 id="troubleshooting-dependencies">Troubleshooting Dependencies<a class="anchor" aria-label="anchor" href="#troubleshooting-dependencies"></a>
+<h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h3>
-<p>If you have trouble compiling dependency packages yourself on Windows, you can take advantage of the unofficial <code>pip</code> wheels (binaries) prepared by by <a href="https://www.cgohlke.com/" class="external-link">Christoph Gohlke</a>: <a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" class="external-link uri">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>. <em>Note the name of the package and the specific version of Python you are installing for.</em> Download the desired package/version and then call <code>pip install your-package.whl</code>.</p>
+<p>If using Python within RStudio for the first time, you may need to set your default interpreter in <em>Tools</em> &gt;&gt; <em>Global Options…</em> &gt;&gt; <em>Python</em>.</p>
+<p>If you have trouble compiling dependency packages on Windows, you can take advantage of the unofficial <code>pip</code> wheels (binaries) prepared by by <a href="https://www.cgohlke.com/" class="external-link">Christoph Gohlke</a>: <a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" class="external-link uri">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>. <em>Note the name of the package and the specific version of Python you are installing for.</em> Download the desired package/version and then call <code>pip install your-package.whl</code>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -122,7 +123,8 @@
 </h2>
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; rgeedim v0.0.0.9007 -- using geedim v1.5.3 w/ earthengine-api v0.1.328</span></span></code></pre></div>
 <p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options are better for non-interactive use.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
@@ -145,24 +147,27 @@
 <span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="st">'image.tif'</span>,</span>
 <span>    region <span class="op">=</span> <span class="va">r</span>,</span>
+<span>    crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
+<span>    resampling <span class="op">=</span> <span class="st">"bilinear"</span>,</span>
 <span>    scale <span class="op">=</span> <span class="fl">10</span>, <span class="co"># scale=10: request ~10m resolution (result in native CRS)</span></span>
 <span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.5.48</span></span>
+<span><span class="co">#&gt; terra 1.6.17</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-inspect-1.png" width="100%"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">f</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="va">f</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 264, 730, 2  (nrow, ncol, nlyr)</span></span>
-<span><span class="co">#&gt; resolution  : 8.983153e-05, 8.983153e-05  (x, y)</span></span>
-<span><span class="co">#&gt; extent      : -120.6032, -120.5377, 38.08066, 38.10438  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : lon/lat NAD83 (EPSG:4269) </span></span>
+<span><span class="co">#&gt; dimensions  : 402, 618, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 10, 10  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : NAD83 / Conus Albers (EPSG:5070) </span></span>
 <span><span class="co">#&gt; source      : image.tif </span></span>
 <span><span class="co">#&gt; names       : constant, FILL_MASK</span></span></code></pre></div>
 </div>
