@@ -36,7 +36,7 @@ earthengine <- function() {
 #' @export
 #' @importFrom reticulate py_eval
 gd_ee_version <- function() {
-  try(reticulate::py_eval("version('ee')"), silent = TRUE)
+  try(reticulate::py_eval("version('earthengine-api')"), silent = TRUE)
 }
 
 
@@ -76,7 +76,7 @@ gd_ee_version <- function() {
     utils::packageVersion("rgeedim"),
     " -- using geedim v",
     gd_version(),
-    " w/ ee v",
+    " w/ earthengine-api v",
     gd_ee_version()
   )
 }
