@@ -85,7 +85,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.0.0.9007 -- using geedim v1.5.3 w/ earthengine-api v0.1.328
+#> rgeedim v0.0.0.9008 -- using geedim v1.5.3 w/ earthengine-api v0.1.329
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -139,7 +139,9 @@ res <- 'CSP/ERGo/1_0/US/CHILI' |>
 ```
 
 We can inspect our results with {terra}. The resulting GeoTIFF has two
-layers, `"elevation"` and `"FILL_MASK"`.
+layers, `"constant"` and `"FILL_MASK"`. The former contains the data,
+and the latter contains a mask reflecting data availability (value = 1
+where data are available).
 
 ``` r
 library(terra)
@@ -205,6 +207,43 @@ plot(c(dem, hillshade = hsd))
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
+## Example: LiDAR Slope Map
+
+This example demonstrates how to access the 1m LiDAR data from USGS. A
+key step in this process is the use of `gd_composite()` to resample the
+component images prior to download.
+
+``` r
+library(rgeedim)
+library(terra)
+
+# search and download from USGS 1m lidar data collection
+gd_initialize()
+
+# wkt->SpatExtent
+b <- 'POLYGON((-121.355 37.56,-121.355 37.555,
+          -121.35 37.555,-121.35 37.56,
+          -121.355 37.56))' |>
+  vect(crs = "OGC:CRS84")
+r <- gd_region(b)
+
+# note that resampling is done on the images as part of compositing/before download
+x <- "USGS/3DEP/1m" |>
+  gd_collection_from_name() |>
+  gd_search(region = r) |>
+  gd_composite(resampling = "bilinear") |>
+  gd_download(region = r,
+              crs = "EPSG:5070",
+              scale = 1) |>
+  rast()
+
+# inspect
+plot(terra::terrain(x$elevation))
+plot(project(b, x), add = TRUE)
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
 ## Example: Landsat-7 cloud/shadow-free composite
 
 This example demonstrates download of a Landsat-7 cloud/shadow-free
@@ -265,7 +304,7 @@ y <- gd_properties(x)$id[1] |>
 plot(rast(y)[[1:4]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ``` r
 
@@ -288,7 +327,7 @@ z <- x |>
 plot(rast(z)[[1:4]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
 
 The `"q-mosaic"` method produces a composite largely free of artefacts;
 this is because it prioritizes pixels with higher distance from clouds.

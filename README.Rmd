@@ -110,7 +110,7 @@ res <- 'CSP/ERGo/1_0/US/CHILI' |>
           )
 ```
 
-We can inspect our results with {terra}. The resulting GeoTIFF has two layers,  `"elevation"` and  `"FILL_MASK"`.
+We can inspect our results with {terra}. The resulting GeoTIFF has two layers,  `"constant"` and  `"FILL_MASK"`. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).
 
 ```{r inspect}
 library(terra)
@@ -160,6 +160,39 @@ hsd <- shade(slp, asp)
 
 # compare elevation v.s. hillshade
 plot(c(dem, hillshade = hsd))
+```
+
+## Example: LiDAR Slope Map
+
+This example demonstrates how to access the 1m LiDAR data from USGS. A key step in this process is the use of `gd_composite()` to resample the component images prior to download.
+
+```{r}
+library(rgeedim)
+library(terra)
+
+# search and download from USGS 1m lidar data collection
+gd_initialize()
+
+# wkt->SpatExtent
+b <- 'POLYGON((-121.355 37.56,-121.355 37.555,
+          -121.35 37.555,-121.35 37.56,
+          -121.355 37.56))' |>
+  vect(crs = "OGC:CRS84")
+r <- gd_region(b)
+
+# note that resampling is done on the images as part of compositing/before download
+x <- "USGS/3DEP/1m" |>
+  gd_collection_from_name() |>
+  gd_search(region = r) |>
+  gd_composite(resampling = "bilinear") |>
+  gd_download(region = r,
+              crs = "EPSG:5070",
+              scale = 1) |>
+  rast()
+
+# inspect
+plot(terra::terrain(x$elevation))
+plot(project(b, x), add = TRUE)
 ```
 
 ## Example: Landsat-7 cloud/shadow-free composite
