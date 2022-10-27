@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9008</span>
       </span>
     </div>
 
@@ -119,7 +119,7 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="how-rgeedim-works">How {rgeedim} Works<a class="anchor" aria-label="anchor" href="#how-rgeedim-works"></a>
 </h2>
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -138,30 +138,26 @@
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5377</span>,</span>
 <span>  ymin <span class="op">=</span> <span class="fl">38.0807</span>,</span>
 <span>  ymax <span class="op">=</span> <span class="fl">38.1043</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># US NED CHILI (Continuous Heat-Insolation Load Index)</span></span>
-<span><span class="co"># https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="st">'CSP/ERGo/1_0/US/CHILI'</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
-<span>    filename <span class="op">=</span> <span class="st">'image.tif'</span>,</span>
-<span>    region <span class="op">=</span> <span class="va">r</span>,</span>
-<span>    crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
-<span>    resampling <span class="op">=</span> <span class="st">"bilinear"</span>,</span>
-<span>    scale <span class="op">=</span> <span class="fl">10</span>, <span class="co"># scale=10: request ~10m resolution (result in native CRS)</span></span>
-<span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<p>We will download the US NED CHILI (Continuous Heat-Insolation Load Index) <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI" class="external-link uri">https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI</a>. We specify an equal-area coordinate reference system (NAD83 Albers), bilinear resampling, and a resolution of 10 meters.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="st">'CSP/ERGo/1_0/US/CHILI'</span> <span class="op">|&gt;</span></span>
+<span>          <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>          <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
+<span>            filename <span class="op">=</span> <span class="st">'image.tif'</span>,</span>
+<span>            region <span class="op">=</span> <span class="va">r</span>,</span>
+<span>            crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
+<span>            resampling <span class="op">=</span> <span class="st">"bilinear"</span>,</span>
+<span>            scale <span class="op">=</span> <span class="fl">10</span>, <span class="co"># scale=10: request ~10m resolution</span></span>
+<span>            overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            silent <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>          <span class="op">)</span></span></code></pre></div>
+<p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"elevation"</code> and <code>"FILL_MASK"</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; terra 1.6.17</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-inspect-1.png" width="100%"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
 <span><span class="co">#&gt; dimensions  : 402, 618, 2  (nrow, ncol, nlyr)</span></span>
@@ -169,7 +165,128 @@
 <span><span class="co">#&gt; extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : NAD83 / Conus Albers (EPSG:5070) </span></span>
 <span><span class="co">#&gt; source      : image.tif </span></span>
-<span><span class="co">#&gt; names       : constant, FILL_MASK</span></span></code></pre></div>
+<span><span class="co">#&gt; names       : constant, FILL_MASK</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-inspect-1.png" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="example-hillshade-from-dem">Example: Hillshade from DEM<a class="anchor" aria-label="anchor" href="#example-hillshade-from-dem"></a>
+</h2>
+<p>This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
+<span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.296</span>,</span>
+<span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.227</span>,</span>
+<span>  ymin <span class="op">=</span> <span class="fl">37.9824</span>,</span>
+<span>  ymax <span class="op">=</span> <span class="fl">38.0071</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## hillshade example</span></span>
+<span><span class="co"># download 10m NED DEM in AEA</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"USGS/NED"</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
+<span>    region <span class="op">=</span> <span class="va">b</span>,</span>
+<span>    scale <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>    crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
+<span>    resampling <span class="op">=</span> <span class="st">"bilinear"</span>,</span>
+<span>    filename <span class="op">=</span> <span class="st">"image.tif"</span>,</span>
+<span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">elevation</span></span>
+<span></span>
+<span><span class="co"># calculate slope, aspect, and hillshade with terra</span></span>
+<span><span class="va">slp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"slope"</span>, unit <span class="op">=</span> <span class="st">"radians"</span><span class="op">)</span></span>
+<span><span class="va">asp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"aspect"</span>, unit <span class="op">=</span> <span class="st">"radians"</span><span class="op">)</span></span>
+<span><span class="va">hsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/shade.html" class="external-link">shade</a></span><span class="op">(</span><span class="va">slp</span>, <span class="va">asp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># compare elevation v.s. hillshade</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">dem</span>, hillshade <span class="op">=</span> <span class="va">hsd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="example-landsat-7-cloudshadow-free-composite">Example: Landsat-7 cloud/shadow-free composite<a class="anchor" aria-label="anchor" href="#example-landsat-7-cloudshadow-free-composite"></a>
+</h2>
+<p>This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the USGS Landsat 7 Level 2, Collection 2, Tier 1. This example is based on a <a href="https://geedim.readthedocs.io/en/latest/examples/l7_composite.html" class="external-link">tutorial</a> in the <code>geedim</code> manual.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
+<span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.296</span>,</span>
+<span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.227</span>,</span>
+<span>  ymin <span class="op">=</span> <span class="fl">37.9824</span>,</span>
+<span>  ymax <span class="op">=</span> <span class="fl">38.0071</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## landsat example</span></span>
+<span><span class="co"># search collection for date range and minimum data fill (85%)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">'LANDSAT/LE07/C02/T1_L2'</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/from.html">gd_collection_from_name</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/gd_search.html">gd_search</a></span><span class="op">(</span></span>
+<span>    start_date <span class="op">=</span> <span class="st">'2020-11-01'</span>,</span>
+<span>    end_date <span class="op">=</span> <span class="st">'2021-02-28'</span>,</span>
+<span>    region <span class="op">=</span> <span class="va">b</span>,</span>
+<span>    cloudless_portion <span class="op">=</span> <span class="fl">85</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># inspect individual image metadata in the collection</span></span>
+<span><span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                            id                date  fill</span></span>
+<span><span class="co">#&gt; 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-29 16:00:00 86.41</span></span>
+<span><span class="co">#&gt; 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2020-12-31 16:00:00 86.85</span></span>
+<span><span class="co">#&gt; 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-16 16:00:00 86.05</span></span>
+<span><span class="co">#&gt; 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-17 16:00:00 85.66</span></span>
+<span><span class="co">#&gt;   cloudless grmse    saa   sea</span></span>
+<span><span class="co">#&gt; 1     86.40  4.92 151.45 25.21</span></span>
+<span><span class="co">#&gt; 2     85.88  4.79 148.07 22.47</span></span>
+<span><span class="co">#&gt; 3     85.99  5.44 145.16 23.71</span></span>
+<span><span class="co">#&gt; 4     85.59  5.73 138.46 30.91</span></span>
+<span></span>
+<span><span class="co"># download a single image</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
+<span>    filename <span class="op">=</span> <span class="st">"image.tif"</span>,</span>
+<span>    region <span class="op">=</span> <span class="va">b</span>,</span>
+<span>    scale <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>    crs <span class="op">=</span> <span class="st">'EPSG:5070'</span>,</span>
+<span>    dtype <span class="op">=</span> <span class="st">'uint16'</span>,</span>
+<span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># create composite landsat image near December 1st, 2020 and download  </span></span>
+<span><span class="co"># using q-mosaic method. </span></span>
+<span><span class="va">z</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="reference/gd_composite.html">gd_composite</a></span><span class="op">(</span></span>
+<span>    method <span class="op">=</span> <span class="st">"q-mosaic"</span>,</span>
+<span>    date <span class="op">=</span> <span class="st">'2020-12-01'</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
+<span>    filename <span class="op">=</span> <span class="st">"image.tif"</span>,</span>
+<span>    region <span class="op">=</span> <span class="va">b</span>,</span>
+<span>    scale <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>    crs <span class="op">=</span> <span class="st">'EPSG:5070'</span>,</span>
+<span>    dtype <span class="op">=</span> <span class="st">'uint16'</span>,</span>
+<span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-2.png" width="100%"></p>
+<p>The <code>"q-mosaic"</code> method produces a composite largely free of artefacts; this is because it prioritizes pixels with higher distance from clouds.</p>
 </div>
 </div>
   </div>

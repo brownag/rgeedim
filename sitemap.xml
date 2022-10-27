@@ -34,7 +34,10 @@
     <loc>/reference/gd_authenticate.html</loc>
   </url>
   <url>
-    <loc>/reference/gd_bandnames.html</loc>
+    <loc>/reference/gd_band_names.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gd_band_properties.html</loc>
   </url>
   <url>
     <loc>/reference/gd_bbox.html</loc>
@@ -44,6 +47,9 @@
   </url>
   <url>
     <loc>/reference/gd_download.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gd_footprint.html</loc>
   </url>
   <url>
     <loc>/reference/gd_initialize.html</loc>
