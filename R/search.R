@@ -2,7 +2,7 @@
 
 #' Search an Image Collection
 #'
-#' @param x `geedim.MaskedCollection` object
+#' @param x `geedim.collection.MaskedCollection` object
 #' @param region list / Python GeoJSON object describing region, e.g. as created by `gd_bbox()`
 #' @param start_date Default: `'2020-01-01'`
 #' @param end_date Default: `Sys.Date()`
@@ -21,9 +21,8 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 
 #' Get Properties of an Image Collection
 #'
-#' @param x `geedim.MaskedCollection` object
-#'
-#' @return `data.frame` containing properties table from `x`
+#' @param x `geedim.collection.MaskedCollection` object
+#' @return `data.frame` containing properties table from `x`; `NULL` if no properties table.
 #' @importFrom utils read.table
 #' @export
 gd_properties <- function(x) {
@@ -31,6 +30,9 @@ gd_properties <- function(x) {
   if (inherits(pt, 'try-error')) {
     message(pt[1])
     return(invisible(pt))
+  }
+  if (pt == "") {
+    return(NULL)
   }
   y <- strsplit(pt, "\n")[[1]]
 

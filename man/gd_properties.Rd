@@ -7,10 +7,10 @@
 gd_properties(x)
 }
 \arguments{
-\item{x}{\code{geedim.MaskedCollection} object}
+\item{x}{\code{geedim.collection.MaskedCollection} object}
 }
 \value{
-\code{data.frame} containing properties table from \code{x}
+\code{data.frame} containing properties table from \code{x}; \code{NULL} if no properties table.
 }
 \description{
 Get Properties of an Image Collection

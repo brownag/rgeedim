@@ -13,7 +13,7 @@ gd_search(
 )
 }
 \arguments{
-\item{x}{\code{geedim.MaskedCollection} object}
+\item{x}{\code{geedim.collection.MaskedCollection} object}
 
 \item{region}{list / Python GeoJSON object describing region, e.g. as created by \code{gd_bbox()}}
 
