@@ -95,3 +95,22 @@ gd_band_properties <- function(x) {
   names(y) <- n
   y
 }
+
+#' Get Footprint of Masked Image
+#'
+#' Gets GeoJSON-style list containing footprint of a `geedim.mask.MaskedImage` object
+#'
+#' @param x a `geedim.mask.MaskedImage` object
+#' @return list.
+#' @export
+gd_footprint <- function(x) {
+  y <- NULL
+  if (inherits(x, 'geedim.mask.MaskedImage')) {
+    y <- try(x$footprint, silent = TRUE)
+  } else stop("`x` should inherit from geedim.mask.MaskedImage", call. = FALSE)
+  if (inherits(y, 'try-error')) {
+    message(y[1])
+    return(invisible(y))
+  }
+  y
+}
