@@ -1,7 +1,7 @@
 Package: rgeedim
 Type: Package
 Title: Search, Composite, and Download Google Earth Engine Imagery with the Python Module 'geedim'
-Version: 0.0.0.9007
+Version: 0.0.0.9008
 Author: Andrew G. Brown
 Maintainer: Andrew G. Brown <brown.andrewg@gmail.com>
 URL: https://humus.rocks/rgeedim/, https://github.com/brownag/rgeedim

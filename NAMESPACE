@@ -2,7 +2,8 @@
 
 export(earthengine)
 export(gd_authenticate)
-export(gd_bandnames)
+export(gd_band_names)
+export(gd_band_properties)
 export(gd_bbox)
 export(gd_cloud_mask_methods)
 export(gd_collection_from_list)

@@ -62,7 +62,7 @@ gd_properties <- function(x) {
 #'
 #' @return character. Vector of names of each layer in an image.
 #' @export
-gd_bandnames <- function(x) {
+gd_band_names <- function(x) {
   y <- NULL
   if (inherits(x, 'geedim.download.BaseImage')) {
     y <- try(x$ee_image$bandNames()$getInfo(), silent = TRUE)
@@ -71,5 +71,27 @@ gd_bandnames <- function(x) {
     message(y[1])
     return(invisible(y))
   }
+  y
+}
+
+#' Get Properties of Layers in an Earth Engine Image
+#'
+#' Gets combined Earth Engine and STAC properties.
+#'
+#' @param x a Google Earth Engine Image object, such as from `gd_image_from_id()`
+#'
+#' @return list. Each element is a list that corresponds to a layer in `x`, each with one or more elements for properties of that layer.
+#' @export
+gd_band_properties <- function(x) {
+  y <- NULL
+  if (inherits(x, 'geedim.download.BaseImage')) {
+    y <- try(x$band_properties, silent = TRUE)
+  } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
+  if (inherits(y, 'try-error')) {
+    message(y[1])
+    return(invisible(y))
+  }
+  n <- sapply(y, \(z) z[["name"]])
+  names(y) <- n
   y
 }
