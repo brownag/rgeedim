@@ -63,7 +63,7 @@ If using Python within RStudio for the first time, you may need to set your defa
 
 If you have trouble compiling dependency packages on Windows, you can take advantage of the unofficial `pip` wheels (binaries) prepared by by [Christoph Gohlke](https://www.cgohlke.com/): <https://www.lfd.uci.edu/~gohlke/pythonlibs/>. _Note the name of the package and the specific version of Python you are installing for._ Download the desired package/version and then call `pip install your-package.whl`.
 
-## Example
+## How {rgeedim} Works
 
 This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
@@ -92,30 +92,141 @@ r <- gd_bbox(
   ymin = 38.0807,
   ymax = 38.1043
 )
-
-# US NED CHILI (Continuous Heat-Insolation Load Index)
-# https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI
-res <- 'CSP/ERGo/1_0/US/CHILI' |>
-  gd_image_from_id() |>
-  gd_download(
-    filename = 'image.tif',
-    region = r,
-    crs = "EPSG:5070",
-    resampling = "bilinear",
-    scale = 10, # scale=10: request ~10m resolution (result in native CRS)
-    overwrite = TRUE,
-    silent = FALSE
-  )
 ```
+
+We will download the US NED CHILI (Continuous Heat-Insolation Load Index) <https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI>. We specify an equal-area coordinate reference system (NAD83 Albers), bilinear resampling, and a resolution of 10 meters.
+
+```{r}
+res <- 'CSP/ERGo/1_0/US/CHILI' |>
+          gd_image_from_id() |>
+          gd_download(
+            filename = 'image.tif',
+            region = r,
+            crs = "EPSG:5070",
+            resampling = "bilinear",
+            scale = 10, # scale=10: request ~10m resolution
+            overwrite = TRUE,
+            silent = FALSE
+          )
+```
+
+We can inspect our results with {terra}. The resulting GeoTIFF has two layers,  `"elevation"` and  `"FILL_MASK"`.
 
 ```{r inspect}
 library(terra)
 
 f <- rast(res)
-plot(f[[1]])
-
 f
+
+plot(f[[1]])
 ```
+
+## Example: Hillshade from DEM
+
+This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.
+
+```{r}
+library(rgeedim)
+library(terra)
+
+gd_initialize()
+
+b <- gd_bbox(
+  xmin = -120.296,
+  xmax = -120.227,
+  ymin = 37.9824,
+  ymax = 38.0071
+)
+
+## hillshade example
+# download 10m NED DEM in AEA
+x <- "USGS/NED" |>
+  gd_image_from_id() |>
+  gd_download(
+    region = b,
+    scale = 10,
+    crs = "EPSG:5070",
+    resampling = "bilinear",
+    filename = "image.tif",
+    overwrite = TRUE,
+    silent = FALSE
+  )
+dem <- rast(x)$elevation
+
+# calculate slope, aspect, and hillshade with terra
+slp <- terrain(dem, "slope", unit = "radians")
+asp <- terrain(dem, "aspect", unit = "radians")
+hsd <- shade(slp, asp)
+
+# compare elevation v.s. hillshade
+plot(c(dem, hillshade = hsd))
+```
+
+## Example: Landsat-7 cloud/shadow-free composite
+
+This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the USGS Landsat 7 Level 2, Collection 2, Tier 1. This example is based on a [tutorial](https://geedim.readthedocs.io/en/latest/examples/l7_composite.html) in the `geedim` manual.
+
+```{r}
+library(rgeedim)
+library(terra)
+
+gd_initialize()
+
+b <- gd_bbox(
+  xmin = -120.296,
+  xmax = -120.227,
+  ymin = 37.9824,
+  ymax = 38.0071
+)
+
+## landsat example
+# search collection for date range and minimum data fill (85%)
+x <- 'LANDSAT/LE07/C02/T1_L2' |>
+  gd_collection_from_name() |>
+  gd_search(
+    start_date = '2020-11-01',
+    end_date = '2021-02-28',
+    region = b,
+    cloudless_portion = 85
+  )
+
+# inspect individual image metadata in the collection
+gd_properties(x)
+
+# download a single image
+y <- gd_properties(x)$id[1] |> 
+  gd_image_from_id() |>
+  gd_download(
+    filename = "image.tif",
+    region = b,
+    scale = 30,
+    crs = 'EPSG:5070',
+    dtype = 'uint16',
+    overwrite = TRUE,
+    silent = FALSE
+  )
+plot(rast(y)[[1:4]])
+
+# create composite landsat image near December 1st, 2020 and download  
+# using q-mosaic method. 
+z <- x |> 
+  gd_composite(
+    method = "q-mosaic",
+    date = '2020-12-01'
+  ) |>
+  gd_download(
+    filename = "image.tif",
+    region = b,
+    scale = 30,
+    crs = 'EPSG:5070',
+    dtype = 'uint16',
+    overwrite = TRUE,
+    silent = FALSE
+  )
+plot(rast(z)[[1:4]])
+```
+
+The `"q-mosaic"` method produces a composite largely free of artefacts; this is because it prioritizes pixels with higher distance from clouds.
 
 ```{r include=FALSE}
 unlink('image.tif')
