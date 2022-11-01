@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -58,6 +58,21 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.0" id="rgeedim-010">rgeedim 0.1.0<a class="anchor" aria-label="anchor" href="#rgeedim-010"></a></h2>
+<ul><li><p>Initial CRAN release</p></li>
+<li><p><code><a href="../reference/gd_region.html">gd_region()</a></code> now supports more complex SpatVector geometries (no longer uses extent to form bounding box if <code>x</code> is SpatVector or can be converted to one)</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.0.9008" id="rgeedim-0009008">rgeedim 0.0.0.9008<a class="anchor" aria-label="anchor" href="#rgeedim-0009008"></a></h2>
+<ul><li><p>Renamed <code>gd_bandnames()</code> -&gt; <code><a href="../reference/gd_band_names.html">gd_band_names()</a></code></p></li>
+<li><p>Added <code><a href="../reference/gd_band_properties.html">gd_band_properties()</a></code> and <code><a href="../reference/gd_footprint.html">gd_footprint()</a></code></p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.0.0.9007" id="rgeedim-0009007">rgeedim 0.0.0.9007<a class="anchor" aria-label="anchor" href="#rgeedim-0009007"></a></h2>
+<ul><li><p>Added helper functions for enums: <code><a href="../reference/enum.html">gd_resampling_methods()</a></code>, <code><a href="../reference/enum.html">gd_composite_methods()</a></code>, <code><a href="../reference/enum.html">gd_cloud_mask_methods()</a></code></p></li>
+<li><p><code><a href="../reference/gd_download.html">gd_download()</a></code> now supports path expansion for <code>filename</code> argument</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.0.9006" id="rgeedim-0009006">rgeedim 0.0.0.9006<a class="anchor" aria-label="anchor" href="#rgeedim-0009006"></a></h2>
 <ul><li><p>Better handling of additional arguments (i.e. <code>crs</code>, <code>resampling</code>, <code>method</code>) in <code><a href="../reference/gd_download.html">gd_download()</a></code> when <code>x</code> is a <code>MaskedCollection</code> and <code>composite=TRUE</code>.</p></li>
 <li><p>Added helper methods for working with the <code>geedim</code> enums: “CloudMaskMethod”, “CompositeMethod” and “ResamplingMethod”</p></li>
@@ -74,7 +89,7 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Andrew G. Brown.</p>
+  <p></p><p>Developed by Andrew Brown.</p>
 </div>
 
 <div class="pkgdown">
