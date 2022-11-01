@@ -7,7 +7,7 @@ Maintainer: Andrew Brown <brown.andrewg@gmail.com>
 URL: https://humus.rocks/rgeedim/, https://github.com/brownag/rgeedim, https://geedim.readthedocs.io/
 BugReports: https://github.com/brownag/rgeedim/issues
 Description: Search, composite, and download Google Earth Engine imagery with 'reticulate' bindings for the Python module 'geedim'.
-    rgeedim provides wrapper functions that make it more convenient to use `geedim` to download images larger than the Earth Engine size limit.
+    Wrapper functions are provided to make it more convenient to use 'geedim' to download images larger than the Earth Engine size limit.
 Config/reticulate:
   list(
     packages = list(
@@ -16,11 +16,12 @@ Config/reticulate:
     )
   )
 License: Apache License (>= 2)
+Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Imports: utils, methods, reticulate, jsonlite
 Suggests: terra, raster, tinytest, knitr, rmarkdown
-Depends: R (>= 4.1)
+Depends: R (>= 3.5)
 Encoding: UTF-8
 LazyData: false
 VignetteBuilder: knitr

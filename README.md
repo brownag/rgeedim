@@ -85,7 +85,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.1.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.328
+#> rgeedim v0.1.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.329
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -329,5 +329,5 @@ plot(rast(z)[[1:4]])
 
 <img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
 
-The `"q-mosaic"` method produces a composite largely free of artefacts;
+The `"q-mosaic"` method produces a composite largely free of artifacts;
 this is because it prioritizes pixels with higher distance from clouds.

@@ -6,7 +6,7 @@
 \alias{rgeedim-package}
 \title{rgeedim: Search, Composite, and Download Google Earth Engine Imagery with the Python Module 'geedim'}
 \description{
-Search, composite, and download Google Earth Engine imagery with 'reticulate' bindings for the Python module 'geedim'. rgeedim provides wrapper functions that make it more convenient to use `geedim` to download images larger than the Earth Engine size limit.
+Search, composite, and download Google Earth Engine imagery with 'reticulate' bindings for the Python module 'geedim'. Wrapper functions are provided to make it more convenient to use 'geedim' to download images larger than the Earth Engine size limit.
 }
 \seealso{
 Useful links:

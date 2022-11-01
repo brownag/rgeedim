@@ -51,7 +51,7 @@ gd_ee_version <- function() {
 
   if (is.null(gd)) {
     try(gd <<- reticulate::import("geedim", delay_load = TRUE), silent = TRUE)
-    if (is.null(ee)) {
+    if (length(gd) > 0) {
       try(ee <<- gd$utils$ee, silent = TRUE)
     }
   }

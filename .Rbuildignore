@@ -5,3 +5,4 @@
 $\.github/*
 ^\.github$
 ^misc$
+^cran-comments\.md$

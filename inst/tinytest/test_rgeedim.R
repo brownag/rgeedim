@@ -1,7 +1,10 @@
-## we are assuming gd_authenticate() has been called or otherwise set up
-
-# init modules
-gi <- gd_initialize()
+if (length(earthengine()) > 0) {
+  # we are assuming gd_authenticate() has been called / set up
+  # such that we can init modules and begin using them
+  gi <- gd_initialize()
+} else {
+  gi <- try(stop("earthengine-api not available"), silent = TRUE)
+}
 
 .testbounds <- c(
   xmin = 5.744140,

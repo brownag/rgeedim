@@ -259,7 +259,7 @@ z <- x |>
 plot(rast(z)[[1:4]])
 ```
 
-The `"q-mosaic"` method produces a composite largely free of artefacts; this is because it prioritizes pixels with higher distance from clouds.
+The `"q-mosaic"` method produces a composite largely free of artifacts; this is because it prioritizes pixels with higher distance from clouds.
 
 ```{r include=FALSE}
 unlink('image.tif')

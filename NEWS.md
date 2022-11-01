@@ -12,7 +12,7 @@
 
 # rgeedim 0.0.0.9007
 
-* Added helper functions for enums: `gd_resampling_methods()`, `gd_composite_methods()`, `gd_cloud_mask_methods()`
+* Fix for enum helper functions `gd_resampling_methods()`, `gd_composite_methods()`, `gd_cloud_mask_methods()` to return values rather than names
 
 * `gd_download()` now supports path expansion for `filename` argument
 
