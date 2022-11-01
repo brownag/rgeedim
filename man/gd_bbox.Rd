@@ -2,7 +2,7 @@
 % Please edit documentation in R/regions.R
 \name{gd_bbox}
 \alias{gd_bbox}
-\title{Prepare \code{region} Object for \code{download()}}
+\title{Prepare Bounding Box Region from X/Y Limits}
 \usage{
 gd_bbox(...)
 }

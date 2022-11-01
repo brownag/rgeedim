@@ -2,18 +2,21 @@
 % Please edit documentation in R/regions.R
 \name{gd_region}
 \alias{gd_region}
-\title{Create \code{region} Object from R Spatial Objects}
+\title{Create GeoJSON Region from R Spatial Objects}
 \usage{
 gd_region(x)
 }
 \arguments{
-\item{x}{either a WKT string (character), a {terra} SpatRaster/SpatVector, an {sf} object, a {sp} Spatial* object or a {raster} RasterLayer/Stack.}
+\item{x}{either a WKT string (character), a {terra} SpatRaster(Collection)/SpatVector(Collection)/SpatExtent, an {sf} object, an {sp} Spatial* object or a {raster} RasterLayer/RasterStack.}
 }
 \value{
-am R list representing a bounding box extent in GeoJSON
+list representing a GeoJSON extent
 }
 \description{
 Creates a suitable input for the \code{region} argument to \verb{gd_download(<Image>)} or \code{gd_search()} for Image Collections.
+}
+\details{
+If \code{x} is an R spatial object, each vertex (possibly after converting object extent to vector) is used to create the GeoJSON object. Otherwise, the extent is determined and passed to \code{gd_bbox()}.
 }
 \seealso{
 \code{gd_bbox()}

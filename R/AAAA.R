@@ -71,12 +71,18 @@ gd_ee_version <- function() {
 
 #' @importFrom utils packageVersion
 .onAttach <- function(libname, pkgname) {
+  gdv <- gd_version()
+  gev <- gd_ee_version()
+  if (inherits(gdv, 'try-error'))
+    gdv <- "<Not Found>"
+  if (inherits(gev, 'try-error'))
+    gev <- "<Not Found>"
   packageStartupMessage(
     "rgeedim v",
     utils::packageVersion("rgeedim"),
-    " -- using geedim v",
-    gd_version(),
-    " w/ earthengine-api v",
-    gd_ee_version()
+    " -- using geedim ",
+    gdv,
+    " w/ earthengine-api ",
+    gev
   )
 }

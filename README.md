@@ -8,7 +8,7 @@
 [![R-CMD-check](https://github.com/brownag/rgeedim/workflows/R-CMD-check/badge.svg)](https://github.com/brownag/rgeedim/actions)
 [![HTML
 Docs](https://camo.githubusercontent.com/f7ba98e46ecd14313e0e8a05bec3f92ca125b8f36302a5b1679d4a949bccbe31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f63732d48544d4c2d696e666f726d6174696f6e616c)](https://humus.rocks/rgeedim/)
-[![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://codecov.io/gh/brownag/rgeedim/)
+[![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://app.codecov.io/gh/brownag/rgeedim)
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery
@@ -85,7 +85,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.0.0.9008 -- using geedim v1.5.3 w/ earthengine-api v0.1.329
+#> rgeedim v0.1.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.328
 ```
 
 If this is your first time using any Google Earth Engine tools,

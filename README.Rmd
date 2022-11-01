@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/brownag/rgeedim/workflows/R-CMD-check/badge.svg)](https://github.com/brownag/rgeedim/actions)
 [![HTML Docs](https://camo.githubusercontent.com/f7ba98e46ecd14313e0e8a05bec3f92ca125b8f36302a5b1679d4a949bccbe31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f63732d48544d4c2d696e666f726d6174696f6e616c)](https://humus.rocks/rgeedim/)
-[![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://codecov.io/gh/brownag/rgeedim/)
+[![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://app.codecov.io/gh/brownag/rgeedim)
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery with Python module [`geedim`](https://github.com/dugalh/geedim). This package provides wrapper functions that make it more convenient to use `geedim` from R. The [rgeedim manual](https://humus.rocks/rgeedim/) describes the R API. See the [geedim manual]( https://geedim.readthedocs.io/) for more information on Python API and command line interface.

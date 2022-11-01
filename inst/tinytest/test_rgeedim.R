@@ -11,11 +11,11 @@ gi <- gd_initialize()
 )
 
 .regionlist <- list(type = "Polygon", coordinates = list(list(
-  c(5.74414, 49.44781),
-  c(6.528252, 49.44781),
-  c(6.528252, 50.18162),
-  c(5.74414, 50.18162),
-  c(5.74414, 49.44781)
+  c(.testbounds[[1]], .testbounds[[3]]),
+  c(.testbounds[[2]], .testbounds[[3]]),
+  c(.testbounds[[2]], .testbounds[[4]]),
+  c(.testbounds[[1]], .testbounds[[4]]),
+  c(.testbounds[[1]], .testbounds[[3]])
 )))
 
 # bbox test
