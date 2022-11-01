@@ -6,7 +6,7 @@
 #' @param opt_url Base URL for API requests; defaults to "High Volume": `"https://earthengine-highvolume.googleapis.com"`
 #' @param quiet Suppress error messages on load? Default: `FALSE`
 #'
-#' @return try-error (invisibly) on error
+#' @return `gd_initialize()`: try-error (invisibly) on error.
 #' @export
 #' @importFrom reticulate py_run_string
 #' @importFrom jsonlite read_json
@@ -54,6 +54,15 @@ gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengin
   }
 }
 
+#' @export
+#' @return `gd_is_initialized()`: logical. `TRUE` if initialized successfully.
+#' @rdname gd_initialize
+#' @examples
+#' gd_is_initialized()
+gd_is_initialized <- function() {
+  return(length(geedim()) > 0 && !inherits(gd_initialize(), "try-error"))
+}
+
 #' Authenticate with Google Earth Engine using `gcloud`, "Notebook Authenticator" or other method
 #'
 #' Calls `ee.Authenticate(...)` to authenticate with Earth Engine.
@@ -65,8 +74,9 @@ gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengin
 #' @return This function is primarily used for the side-effect of authentication with the 'Google Earth Engine' servers. Invisibly returns `try-error` on error.
 #' @export
 #' @examples
-#' \donttest{
-#' gd_authenticate(auth_mode="notebook")
+#' \dontrun{
+#' # opens web page to complete authentication/provide authorization code
+#' gd_authenticate(auth_mode = "notebook")
 #' }
 gd_authenticate <- function(authorization_code = NULL, quiet = FALSE, code_verifier = NULL, auth_mode = NULL) {
   invisible(try(ee$Authenticate(

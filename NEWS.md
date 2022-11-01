@@ -4,6 +4,8 @@
 
 * `gd_region()` now supports more complex SpatVector geometries (no longer uses extent to form bounding box if `x` is SpatVector or can be converted to one)
 
+* Add `gd_is_initialized()` and use for examples and other conditional evaluation of code that requires authentication and initialized 'Google Earth Engine' resources
+
 # rgeedim 0.0.0.9008
 
 * Renamed `gd_bandnames()` -> `gd_band_names()`

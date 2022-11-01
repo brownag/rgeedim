@@ -16,10 +16,8 @@ gd_projection(x)
 Get Projection Information from Google Earth Engine Asset
 }
 \examples{
-\dontshow{if (length(geedim()) > 1) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
-gd_initialize()
-gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))
-}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if(gd_is_initialized())
+  gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))
 \dontshow{\}) # examplesIf}
 }

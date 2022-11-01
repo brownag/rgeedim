@@ -2,6 +2,7 @@
 % Please edit documentation in R/hello.R
 \name{gd_initialize}
 \alias{gd_initialize}
+\alias{gd_is_initialized}
 \title{Initialize \code{geedim}}
 \usage{
 gd_initialize(
@@ -9,6 +10,8 @@ gd_initialize(
   opt_url = "https://earthengine-highvolume.googleapis.com",
   quiet = TRUE
 )
+
+gd_is_initialized()
 }
 \arguments{
 \item{private_key_file}{Optional: Path to JSON file containing client information and private key.}
@@ -18,7 +21,9 @@ gd_initialize(
 \item{quiet}{Suppress error messages on load? Default: \code{FALSE}}
 }
 \value{
-try-error (invisibly) on error
+\code{gd_initialize()}: try-error (invisibly) on error.
+
+\code{gd_is_initialized()}: logical. \code{TRUE} if initialized successfully.
 }
 \description{
 Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.
@@ -27,6 +32,7 @@ Calls \code{geedim} \code{Initialize()} method. This method should be called at 
 \donttest{
 gd_initialize()
 }
+gd_is_initialized()
 }
 \seealso{
 \code{gd_authenticate()}

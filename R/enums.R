@@ -6,10 +6,8 @@
 #' @export
 #' @rdname enum
 #' @examples
-#' \donttest{
-#' gd_initialize()
-#' gd_enum_names()
-#' }
+#' if (gd_is_initialized())
+#'   gd_enum_names()
 gd_enum_names <- function() {
   n <- names(gd$enums)
   n[which(n != "Enum")]
@@ -18,12 +16,10 @@ gd_enum_names <- function() {
 #' @return `gd_enum_elements()`: element values of an Enum
 #' @export
 #' @rdname enum
-#' @examplesIf length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")
+#' @examplesIf gd_is_initialized()
 #' @examples
-#' \donttest{
-#' gd_initialize()
-#' gd_enum_elements()
-#' }
+#' if (gd_is_initialized())
+#'   gd_enum_elements()
 gd_enum_elements <- function(enum = gd_enum_names()) {
   enum <- match.arg(enum, gd_enum_names(), several.ok = TRUE)
   res <- lapply(enum, \(x) {
@@ -37,12 +33,10 @@ gd_enum_elements <- function(enum = gd_enum_names()) {
 #' @return `gd_resampling_methods()`: character vector of resampling methods (Enum `"ResamplingMethod"`)
 #' @export
 #' @rdname enum
-#' @examplesIf length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")
+#' @examplesIf gd_is_initialized()
 #' @examples
-#' \donttest{
-#' gd_initialize()
-#' gd_resampling_methods()
-#' }
+#' if (gd_is_initialized())
+#'   gd_resampling_methods()
 gd_resampling_methods <- function() {
   gd_enum_elements("ResamplingMethod")[[1]]
 }
@@ -50,12 +44,10 @@ gd_resampling_methods <- function() {
 #' @return `gd_cloud_mask_methods()`: character vector of cloud mask methods (Enum `"CloudMaskMethod"`)
 #' @export
 #' @rdname enum
-#' @examplesIf length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")
+#' @examplesIf gd_is_initialized()
 #' @examples
-#' \donttest{
-#' gd_initialize()
-#' gd_cloud_mask_methods()
-#' }
+#' if (gd_is_initialized())
+#'   gd_cloud_mask_methods()
 gd_cloud_mask_methods <- function() {
   gd_enum_elements("CloudMaskMethod")[[1]]
 }
@@ -63,12 +55,10 @@ gd_cloud_mask_methods <- function() {
 #' @return `gd_composite_methods()`: character vector of composite methods (Enum `"CompositeMethod"`)
 #' @export
 #' @rdname enum
-#' @examplesIf length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")
+#' @examplesIf gd_is_initialized()
 #' @examples
-#' \donttest{
-#' gd_initialize()
-#' gd_composite_methods()
-#' }
+#' if (gd_is_initialized())
+#'   gd_composite_methods()
 gd_composite_methods <- function() {
   gd_enum_elements("CompositeMethod")[[1]]
 }

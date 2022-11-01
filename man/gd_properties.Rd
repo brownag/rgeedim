@@ -16,17 +16,16 @@ gd_properties(x)
 Get Properties of an Image Collection
 }
 \examples{
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error") && requireNamespace("terra")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized() && requireNamespace("terra")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
-\donttest{
-gd_initialize()
 b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
                     -121.35 37.555,-121.35 37.56,
                     -121.355 37.56))',
           crs = "OGC:CRS84")
 
-x <- gd_search(gd_collection_from_name("USGS/3DEP/1m"),
-               region = gd_region(b))
-gd_properties(x)
+if (gd_is_initialized()) {
+  x <- gd_search(gd_collection_from_name("USGS/3DEP/1m"),
+                 region = gd_region(b))
+  gd_properties(x)
 }
 }

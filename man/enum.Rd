@@ -36,32 +36,22 @@ gd_composite_methods()
 \code{geedim} Enums
 }
 \examples{
-\donttest{
-gd_initialize()
-gd_enum_names()
-}
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (gd_is_initialized())
+  gd_enum_names()
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
-\donttest{
-gd_initialize()
-gd_enum_elements()
-}
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (gd_is_initialized())
+  gd_enum_elements()
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
-\donttest{
-gd_initialize()
-gd_resampling_methods()
-}
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (gd_is_initialized())
+  gd_resampling_methods()
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
-\donttest{
-gd_initialize()
-gd_cloud_mask_methods()
-}
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (gd_is_initialized())
+  gd_cloud_mask_methods()
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
-\donttest{
-gd_initialize()
-gd_composite_methods()
-}
+if (gd_is_initialized())
+  gd_composite_methods()
 }

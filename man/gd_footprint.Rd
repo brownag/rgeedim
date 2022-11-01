@@ -16,10 +16,8 @@ list.
 Gets GeoJSON-style list containing footprint of a \code{geedim.mask.MaskedImage} object
 }
 \examples{
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
-\donttest{
-gd_initialize()
-gd_footprint(gd_image_from_id("USGS/NED"))
-}
+if (gd_is_initialized())
+  gd_footprint(gd_image_from_id("USGS/NED"))
 }

@@ -40,10 +40,8 @@ The \code{region} argument is \emph{optional} for downloading images. When downl
 The default resampling method in \code{geedim} is \code{resampling="near"} (Nearest Neighbor). Other options for \code{resampling} include: \code{"average"}, \code{"bicubic"}, \code{"bilinear"}. See \code{gd_resampling_methods()}.
 }
 \examples{
-\dontshow{if (length(geedim) > 1) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
-\donttest{
- gd_initialize()
  r <- gd_bbox(
    xmin = -121,
    xmax = -120.5,
@@ -51,6 +49,7 @@ The default resampling method in \code{geedim} is \code{resampling="near"} (Near
    ymax = 39
  )
 
+if (gd_is_initialized()) {
  x <- gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
  tf <- tempfile(fileext = ".tif")
 
@@ -59,16 +58,14 @@ The default resampling method in \code{geedim} is \code{resampling="near"} (Near
                     region = r, scale = 900,
                     overwrite = TRUE, silent = FALSE)
 
-if (requireNamespace("terra")) {
- library(terra)
- f <- rast(img)
-
- plot(f[[1]])
-
- # inspect object
- f
-}
-unlink(tf)
+ if (requireNamespace("terra")) {
+   library(terra)
+   f <- rast(img)
+   plot(f[[1]])
+   # inspect object
+   f
+ }
+ unlink(tf)
 }
 }
 \seealso{

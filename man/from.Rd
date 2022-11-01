@@ -22,22 +22,16 @@ gd_collection_from_list(x)
 Create references to a Google Earth Engine Image or Image Collection based on IDs or names, or combine Images into Image Collections.
 }
 \examples{
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
-gd_initialize()
-gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
-}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (gd_is_initialized())
+  gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
 \dontshow{\}) # examplesIf}
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
-gd_initialize()
-gd_collection_from_name("USGS/3DEP/1m")
-}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (gd_is_initialized())
+  gd_collection_from_name("USGS/3DEP/1m")
 \dontshow{\}) # examplesIf}
-\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
-gd_initialize()
-gd_collection_from_name(c("USGS/3DEP/1m", "USGS/NED"))
-}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (gd_is_initialized())
+  gd_collection_from_list(c("USGS/3DEP/1m", "USGS/NED"))
 \dontshow{\}) # examplesIf}
 }

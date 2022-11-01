@@ -30,7 +30,8 @@ Calls \code{ee.Authenticate(...)} to authenticate with Earth Engine.
 This method should be called once to set up a machine/project with a particular authentication method. The \code{auth_mode="notebook"} argument is very convenient for interactive R use and will take you to a web page where you can sign into your Google Account and get a token to paste into a console prompt.
 }
 \examples{
-\donttest{
-gd_authenticate(auth_mode="notebook")
+\dontrun{
+# opens web page to complete authentication/provide authorization code
+gd_authenticate(auth_mode = "notebook")
 }
 }
