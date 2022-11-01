@@ -15,3 +15,11 @@ character. Vector of names of each layer in an image.
 \description{
 Calls \code{bandNames()} method from \code{ee.Image} class.
 }
+\examples{
+\dontshow{if (length(geedim()) > 0 && !inherits(gd_initialize(), "try-error")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+gd_initialize()
+gd_band_names(gd_image_from_id("USGS/NED"))
+}
+}

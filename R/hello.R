@@ -12,10 +12,10 @@
 #' @importFrom jsonlite read_json
 #' @seealso `gd_authenticate()`
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' gd_initialize()
 #' }
-gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengine-highvolume.googleapis.com', quiet = FALSE) {
+gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengine-highvolume.googleapis.com', quiet = TRUE) {
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
 
@@ -62,9 +62,10 @@ gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengin
 #' @param quiet Suppress warnings, errors, messages? Default: `FALSE`
 #' @param code_verifier Optional code verifier for security Default: `NULL`
 #' @param auth_mode One of `"notebook"`, `"gcloud"`, `"appdefault"` or (default) `NULL` to guess based on the environment
+#' @return This function is primarily used for the side-effect of authentication with the 'Google Earth Engine' servers. Invisibly returns `try-error` on error.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' gd_authenticate(auth_mode="notebook")
 #' }
 gd_authenticate <- function(authorization_code = NULL, quiet = FALSE, code_verifier = NULL, auth_mode = NULL) {

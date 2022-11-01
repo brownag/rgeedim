@@ -15,3 +15,11 @@ gd_projection(x)
 \description{
 Get Projection Information from Google Earth Engine Asset
 }
+\examples{
+\dontshow{if (length(geedim()) > 1) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+gd_initialize()
+gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))
+}
+\dontshow{\}) # examplesIf}
+}

@@ -14,6 +14,36 @@
 #' @seealso `gd_region()` `gd_bbox()`
 #' @return Invisible path to downloaded image, or `try-error` on error
 #' @export
+#' @examplesIf length(geedim) > 1
+#' @examples
+#' \donttest{
+#'  gd_initialize()
+#'  r <- gd_bbox(
+#'    xmin = -121,
+#'    xmax = -120.5,
+#'    ymin = 38.5,
+#'    ymax = 39
+#'  )
+#'
+#'  x <- gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
+#'  tf <- tempfile(fileext = ".tif")
+#'
+#'  # fast sample download at 10x aggregation (900m v.s. 90m)
+#'  img <- gd_download(x, filename = tf,
+#'                     region = r, scale = 900,
+#'                     overwrite = TRUE, silent = FALSE)
+#'
+#' if (requireNamespace("terra")) {
+#'  library(terra)
+#'  f <- rast(img)
+#'
+#'  plot(f[[1]])
+#'
+#'  # inspect object
+#'  f
+#' }
+#' unlink(tf)
+#' }
 gd_download <- function(x,
                         filename = tempfile(fileext = ".tif"),
                         region = NULL,

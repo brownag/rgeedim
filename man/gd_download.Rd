@@ -39,6 +39,38 @@ Download a Google Earth Engine Image
 The \code{region} argument is \emph{optional} for downloading images. When downloading a composite Image Collection, you must specify \code{region}, \code{scale} and \code{crs} arguments. When downloading an image collection as a set of GeoTIFF files (\code{composite=FALSE}), then \code{filename} is the destination directory, and \code{scale} must be specified.
 The default resampling method in \code{geedim} is \code{resampling="near"} (Nearest Neighbor). Other options for \code{resampling} include: \code{"average"}, \code{"bicubic"}, \code{"bilinear"}. See \code{gd_resampling_methods()}.
 }
+\examples{
+\dontshow{if (length(geedim) > 1) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+ gd_initialize()
+ r <- gd_bbox(
+   xmin = -121,
+   xmax = -120.5,
+   ymin = 38.5,
+   ymax = 39
+ )
+
+ x <- gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
+ tf <- tempfile(fileext = ".tif")
+
+ # fast sample download at 10x aggregation (900m v.s. 90m)
+ img <- gd_download(x, filename = tf,
+                    region = r, scale = 900,
+                    overwrite = TRUE, silent = FALSE)
+
+if (requireNamespace("terra")) {
+ library(terra)
+ f <- rast(img)
+
+ plot(f[[1]])
+
+ # inspect object
+ f
+}
+unlink(tf)
+}
+}
 \seealso{
 \code{gd_region()} \code{gd_bbox()}
 }

@@ -7,7 +7,7 @@
 gd_initialize(
   private_key_file = NULL,
   opt_url = "https://earthengine-highvolume.googleapis.com",
-  quiet = FALSE
+  quiet = TRUE
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ try-error (invisibly) on error
 Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.
 }
 \examples{
-\dontrun{
+\donttest{
 gd_initialize()
 }
 }

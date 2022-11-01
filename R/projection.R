@@ -7,6 +7,11 @@
 #'
 #' @return `ee.Projection` object
 #' @export
+#' @examplesIf length(geedim()) > 1
+#' \donttest{
+#' gd_initialize()
+#' gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))
+#' }
 gd_projection <- function(x) {
   if (!inherits(x, "ee.image.Image")) {
     if (inherits(x, 'geedim.download.BaseImage')) {
