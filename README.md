@@ -9,6 +9,8 @@
 [![HTML
 Docs](https://camo.githubusercontent.com/f7ba98e46ecd14313e0e8a05bec3f92ca125b8f36302a5b1679d4a949bccbe31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f63732d48544d4c2d696e666f726d6174696f6e616c)](https://humus.rocks/rgeedim/)
 [![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://app.codecov.io/gh/brownag/rgeedim)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rgeedim)](https://CRAN.R-project.org/package=rgeedim)
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery
@@ -240,7 +242,10 @@ x <- "USGS/3DEP/1m" |>
   gd_composite(resampling = "bilinear") |>
   gd_download(region = r,
               crs = "EPSG:5070",
-              scale = 1) |>
+              scale = 1,
+              filename = "image.tif",
+              overwrite = TRUE,
+              silent = FALSE) |>
   rast()
 
 # inspect
