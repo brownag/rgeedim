@@ -40,17 +40,17 @@ gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengin
       kd <- jsonlite::parse_json(ek)
     }
 
-    sac <- try(ee$ServiceAccountCredentials(kd[['client_email']],
-                                            key_data = kd[['private_key']]),
+    sac <- try(gd$utils$ee$ServiceAccountCredentials(kd[['client_email']],
+                                                     key_data = kd[['private_key']]),
                silent = quiet)
 
     if (inherits(sac, 'try-error')) {
       return(invisible(sac))
     }
 
-    return(invisible(try(ee$Initialize(sac, opt_url = opt_url), silent = quiet)))
+    return(invisible(try(gd$utils$ee$Initialize(sac, opt_url = opt_url), silent = quiet)))
   } else {
-    return(invisible(try(ee$Initialize(opt_url = opt_url), silent = quiet)))
+    return(invisible(try(gd$utils$ee$Initialize(opt_url = opt_url), silent = quiet)))
   }
 }
 
@@ -79,7 +79,7 @@ gd_is_initialized <- function() {
 #' gd_authenticate(auth_mode = "notebook")
 #' }
 gd_authenticate <- function(authorization_code = NULL, quiet = FALSE, code_verifier = NULL, auth_mode = NULL) {
-  invisible(try(ee$Authenticate(
+  invisible(try(gd$utils$Authenticate(
     authorization_code = authorization_code,
     quiet = quiet,
     code_verifier = code_verifier,
