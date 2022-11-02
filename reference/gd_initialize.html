@@ -66,8 +66,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gd_initialize</span><span class="op">(</span></span>
 <span>  private_key_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  opt_url <span class="op">=</span> <span class="st">"https://earthengine-highvolume.googleapis.com"</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gd_is_initialized</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -88,7 +90,10 @@
     <h2>Value</h2>
     
 
-<p>try-error (invisibly) on error</p>
+<p><code>gd_initialize()</code>: try-error (invisibly) on error.</p>
+
+
+<p><code>gd_is_initialized()</code>: logical. <code>TRUE</code> if initialized successfully.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -97,9 +102,11 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu">gd_initialize</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu">gd_is_initialized</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>
   </div>
