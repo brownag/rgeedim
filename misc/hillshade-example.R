@@ -19,13 +19,13 @@ x <- rast("USGS/NED" |>
               scale = 10,
               crs = "EPSG:5070",
               resampling = "bilinear",
-              filename = tf
+              filename = "dem.tif"
             ))
 
 # calculate slope, aspect, and hillshade with terra
-slp <- terrain(x[[1]], "slope", unit="radians")
-asp <- terrain(x[[1]], "aspect", unit="radians")
+slp <- terrain(x[[1]], "slope", unit = "radians")
+asp <- terrain(x[[1]], "aspect", unit = "radians")
 hs <- shade(slp, asp)
 
 # compare elevation v.s. hillshade
-plot(c(x[[1]], hillshade=hs))
+plot(c(x[[1]], hillshade = hs))

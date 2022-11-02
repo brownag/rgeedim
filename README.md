@@ -91,6 +91,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
+#> rgeedim v0.1.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.329
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -150,12 +151,22 @@ where data are available).
 
 ``` r
 library(terra)
+#> terra 1.6.17
 
 f <- rast(res)
 f
+#> class       : SpatRaster 
+#> dimensions  : 402, 618, 2  (nrow, ncol, nlyr)
+#> resolution  : 10, 10  (x, y)
+#> extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)
+#> coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
+#> source      : image.tif 
+#> names       : constant, FILL_MASK
 
 plot(f[[1]])
 ```
+
+<img src="man/figures/README-inspect-1.png" width="100%" />
 
 ## Example: Hillshade from DEM
 
@@ -200,6 +211,8 @@ hsd <- shade(slp, asp)
 plot(c(dem, hillshade = hsd))
 ```
 
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
 ## Example: LiDAR Slope Map
 
 This example demonstrates how to access the 1m LiDAR data from USGS. A
@@ -235,6 +248,8 @@ plot(terra::terrain(x$elevation))
 plot(project(b, x), add = TRUE)
 ```
 
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
 ## Example: Landsat-7 cloud/shadow-free composite
 
 This example demonstrates download of a Landsat-7 cloud/shadow-free
@@ -269,6 +284,16 @@ x <- 'LANDSAT/LE07/C02/T1_L2' |>
 
 # inspect individual image metadata in the collection
 gd_properties(x)
+#>                                            id                date  fill
+#> 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-29 16:00:00 86.41
+#> 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2020-12-31 16:00:00 86.85
+#> 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-16 16:00:00 86.05
+#> 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-17 16:00:00 85.66
+#>   cloudless grmse    saa   sea
+#> 1     86.40  4.92 151.45 25.21
+#> 2     85.88  4.79 148.07 22.47
+#> 3     85.99  5.44 145.16 23.71
+#> 4     85.59  5.73 138.46 30.91
 
 # download a single image
 y <- gd_properties(x)$id[1] |> 
@@ -283,6 +308,11 @@ y <- gd_properties(x)$id[1] |>
     silent = FALSE
   )
 plot(rast(y)[[1:4]])
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
+``` r
 
 # create composite landsat image near December 1st, 2020 and download  
 # using q-mosaic method. 
@@ -302,6 +332,8 @@ z <- x |>
   )
 plot(rast(z)[[1:4]])
 ```
+
+<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
 
 The `"q-mosaic"` method produces a composite largely free of artifacts;
 this is because it prioritizes pixels with higher distance from clouds.
