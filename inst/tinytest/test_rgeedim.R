@@ -1,9 +1,9 @@
-if (length(earthengine()) > 0) {
+if (!inherits(gd_version(), 'try-error')) {
   # we are assuming gd_authenticate() has been called / set up
   # such that we can init modules and begin using them
   gi <- gd_initialize()
 } else {
-  gi <- try(stop("earthengine-api not available"), silent = TRUE)
+  gi <- try(stop("geedim/earthengine-api not available"), silent = TRUE)
 }
 
 .testbounds <- c(
