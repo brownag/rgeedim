@@ -17,7 +17,9 @@ Get Projection Information from Google Earth Engine Asset
 }
 \examples{
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-if(gd_is_initialized())
+\donttest{
+if (gd_is_initialized())
   gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))
+}
 \dontshow{\}) # examplesIf}
 }

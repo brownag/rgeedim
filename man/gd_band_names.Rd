@@ -18,6 +18,8 @@ Calls \code{bandNames()} method from \code{ee.Image} class.
 \examples{
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
+\donttest{
 if (gd_is_initialized())
   gd_band_names(gd_image_from_id("USGS/NED"))
+}
 }

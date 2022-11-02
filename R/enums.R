@@ -6,8 +6,10 @@
 #' @export
 #' @rdname enum
 #' @examples
+#' \donttest{
 #' if (gd_is_initialized())
 #'   gd_enum_names()
+#' }
 gd_enum_names <- function() {
   n <- names(gd$enums)
   n[which(n != "Enum")]
@@ -18,8 +20,10 @@ gd_enum_names <- function() {
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
 #' @examples
+#' \donttest{
 #' if (gd_is_initialized())
 #'   gd_enum_elements()
+#' }
 gd_enum_elements <- function(enum = gd_enum_names()) {
   enum <- match.arg(enum, gd_enum_names(), several.ok = TRUE)
   res <- lapply(enum, \(x) {
@@ -35,8 +39,10 @@ gd_enum_elements <- function(enum = gd_enum_names()) {
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
 #' @examples
+#' \donttest{
 #' if (gd_is_initialized())
 #'   gd_resampling_methods()
+#' }
 gd_resampling_methods <- function() {
   gd_enum_elements("ResamplingMethod")[[1]]
 }
@@ -46,8 +52,10 @@ gd_resampling_methods <- function() {
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
 #' @examples
+#' \donttest{
 #' if (gd_is_initialized())
 #'   gd_cloud_mask_methods()
+#' }
 gd_cloud_mask_methods <- function() {
   gd_enum_elements("CloudMaskMethod")[[1]]
 }
@@ -57,8 +65,10 @@ gd_cloud_mask_methods <- function() {
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
 #' @examples
+#' \donttest{
 #' if (gd_is_initialized())
 #'   gd_composite_methods()
+#' }
 gd_composite_methods <- function() {
   gd_enum_elements("CompositeMethod")[[1]]
 }

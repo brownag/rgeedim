@@ -19,15 +19,13 @@ Creates a suitable input for the \code{region} argument to \verb{gd_download(<Im
 If \code{x} is an R spatial object, each vertex (possibly after converting object extent to vector) is used to create the GeoJSON object. Otherwise, the extent is determined and passed to \code{gd_bbox()}.
 }
 \examples{
-\dontshow{if (gd_is_initialized() && requireNamespace("terra")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("terra")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
                     -121.35 37.555,-121.35 37.56,
                     -121.355 37.56))',
           crs = "OGC:CRS84")
-
-if (gd_is_initialized())
-  gd_region(b)
+gd_region(b)
 }
 \seealso{
 \code{gd_bbox()}

@@ -16,6 +16,7 @@
 #' @export
 #' @examplesIf gd_is_initialized()
 #' @examples
+#' \donttest{
 #'  r <- gd_bbox(
 #'    xmin = -121,
 #'    xmax = -120.5,
@@ -40,6 +41,7 @@
 #'    f
 #'  }
 #'  unlink(tf)
+#' }
 #' }
 gd_download <- function(x,
                         filename = tempfile(fileext = ".tif"),

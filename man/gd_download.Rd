@@ -42,6 +42,7 @@ The default resampling method in \code{geedim} is \code{resampling="near"} (Near
 \examples{
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
+\donttest{
  r <- gd_bbox(
    xmin = -121,
    xmax = -120.5,
@@ -66,6 +67,7 @@ if (gd_is_initialized()) {
    f
  }
  unlink(tf)
+}
 }
 }
 \seealso{

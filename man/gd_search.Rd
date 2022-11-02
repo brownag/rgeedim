@@ -32,6 +32,7 @@ Search an Image Collection
 \examples{
 \dontshow{if (gd_is_initialized() && requireNamespace("terra")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
+\donttest{
 b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
                     -121.35 37.555,-121.35 37.56,
                     -121.355 37.56))',
@@ -39,4 +40,5 @@ b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
 if (gd_is_initialized())
   gd_search(gd_collection_from_name("USGS/3DEP/1m"),
             region = gd_region(b))
+}
 }

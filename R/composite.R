@@ -8,6 +8,7 @@
 #' @export
 #' @examplesIf gd_is_initialized() && requireNamespace("terra")
 #' @examples
+#' \donttest{
 #' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
 #'                     -121.35 37.555,-121.35 37.56,
 #'                     -121.355 37.56))',
@@ -17,6 +18,7 @@
 #'   gd_composite(gd_search(gd_collection_from_name("USGS/3DEP/1m"),
 #'                          region = gd_region(b)),
 #'                resampling = "bilinear")
+#' }
 gd_composite <- function(x, ...) {
   if (!inherits(x, 'geedim.collection.MaskedCollection')) {
     stop("`x` should be a geedim.collection.MaskedCollection", call. = FALSE)
