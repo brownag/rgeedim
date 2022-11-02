@@ -26,10 +26,16 @@ single GeoTIFF.
 
 ## Installation
 
+{rgeedim} is available on CRAN, and can be installed as follows:
+
+``` r
+install.packages("rgeedim")
+```
+
 You can install the development version of {rgeedim} using {remotes}:
 
 ``` r
-# install.packages("remotes")
+if (!require("remotes")) install.packages("remotes")
 remotes::install_github("brownag/rgeedim")
 ```
 
