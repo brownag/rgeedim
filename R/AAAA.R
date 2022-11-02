@@ -1,5 +1,4 @@
 gd <- NULL
-ee <- NULL
 collections_module <- NULL
 
 #' `Module(geedim)` - Get `geedim` Module Instance
@@ -26,7 +25,7 @@ gd_version <- function() {
 #'
 #' @export
 earthengine <- function() {
-  ee
+  gd$utils$ee
 }
 
 #' @description `gd_ee_version()` Gets the `ee` version using `importlib.metadata.version()`
@@ -51,9 +50,6 @@ gd_ee_version <- function() {
 
   if (is.null(gd)) {
     try(gd <<- reticulate::import("geedim", delay_load = TRUE), silent = TRUE)
-    if (length(gd) > 0) {
-      try(ee <<- gd$utils$ee, silent = TRUE)
-    }
   }
 
   try(reticulate::py_run_string("from importlib.metadata import version"), silent = TRUE)

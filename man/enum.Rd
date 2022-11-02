@@ -35,3 +35,33 @@ gd_composite_methods()
 \description{
 \code{geedim} Enums
 }
+\examples{
+\donttest{
+if (gd_is_initialized())
+  gd_enum_names()
+}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_enum_elements()
+}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_resampling_methods()
+}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_cloud_mask_methods()
+}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_composite_methods()
+}
+}

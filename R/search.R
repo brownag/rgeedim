@@ -9,9 +9,20 @@
 #' @param ... additional arguments to `geedim.MaskedCollection.search()` e.g. `cloudless_portion`, `fill_portion`
 #' @return `geedim.MaskedCollection` object suitable for querying properties
 #' @export
+#' @examplesIf gd_is_initialized() && requireNamespace("terra")
+#' @examples
+#' \donttest{
+#' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
+#'                     -121.35 37.555,-121.35 37.56,
+#'                     -121.355 37.56))',
+#'           crs = "OGC:CRS84")
+#' if (gd_is_initialized())
+#'   gd_search(gd_collection_from_name("USGS/3DEP/1m"),
+#'             region = gd_region(b))
+#' }
 gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.character(Sys.Date()), ...) {
   y <- try(x$search(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
-  if (inherits(y, "try-error")){
+  if (inherits(y, "try-error")) {
     message(y[1])
     return(invisible(y))
   }
@@ -25,6 +36,20 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 #' @return `data.frame` containing properties table from `x`; `NULL` if no properties table.
 #' @importFrom utils read.table
 #' @export
+#' @examplesIf gd_is_initialized() && requireNamespace("terra")
+#' @examples
+#' \donttest{
+#' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
+#'                     -121.35 37.555,-121.35 37.56,
+#'                     -121.355 37.56))',
+#'           crs = "OGC:CRS84")
+#'
+#' if (gd_is_initialized()) {
+#'   x <- gd_search(gd_collection_from_name("USGS/3DEP/1m"),
+#'                  region = gd_region(b))
+#'   gd_properties(x)
+#' }
+#' }
 gd_properties <- function(x) {
   pt <- try(x$properties_table)
   if (inherits(pt, 'try-error')) {
@@ -62,6 +87,12 @@ gd_properties <- function(x) {
 #'
 #' @return character. Vector of names of each layer in an image.
 #' @export
+#' @examplesIf gd_is_initialized()
+#' @examples
+#' \donttest{
+#' if (gd_is_initialized())
+#'   gd_band_names(gd_image_from_id("USGS/NED"))
+#' }
 gd_band_names <- function(x) {
   y <- NULL
   if (inherits(x, 'geedim.download.BaseImage')) {
@@ -82,6 +113,12 @@ gd_band_names <- function(x) {
 #'
 #' @return list. Each element is a list that corresponds to a layer in `x`, each with one or more elements for properties of that layer.
 #' @export
+#' @examplesIf gd_is_initialized()
+#' @examples
+#' \donttest{
+#' if (gd_is_initialized())
+#'   gd_band_properties(gd_image_from_id("USGS/NED"))
+#' }
 gd_band_properties <- function(x) {
   y <- NULL
   if (inherits(x, 'geedim.download.BaseImage')) {
@@ -103,6 +140,12 @@ gd_band_properties <- function(x) {
 #' @param x a `geedim.mask.MaskedImage` object
 #' @return list.
 #' @export
+#' @examplesIf gd_is_initialized()
+#' @examples
+#' \donttest{
+#' if (gd_is_initialized())
+#'   gd_footprint(gd_image_from_id("USGS/NED"))
+#' }
 gd_footprint <- function(x) {
   y <- NULL
   if (inherits(x, 'geedim.mask.MaskedImage')) {

@@ -20,6 +20,9 @@ gd_authenticate(
 
 \item{auth_mode}{One of \code{"notebook"}, \code{"gcloud"}, \code{"appdefault"} or (default) \code{NULL} to guess based on the environment}
 }
+\value{
+This function is primarily used for the side-effect of authentication with the 'Google Earth Engine' servers. Invisibly returns \code{try-error} on error.
+}
 \description{
 Calls \code{ee.Authenticate(...)} to authenticate with Earth Engine.
 }
@@ -28,6 +31,7 @@ This method should be called once to set up a machine/project with a particular 
 }
 \examples{
 \dontrun{
-gd_authenticate(auth_mode="notebook")
+# opens web page to complete authentication/provide authorization code
+gd_authenticate(auth_mode = "notebook")
 }
 }

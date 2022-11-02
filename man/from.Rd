@@ -21,3 +21,23 @@ gd_collection_from_list(x)
 \description{
 Create references to a Google Earth Engine Image or Image Collection based on IDs or names, or combine Images into Image Collections.
 }
+\examples{
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
+}
+\dontshow{\}) # examplesIf}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_collection_from_name("USGS/3DEP/1m")
+}
+\dontshow{\}) # examplesIf}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_collection_from_list(c("USGS/3DEP/1m", "USGS/NED"))
+}
+\dontshow{\}) # examplesIf}
+}

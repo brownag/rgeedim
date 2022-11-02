@@ -57,6 +57,13 @@ gd_bbox <- function(...) {
 #' @return list representing a GeoJSON extent
 #' @importFrom  methods as
 #' @export
+#' @examplesIf requireNamespace("terra")
+#' @examples
+#' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
+#'                     -121.35 37.555,-121.35 37.56,
+#'                     -121.355 37.56))',
+#'           crs = "OGC:CRS84")
+#' gd_region(b)
 gd_region <- function(x) {
 
   if (is.list(x) &&

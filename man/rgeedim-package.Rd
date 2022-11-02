@@ -4,9 +4,9 @@
 \name{rgeedim-package}
 \alias{rgeedim}
 \alias{rgeedim-package}
-\title{rgeedim: Search, Composite, and Download Google Earth Engine Imagery with the Python Module 'geedim'}
+\title{rgeedim: Search, Composite, and Download 'Google Earth Engine' Imagery with the 'Python' Module 'geedim'}
 \description{
-Search, composite, and download Google Earth Engine imagery with 'reticulate' bindings for the Python module 'geedim'. Wrapper functions are provided to make it more convenient to use 'geedim' to download images larger than the Earth Engine size limit.
+Search, composite, and download 'Google Earth Engine' imagery with 'reticulate' bindings for the 'Python' module 'geedim'. Read the 'geedim' documentation here: \url{https://geedim.readthedocs.io/}. Wrapper functions are provided to make it more convenient to use 'geedim' to download images larger than the 'Google Earth Engine' size limit \url{https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl}. By default the "High Volume" API endpoint \url{https://developers.google.com/earth-engine/cloud/highvolume} is used to download data and this URL can be customized during initialization of the package.
 }
 \seealso{
 Useful links:
@@ -16,6 +16,10 @@ Useful links:
   \item \url{https://geedim.readthedocs.io/}
   \item Report bugs at \url{https://github.com/brownag/rgeedim/issues}
 }
+
+}
+\author{
+\strong{Maintainer}: Andrew Brown \email{brown.andrewg@gmail.com}
 
 }
 \keyword{internal}

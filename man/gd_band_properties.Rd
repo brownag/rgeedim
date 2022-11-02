@@ -15,3 +15,11 @@ list. Each element is a list that corresponds to a layer in \code{x}, each with 
 \description{
 Gets combined Earth Engine and STAC properties.
 }
+\examples{
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_band_properties(gd_image_from_id("USGS/NED"))
+}
+}
