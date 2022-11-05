@@ -128,7 +128,7 @@ gd_band_properties <- function(x) {
     message(y[1])
     return(invisible(y))
   }
-  n <- sapply(y, \(z) z[["name"]])
+  n <- sapply(y, function(z) z[["name"]])
   names(y) <- n
   y
 }

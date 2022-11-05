@@ -26,9 +26,9 @@ gd_enum_names <- function() {
 #' }
 gd_enum_elements <- function(enum = gd_enum_names()) {
   enum <- match.arg(enum, gd_enum_names(), several.ok = TRUE)
-  res <- lapply(enum, \(x) {
+  res <- lapply(enum, function(x) {
     y <- gd$enums[[x]]
-    sapply(names(y), \(z) y[[z]]$value)
+    sapply(names(y), function(z) y[[z]]$value)
   })
   names(res) <- enum
   res
