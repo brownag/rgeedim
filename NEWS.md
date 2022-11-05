@@ -1,3 +1,7 @@
+# rgeedim 0.1.1
+
+* Fix for R <4.1 compatibility (replaced `\(x)` function syntax)
+
 # rgeedim 0.1.0
 
 * Initial CRAN release
