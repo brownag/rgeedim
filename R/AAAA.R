@@ -52,6 +52,7 @@ gd_ee_version <- function() {
     try(gd <<- reticulate::import("geedim", delay_load = TRUE), silent = TRUE)
   }
 
+  # note: requires Python >= 3.8; but is not essential for functioning of package
   try(reticulate::py_run_string("from importlib.metadata import version"), silent = TRUE)
 
   !is.null(gd)
@@ -79,9 +80,11 @@ gd_ee_version <- function() {
 
 #' @importFrom reticulate configure_environment
 .onLoad <- function(libname, pkgname) {
-  if (!.loadModules() && .has_python3()) {
-    reticulate::configure_environment(pkgname)
-    .loadModules()
+  if (.has_python3()) {
+    if (!.loadModules()) {
+      reticulate::configure_environment(pkgname)
+      .loadModules()
+    }
   }
 }
 
