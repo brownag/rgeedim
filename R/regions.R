@@ -125,9 +125,9 @@ gd_region <- function(x) {
     stop("`x` must be a SpatVector", call. = FALSE)
   }
   p <- terra::crds(terra::as.points(x))
-  p <- p[rev(seq_len(nrow(p))),]
-  p <- rbind(p[nrow(p),], p)
-  list(type = "Polygon", coordinates = list(apply(p, 1, function(y) {
-    as.numeric(c(y))
-  }, simplify = FALSE)))
+  p <- p[rev(seq_len(nrow(p))), ]
+  p <- rbind(p[nrow(p), ], p)
+  list(type = "Polygon", coordinates = list(lapply(apply(p, 1, function(x) {
+    list(as.numeric(x))
+  }), .subset2, 1)))
 }
