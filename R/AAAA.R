@@ -68,9 +68,9 @@ gd_ee_version <- function() {
   # need python 3 for reticulate
   # need python 3.6+ for geedim
   if (length(x) > 0) {
-    if (x$version >= "3.6") {
+    if (numeric_version(x$version) >= "3.6") {
       return(TRUE)
-    } else if (x$version >= "3.0") {
+    } else if (numeric_version(x$version) >= "3.0") {
       # message about geedim dependency? not on load.
       return(FALSE)
     }
