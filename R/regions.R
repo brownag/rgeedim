@@ -42,7 +42,9 @@ gd_bbox <- function(...) {
   }
   m <- rbind(m, m[1,])
   m <- m[rev(1:nrow(m)),]
-  list(type = "Polygon", coordinates = list(apply(m, 1, c, simplify = FALSE)))
+  list(type = "Polygon", coordinates = list(lapply(apply(m, 1, function(x) {
+    list(as.numeric(x))
+  }), .subset2, 1)))
 }
 
 
