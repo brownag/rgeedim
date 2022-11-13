@@ -44,3 +44,16 @@ gd_collection_from_list <- function(x) {
   if (inherits(y, 'try-error')) return(invisible(y))
   y
 }
+
+#' @export
+#' @param filename File or Asset Name
+#' @param folder Optional: Project Name
+#' @rdname from
+#' @examplesIf gd_is_initialized()
+#' \donttest{
+#' if (gd_is_initialized())
+#'   gd_asset_id("RGEEDIM_TEST", "your-project-name")
+#' }
+gd_asset_id <- function(filename, folder = NULL) {
+  gd$utils$asset_id(filename, folder)
+}

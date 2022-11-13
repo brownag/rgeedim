@@ -7,6 +7,8 @@
    - Added `gd_export()`, a helper method for exporting images to Google Drive, Google Cloud Storage Bucket, or Earth Engine Project assets.
    
    - Added `gd_export_types()` `"ExportType"` enum helper function
+   
+   - Added `gd_asset_id()`, a helper method for creating asset IDs from a file/asset name and (optional) project name.
 
 # rgeedim 0.1.0
 
