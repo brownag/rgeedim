@@ -72,3 +72,17 @@ gd_cloud_mask_methods <- function() {
 gd_composite_methods <- function() {
   gd_enum_elements("CompositeMethod")[[1]]
 }
+
+
+#' @return `gd_export_types()`: character vector of export types (Enum `"ExportType"`)
+#' @export
+#' @rdname enum
+#' @examplesIf gd_is_initialized()
+#' @examples
+#' \donttest{
+#' if (gd_is_initialized())
+#'   gd_export_types()
+#' }
+gd_export_types <- function() {
+  gd_enum_elements("ExportType")[[1]]
+}

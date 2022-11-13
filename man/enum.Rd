@@ -6,6 +6,7 @@
 \alias{gd_resampling_methods}
 \alias{gd_cloud_mask_methods}
 \alias{gd_composite_methods}
+\alias{gd_export_types}
 \title{\code{geedim} Enums}
 \usage{
 gd_enum_names()
@@ -17,6 +18,8 @@ gd_resampling_methods()
 gd_cloud_mask_methods()
 
 gd_composite_methods()
+
+gd_export_types()
 }
 \arguments{
 \item{enum}{Enum name, one or more of: \code{"CloudMaskMethod"}, \code{"CompositeMethod"}, \code{"ResamplingMethod"}}
@@ -31,6 +34,8 @@ gd_composite_methods()
 \code{gd_cloud_mask_methods()}: character vector of cloud mask methods (Enum \code{"CloudMaskMethod"})
 
 \code{gd_composite_methods()}: character vector of composite methods (Enum \code{"CompositeMethod"})
+
+\code{gd_export_types()}: character vector of export types (Enum \code{"ExportType"})
 }
 \description{
 \code{geedim} Enums
@@ -63,5 +68,11 @@ if (gd_is_initialized())
 \donttest{
 if (gd_is_initialized())
   gd_composite_methods()
+}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_export_types()
 }
 }

@@ -1,6 +1,12 @@
 # rgeedim 0.1.1
 
-* Fix for R <4.1 compatibility (replaced `\(x)` function syntax)
+* Fix for R <4.1 compatibility (replaced lambda `\(x)` function syntax, replaced `apply(..., simplify=FALSE)` usage)
+
+* Updates to support new functionality in geedim 1.6+
+   
+   - Added `gd_export()`, a helper method for exporting images to Google Drive, Google Cloud Storage Bucket, or Earth Engine Project assets.
+   
+   - Added `gd_export_types()` `"ExportType"` enum helper function
 
 # rgeedim 0.1.0
 
