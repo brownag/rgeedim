@@ -79,7 +79,7 @@ gd_is_initialized <- function() {
 #' gd_authenticate(auth_mode = "notebook")
 #' }
 gd_authenticate <- function(authorization_code = NULL, quiet = FALSE, code_verifier = NULL, auth_mode = NULL) {
-  invisible(try(gd$utils$Authenticate(
+  invisible(try(gd$utils$ee$Authenticate(
     authorization_code = authorization_code,
     quiet = quiet,
     code_verifier = code_verifier,
