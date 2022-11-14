@@ -28,6 +28,9 @@
     <loc>/reference/enum.html</loc>
   </url>
   <url>
+    <loc>/reference/existing-assets.html</loc>
+  </url>
+  <url>
     <loc>/reference/from.html</loc>
   </url>
   <url>
@@ -47,6 +50,9 @@
   </url>
   <url>
     <loc>/reference/gd_download.html</loc>
+  </url>
+  <url>
+    <loc>/reference/gd_export.html</loc>
   </url>
   <url>
     <loc>/reference/gd_footprint.html</loc>

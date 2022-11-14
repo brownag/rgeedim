@@ -67,13 +67,23 @@
 <span></span>
 <span><span class="fu">gd_collection_from_name</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">gd_collection_from_list</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gd_collection_from_list</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gd_asset_id</span><span class="op">(</span><span class="va">filename</span>, folder <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>character. <code>id</code> of Image, <code>name</code> of Image Collection, or a vector of Image <code>id</code> to create a new Image Collection</p></dd>
+
+
+<dt>filename</dt>
+<dd><p>File or Asset Name</p></dd>
+
+
+<dt>folder</dt>
+<dd><p>Optional: Project Name</p></dd>
 
 </dl></div>
     <div id="value">
@@ -101,6 +111,12 @@
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_collection_from_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"USGS/3DEP/1m"</span>, <span class="st">"USGS/NED"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">gd_asset_id</span><span class="op">(</span><span class="st">"RGEEDIM_TEST"</span>, <span class="st">"your-project-name"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

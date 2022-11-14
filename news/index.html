@@ -59,7 +59,15 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.1" id="rgeedim-011">rgeedim 0.1.1<a class="anchor" aria-label="anchor" href="#rgeedim-011"></a></h2>
-<ul><li>Fix for R &lt;4.1 compatibility (replaced <code>\(x)</code> function syntax)</li></ul></div>
+<ul><li><p>Fix for R &lt;4.1 compatibility (replaced lambda <code>\(x)</code> function syntax, replaced <code>apply(..., simplify=FALSE)</code> usage)</p></li>
+<li>
+<p>Updates to support new image export to asset functionality in geedim 1.6+</p>
+<ul><li><p>Added <code><a href="../reference/gd_export.html">gd_export()</a></code>, a helper method for exporting images to Google Drive, Google Cloud Storage Bucket, or Earth Engine Project assets.</p></li>
+<li><p>Added <code><a href="../reference/enum.html">gd_export_types()</a></code> <code>"ExportType"</code> enum helper function</p></li>
+<li><p>Added <code><a href="../reference/from.html">gd_asset_id()</a></code>, a helper method for creating asset IDs from a file/asset name and (optional) project name.</p></li>
+<li><p>Added <code><a href="../reference/existing-assets.html">gd_get_asset()</a></code>, <code><a href="../reference/existing-assets.html">gd_update_asset()</a></code>, and <code><a href="../reference/existing-assets.html">gd_delete_asset()</a></code>, helper functions for accessing, updating and deleting assets created in a Google Cloud project (i.e. those created via <code>gd_export(..., type="asset")</code>)</p></li>
+</ul></li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0" id="rgeedim-010">rgeedim 0.1.0<small>2022-11-02</small><a class="anchor" aria-label="anchor" href="#rgeedim-010"></a></h2>
 <ul><li><p>Initial CRAN release</p></li>
