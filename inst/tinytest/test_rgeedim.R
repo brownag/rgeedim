@@ -73,6 +73,10 @@ if (!inherits(gi, 'try-error')) {
     spv <- terra::as.polygons(terra::ext(.testbounds), crs = "OGC:CRS84")
     expect_equal(gd_region(spv), .regionlist)
 
+    # asset IDs
+    id <- gd_asset_id("RGEEDIM_TEST", "your-project-name")
+    expect_equal(id, "projects/your-project-name/assets/RGEEDIM_TEST")
+
     # images
     img <- gd_image_from_id("USGS/NED")
     expect_true(inherits(img, "geedim.mask.MaskedImage"))

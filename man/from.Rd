@@ -4,6 +4,7 @@
 \alias{gd_image_from_id}
 \alias{gd_collection_from_name}
 \alias{gd_collection_from_list}
+\alias{gd_asset_id}
 \title{Reference Google Earth Engine Image or Image Collection by ID or Name}
 \usage{
 gd_image_from_id(x)
@@ -11,9 +12,15 @@ gd_image_from_id(x)
 gd_collection_from_name(x)
 
 gd_collection_from_list(x)
+
+gd_asset_id(filename, folder = NULL)
 }
 \arguments{
 \item{x}{character. \code{id} of Image, \code{name} of Image Collection, or a vector of Image \code{id} to create a new Image Collection}
+
+\item{filename}{File or Asset Name}
+
+\item{folder}{Optional: Project Name}
 }
 \value{
 \code{geedim.MaskedImage} or \code{geedim.MaskedCollection} object, or \code{try-error} on error
@@ -38,6 +45,12 @@ if (gd_is_initialized())
 \donttest{
 if (gd_is_initialized())
   gd_collection_from_list(c("USGS/3DEP/1m", "USGS/NED"))
+}
+\dontshow{\}) # examplesIf}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_asset_id("RGEEDIM_TEST", "your-project-name")
 }
 \dontshow{\}) # examplesIf}
 }
