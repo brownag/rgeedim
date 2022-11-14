@@ -6,34 +6,50 @@
 \alias{gd_delete_asset}
 \title{Get, Update, or Delete an Earth Engine Asset by ID}
 \usage{
-gd_get_asset(x)
+gd_get_asset(x, silent = FALSE)
 
-gd_update_asset(x, asset, updateFields = character(0))
+gd_update_asset(
+  x,
+  asset,
+  update = c("start_time", "end_time", "properties"),
+  silent = FALSE
+)
 
-gd_delete_asset(x)
+gd_delete_asset(x, silent = FALSE)
 }
 \arguments{
 \item{x}{Asset ID name}
 
-\item{asset}{Used only for \code{gd_update_asset()}, a list representing elements of \code{x} to replace. Only the \code{"start_time"}, \code{"end_time"}, and \code{"properties"} fields can be updated. If a value is named in "updateFields", but is unset in \code{asset}, then that value will be deleted from the asset.}
+\item{silent}{Silence errors? Default: \code{FALSE}}
 
-\item{updateFields}{Used only for \code{gd_update_asset()}. A character vector of field names to update. This may contain: "start_time" or "end_time" to update the corresponding timestamp, "properties.PROPERTY_NAME" to update a given property, or "properties" to update all properties. If the list is empty (default), all properties and both timestamps will be updated.}
+\item{asset}{Used only for \code{gd_update_asset()}: a named list, with names representing elements of \code{x} to replace. Only \code{"start_time"}, \code{"end_time"}, and \code{"properties"} fields can be updated.}
+
+\item{update}{Used only for \code{gd_update_asset()}: A character vector of field names to update. Default: \code{"start_time"}, and \code{"end_time"} to update timestamps; and \code{"properties"} to update all properties.}
 }
 \value{
-This function is called for its side-effects (updates or deletes the specified asset)
+\code{try-error} on error. \code{gd_get_asset()}: a named list containing information and properties of an Earth Engine asset
+
+\code{gd_update_asset()}: This function is called for side-effects (updates the specified asset fields)
+
+\code{gd_delete_asset()}: This function is called for side-effects (deletes the specified asset)
 }
 \description{
 Get, Update, or Delete an Earth Engine Asset by ID
 }
 \examples{
 \dontrun{
+# get asset from project by ID
 a <- gd_get_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
 }
 \dontrun{
+# change description in `"properties"`
 a$properties$description <- "foo"
+
+# update asset
 gd_update_asset("projects/your-project-name/assets/YOUR_ASSET_ID", a, "properties")
 }
 \dontrun{
+# remove an asset from project
 gd_delete_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
 }
 }
