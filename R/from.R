@@ -24,7 +24,18 @@ gd_image_from_id <- function(x) {
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_collection_from_name("USGS/3DEP/1m")
+#'
+#'   # Find 1m DEMs in arbitrary extent
+#'   r <- gd_bbox(xmin = -121.4, xmax = -121.35, ymin = 37.55, ymax = 37.6)
+#'
+#'   # collection of individual tiles of DEM
+#'   x <- gd_collection_from_name("USGS/3DEP/1m")
+#'
+#'   # search within region
+#'   y <- gd_search(x, r)
+#'
+#'   gd_properties(y)
+#'
 #' }
 gd_collection_from_name <- function(x) {
   y <- try(gd$MaskedCollection$from_name(x), silent = FALSE)
@@ -37,7 +48,23 @@ gd_collection_from_name <- function(x) {
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_collection_from_list(c("USGS/3DEP/1m", "USGS/NED"))
+#'   # Find 1m DEM in arbitrary extent
+#'   r <- gd_bbox(xmin = -121.4, xmax = -121.35, ymin = 37.55, ymax = 37.6)
+#'
+#'   # collection of individual tiles of DEM
+#'   x <- gd_collection_from_name("USGS/3DEP/1m")
+#'
+#'   # search within region
+#'   y <- gd_search(x, r)
+#'
+#'   # select images with fill > 0
+#'   z <- subset(gd_properties(y), fill > 0)
+#'
+#'   # create encapsulated images from IDs returned by search
+#'   l <- lapply(z$id, gd_image_from_id)
+#'
+#'   # create a new collection from the list of images
+#'   gd_collection_from_list(l)
 #' }
 gd_collection_from_list <- function(x) {
   y <- try(gd$MaskedCollection$from_list(x), silent = FALSE)

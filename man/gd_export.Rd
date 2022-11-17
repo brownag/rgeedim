@@ -60,7 +60,7 @@ if (gd_is_initialized()) {
  ## export to Google Cloud Bucket with `type="cloud"`,
  ##   where `folder` is the bucket path without `"gs://"`
  # res <- gd_export(i, filename = "RGEEDIM_TEST.tif", type = "cloud",
-                    folder = "your-bucket-name", scale = 100, region = r)
+ #                  folder = "your-bucket-name", scale = 100, region = r)
 }
 }
 }
