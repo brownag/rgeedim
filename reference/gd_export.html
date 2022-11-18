@@ -117,7 +117,31 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.6032</span>,</span></span>
+<span class="r-in"><span>   xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5377</span>,</span></span>
+<span class="r-in"><span>   ymin <span class="op">=</span> <span class="fl">38.0807</span>,</span></span>
+<span class="r-in"><span>   ymax <span class="op">=</span> <span class="fl">38.1043</span></span></span>
+<span class="r-in"><span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="va">i</span> <span class="op">&lt;-</span> <span class="fu"><a href="from.html">gd_image_from_id</a></span><span class="op">(</span><span class="st">'CSP/ERGo/1_0/US/CHILI'</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co">## export to Google Drive (default `type="drive"`)</span></span></span>
+<span class="r-in"><span> <span class="co"># res &lt;- gd_export(i, filename = "RGEEDIM_TEST.tif", scale = 100, region = r)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co">## export to `type="asset"`, then download by ID (stored in project assets)</span></span></span>
+<span class="r-in"><span> <span class="co"># res &lt;- gd_export(i, "RGEEDIM_TEST", type = "asset", folder = "your-project-name", scale = 100, region=r)</span></span></span>
+<span class="r-in"><span> <span class="co"># gd_download("projects/your-project-name/assets/RGEEDIM_TEST", filename = "test.tif")</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co">## export to Google Cloud Bucket with `type="cloud"`,</span></span></span>
+<span class="r-in"><span> <span class="co">##   where `folder` is the bucket path without `"gs://"`</span></span></span>
+<span class="r-in"><span> <span class="co"># res &lt;- gd_export(i, filename = "RGEEDIM_TEST.tif", type = "cloud",</span></span></span>
+<span class="r-in"><span> <span class="co">#                  folder = "your-bucket-name", scale = 100, region = r)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
