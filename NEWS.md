@@ -1,6 +1,4 @@
-# rgeedim 0.1.1
-
-* Fix for R <4.1 compatibility (replaced lambda `\(x)` function syntax, replaced `apply(..., simplify=FALSE)` usage)
+# rgeedim 0.2.0
 
 * Updates to support new image export to asset functionality in geedim 1.6+
    
@@ -11,6 +9,10 @@
    - Added `gd_asset_id()`, a helper method for creating asset IDs from a file/asset name and (optional) project name.
    
    - Added `gd_get_asset()`, `gd_update_asset()`, and `gd_delete_asset()`, helper functions for accessing, updating and deleting assets created in a Google Cloud project (i.e. those created via `gd_export(..., type="asset")`)
+
+# rgeedim 0.1.1
+
+* Fix for R <4.1 compatibility (replaced lambda `\(x)` function syntax, replaced `apply(..., simplify=FALSE)` usage)
 
 # rgeedim 0.1.0
 
