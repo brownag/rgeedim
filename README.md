@@ -14,12 +14,13 @@ status](https://www.r-pkg.org/badges/version/rgeedim)](https://CRAN.R-project.or
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery
-with Python module [`geedim`](https://github.com/dugalh/geedim). This
-package provides wrapper functions that make it more convenient to use
-`geedim` from R. The [rgeedim manual](https://humus.rocks/rgeedim/)
-describes the R API. See the [geedim
-manual](https://geedim.readthedocs.io/) for more information on Python
-API and command line interface.
+with Python module [`geedim`](https://github.com/dugalh/geedim) by Dugal
+Harris. This package provides wrapper functions that make it more
+convenient to use `geedim` from R.
+
+The [rgeedim manual](https://humus.rocks/rgeedim/) describes the R API.
+See the [geedim manual](https://geedim.readthedocs.io/) for more
+information on Python API and command line interface.
 
 By using `geedim` images larger than the [`Image.getDownloadURL()` size
 limit](https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl)
@@ -93,7 +94,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.1.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.329
+#> rgeedim v0.2.0 -- using geedim 1.7.0 w/ earthengine-api 0.1.334
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -153,7 +154,7 @@ where data are available).
 
 ``` r
 library(terra)
-#> terra 1.6.17
+#> terra 1.6.47
 
 f <- rast(res)
 f
@@ -295,10 +296,10 @@ gd_properties(x)
 #> 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-16 16:00:00 86.05
 #> 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-17 16:00:00 85.66
 #>   cloudless grmse    saa   sea
-#> 1     86.40  4.92 151.45 25.21
-#> 2     85.88  4.79 148.07 22.47
-#> 3     85.99  5.44 145.16 23.71
-#> 4     85.59  5.73 138.46 30.91
+#> 1     99.98  4.92 151.45 25.21
+#> 2     98.89  4.79 148.07 22.47
+#> 3     99.93  5.44 145.16 23.71
+#> 4     99.91  5.73 138.46 30.91
 
 # download a single image
 y <- gd_properties(x)$id[1] |> 
