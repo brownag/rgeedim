@@ -54,7 +54,14 @@ if (gd_is_initialized()) {
  # res <- gd_export(i, filename = "RGEEDIM_TEST.tif", scale = 100, region = r)
 
  ## export to `type="asset"`, then download by ID (stored in project assets)
- # res <- gd_export(i, "RGEEDIM_TEST", type = "asset", folder = "your-project-name", scale = 100, region=r)
+ # res <- gd_export(
+ #   i,
+ #   "RGEEDIM_TEST",
+ #   type = "asset",
+ #   folder = "your-project-name",
+ #   scale = 100,
+ #   region = r
+ # )
  # gd_download("projects/your-project-name/assets/RGEEDIM_TEST", filename = "test.tif")
 
  ## export to Google Cloud Bucket with `type="cloud"`,
