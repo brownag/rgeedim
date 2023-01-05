@@ -43,7 +43,6 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          dependencies: "hard"
           extra-packages: pkgdown
           needs: website
           
