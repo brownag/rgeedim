@@ -10,7 +10,7 @@
 Docs](https://camo.githubusercontent.com/f7ba98e46ecd14313e0e8a05bec3f92ca125b8f36302a5b1679d4a949bccbe31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f63732d48544d4c2d696e666f726d6174696f6e616c)](https://humus.rocks/rgeedim/)
 [![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://app.codecov.io/gh/brownag/rgeedim)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/rgeedim)](https://CRAN.R-project.org/package=rgeedim)
+status](https://www.r-pkg.org/badges/version-last-release/rgeedim)](https://CRAN.R-project.org/package=rgeedim)
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery
@@ -94,7 +94,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.2.0 -- using geedim 1.7.0 w/ earthengine-api 0.1.334
+#> rgeedim v0.2.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.330
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -154,7 +154,8 @@ where data are available).
 
 ``` r
 library(terra)
-#> terra 1.6.47
+#> Warning: package 'terra' was built under R version 4.2.2
+#> terra 1.6.49
 
 f <- rast(res)
 f
@@ -296,10 +297,10 @@ gd_properties(x)
 #> 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-16 16:00:00 86.05
 #> 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-17 16:00:00 85.66
 #>   cloudless grmse    saa   sea
-#> 1     99.98  4.92 151.45 25.21
-#> 2     98.89  4.79 148.07 22.47
-#> 3     99.93  5.44 145.16 23.71
-#> 4     99.91  5.73 138.46 30.91
+#> 1     86.40  4.92 151.45 25.21
+#> 2     85.88  4.79 148.07 22.47
+#> 3     85.99  5.44 145.16 23.71
+#> 4     85.59  5.73 138.46 30.91
 
 # download a single image
 y <- gd_properties(x)$id[1] |> 
