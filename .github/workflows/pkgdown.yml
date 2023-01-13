@@ -43,9 +43,9 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: pkgdown
+          extra-packages: any::pkgdown, local::.
           needs: website
-          
+
       - name: Install terra from r-universe
         run: |
           install.packages('terra', repos='https://rspatial.r-universe.dev')
