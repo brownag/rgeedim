@@ -75,7 +75,7 @@
 
       
 
-      </header><script src="demo_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>
@@ -89,12 +89,19 @@
 
     
     
-<p>This vignette shows how to extract a Google Earth Engine asset by name for an arbitrary extent and visualize it in R.</p>
-<p>First, we load {rgeedim} and call <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>. This is a wrapper function around <code>geedim.Initialize()</code> that must be run before using the Python Google Earth Engine API.</p>
+<p>This vignette shows how to extract a Google Earth Engine asset by
+name for an arbitrary extent and visualize it in R.</p>
+<p>First, we load {rgeedim} and call <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>. This
+is a wrapper function around <code>geedim.Initialize()</code> that must
+be run before using the Python Google Earth Engine API.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Perhaps the <em>simplest</em> way to specify the target extent is using the xmin/xmax/ymin/ymax arguments to <code><a href="../reference/gd_bbox.html">gd_bbox()</a></code>. This function returns a Python object equivalent to <em>GeoJSON</em>, which is interchangeably represented as a simple <code>list</code> object in <strong>R</strong> using {reticulate}.</p>
+<p>Perhaps the <em>simplest</em> way to specify the target extent is
+using the xmin/xmax/ymin/ymax arguments to <code><a href="../reference/gd_bbox.html">gd_bbox()</a></code>. This
+function returns a Python object equivalent to <em>GeoJSON</em>, which
+is interchangeably represented as a simple <code>list</code> object in
+<strong>R</strong> using {reticulate}.</p>
 <div class="section level2">
 <h2 id="determine-target-region">Determine Target Region<a class="anchor" aria-label="anchor" href="#determine-target-region"></a>
 </h2>
@@ -105,25 +112,44 @@
 <span>  ymin <span class="op">=</span> <span class="fl">38.5</span>,</span>
 <span>  ymax <span class="op">=</span> <span class="fl">39</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>As is standard for <em>GeoJSON</em>, coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>). Note that longitude, latitude (X, Y) coordinate pair order is implied.</p>
+<p>As is standard for <em>GeoJSON</em>, coordinates of the bounding box
+are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>). Note
+that longitude, latitude (X, Y) coordinate pair order is implied.</p>
 </div>
 <div class="section level2">
 <h2 id="access-by-id">Access by ID<a class="anchor" aria-label="anchor" href="#access-by-id"></a>
 </h2>
-<p>We can find IDs of assets of interest using the Google Earth Engine data catalog: <a href="https://developers.google.com/earth-engine/datasets/catalog" class="external-link uri">https://developers.google.com/earth-engine/datasets/catalog</a></p>
-<p>To obtain an R object reference to the asset we pass the <code>"id"</code> to <code><a href="../reference/from.html">gd_image_from_id()</a></code>. For example here we use <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_Global_SRTM_topoDiversity" class="external-link">Global SRTM Topographic Diversity</a>:</p>
+<p>We can find IDs of assets of interest using the Google Earth Engine
+data catalog: <a href="https://developers.google.com/earth-engine/datasets/catalog" class="external-link uri">https://developers.google.com/earth-engine/datasets/catalog</a></p>
+<p>To obtain an R object reference to the asset we pass the
+<code>"id"</code> to <code><a href="../reference/from.html">gd_image_from_id()</a></code>. For example here
+we use <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_Global_SRTM_topoDiversity" class="external-link">Global
+SRTM Topographic Diversity</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="st">'CSP/ERGo/1_0/Global/SRTM_topoDiversity'</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="../reference/from.html">gd_image_from_id()</a></code> will return <code>geedim.mask.MaskedImage</code> and <code><a href="../reference/from.html">gd_collection_from_name()</a></code> will return <code>geedim.collection.MaskedCollection</code> objects.</p>
-<p>Now, we pass the image result to <code><a href="../reference/gd_download.html">gd_download()</a></code>. We can specify output <code>filename</code> and target area as <code>region</code> arguments. See <code><a href="../reference/gd_bbox.html">gd_bbox()</a></code> for examples of making a region argument from bounding coordinates or a {terra} <code>SpatExtent</code> object.</p>
-<p>Other options that can be passed to the <code>BaseImage.download()</code> method include <code>scale</code> which allows warping of the result to a target resolution. Try modifying this example to use <code>scale=90</code> (~native SRTM resolution):</p>
+<p><code><a href="../reference/from.html">gd_image_from_id()</a></code> will return
+<code>geedim.mask.MaskedImage</code> and
+<code><a href="../reference/from.html">gd_collection_from_name()</a></code> will return
+<code>geedim.collection.MaskedCollection</code> objects.</p>
+<p>Now, we pass the image result to <code><a href="../reference/gd_download.html">gd_download()</a></code>. We can
+specify output <code>filename</code> and target area as
+<code>region</code> arguments. See <code><a href="../reference/gd_bbox.html">gd_bbox()</a></code> for examples
+of making a region argument from bounding coordinates or a {terra}
+<code>SpatExtent</code> object.</p>
+<p>Other options that can be passed to the
+<code>BaseImage.download()</code> method include <code>scale</code>
+which allows warping of the result to a target resolution. Try modifying
+this example to use <code>scale=90</code> (~native SRTM resolution):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_download.html">gd_download</a></span><span class="op">(</span><span class="va">x</span>, filename <span class="op">=</span> <span class="st">'image.tif'</span>,</span>
 <span>                   region <span class="op">=</span> <span class="va">r</span>, scale <span class="op">=</span> <span class="fl">900</span>,</span>
 <span>                   overwrite <span class="op">=</span> <span class="cn">TRUE</span>, silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>                  <span class="op">)</span></span></code></pre></div>
-<p><code><a href="../reference/gd_download.html">gd_download()</a></code> (invisibly) returns the <code>filename</code> on successful download, which helps to “pipe” into functions that might read the result.</p>
-<p>So we can use the {terra} <code><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast()</a></code> function to read the GeoTIFF <code><a href="../reference/gd_download.html">gd_download()</a></code> result.</p>
+<p><code><a href="../reference/gd_download.html">gd_download()</a></code> (invisibly) returns the
+<code>filename</code> on successful download, which helps to “pipe” into
+functions that might read the result.</p>
+<p>So we can use the {terra} <code><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast()</a></code> function to read the
+GeoTIFF <code><a href="../reference/gd_download.html">gd_download()</a></code> result.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></code></pre></div>
@@ -153,7 +179,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

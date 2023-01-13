@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Search, Composite, and Download Google Earth Engine Imagery with the Python Module geedim">
-<meta property="og:description" content='Search, composite, and download Google Earth Engine imagery with reticulate bindings for the Python module geedim. Read the geedim documentation here: &lt;https://geedim.readthedocs.io/&gt;.
+<meta property="og:description" content='Search, composite, and download Google Earth Engine imagery with reticulate bindings for the Python module geedim by Dugal Harris. Read the geedim documentation here: &lt;https://geedim.readthedocs.io/&gt;.
     Wrapper functions are provided to make it more convenient to use geedim to download images larger than the Google Earth Engine size limit &lt;https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl&gt;.
     By default the "High Volume" API endpoint &lt;https://developers.google.com/earth-engine/cloud/highvolume&gt; is used to download data and this URL can be customized during initialization of the package.'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -83,7 +83,9 @@
 <div class="page-header"><h1 id="rgeedim">{rgeedim}<a class="anchor" aria-label="anchor" href="#rgeedim"></a>
 </h1></div>
 <!-- badges: start -->
-<p>{rgeedim} supports search and download of Google Earth Engine imagery with Python module <a href="https://github.com/dugalh/geedim" class="external-link"><code>geedim</code></a>. This package provides wrapper functions that make it more convenient to use <code>geedim</code> from R. The <a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim manual</a> describes the R API. See the <a href="https://geedim.readthedocs.io/" class="external-link">geedim manual</a> for more information on Python API and command line interface.</p>
+
+<p>{rgeedim} supports search and download of Google Earth Engine imagery with Python module <a href="https://github.com/dugalh/geedim" class="external-link"><code>geedim</code></a> by Dugal Harris. This package provides wrapper functions that make it more convenient to use <code>geedim</code> from R.</p>
+<p>The <a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim manual</a> describes the R API. See the <a href="https://geedim.readthedocs.io/" class="external-link">geedim manual</a> for more information on Python API and command line interface.</p>
 <p>By using <code>geedim</code> images larger than the <a href="https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl" class="external-link"><code>Image.getDownloadURL()</code> size limit</a> are split and downloaded as separate tiles, then re-assembled into a single GeoTIFF.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -94,7 +96,7 @@
 <p>You can install the development version of {rgeedim} using {remotes}:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"brownag/rgeedim"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"brownag/rgeedim"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
@@ -105,7 +107,7 @@
 <a class="anchor" aria-label="anchor" href="#using-pip"></a>
 </h4>
 <p>You can install <code>geedim</code> with <code>pip</code>, for example:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">python</span> -m pip install geedim</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install geedim</span></code></pre></div>
 <p>This shell command assumes you have a Python 3 executable named (or aliased) as <code>python</code> on your PATH, or the command is being called from within an active Python virtual environment.</p>
 </div>
 <div class="section level4">
@@ -129,7 +131,7 @@
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.1.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.329</span></span></code></pre></div>
+<span><span class="co">#&gt; rgeedim v0.2.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.330</span></span></code></pre></div>
 <p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options are better for non-interactive use.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
@@ -160,7 +162,8 @@
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.6.17</span></span>
+<span><span class="co">#&gt; Warning: package 'terra' was built under R version 4.2.2</span></span>
+<span><span class="co">#&gt; terra 1.6.49</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
@@ -362,6 +365,7 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Andrew Brown <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
@@ -371,7 +375,7 @@
 <li><a href="https://github.com/brownag/rgeedim/actions" class="external-link"><img src="https://github.com/brownag/rgeedim/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://humus.rocks/rgeedim/" class="external-link"><img src="https://camo.githubusercontent.com/f7ba98e46ecd14313e0e8a05bec3f92ca125b8f36302a5b1679d4a949bccbe31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f63732d48544d4c2d696e666f726d6174696f6e616c" alt="HTML Docs"></a></li>
 <li><a href="https://app.codecov.io/gh/brownag/rgeedim" class="external-link"><img src="https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3" alt="codecov"></a></li>
-<li><a href="https://CRAN.R-project.org/package=rgeedim" class="external-link"><img src="https://www.r-pkg.org/badges/version/rgeedim" alt="CRAN status"></a></li>
+<li><a href="https://CRAN.R-project.org/package=rgeedim" class="external-link"><img src="https://www.r-pkg.org/badges/version-last-release/rgeedim" alt="CRAN status"></a></li>
 </ul>
 </div>
 
@@ -386,7 +390,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
