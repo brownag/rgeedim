@@ -63,11 +63,11 @@ gd_ee_version <- function() {
   # get reticulate python information
   # NB: reticulate::py_config() calls configure_environment() etc.
   #     .:. use py_discover_config()
-  x <- reticulate::py_discover_config()
+  x <- try(reticulate::py_discover_config(), silent = TRUE)
 
   # need python 3 for reticulate
   # need python 3.6+ for geedim
-  if (length(x) > 0) {
+  if (length(x) > 0 && !inherits(x, 'try-error')) {
     if (numeric_version(x$version) >= "3.6") {
       return(TRUE)
     } else if (numeric_version(x$version) >= "3.0") {
@@ -82,8 +82,10 @@ gd_ee_version <- function() {
 .onLoad <- function(libname, pkgname) {
   if (.has_python3()) {
     if (!.loadModules()) {
-      reticulate::configure_environment(pkgname)
-      .loadModules()
+      x <- try(reticulate::configure_environment(pkgname), silent = TRUE)
+      if (!inherits(x, 'try-error')) {
+       .loadModules()
+      }
     }
   }
 }
