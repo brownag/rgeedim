@@ -1,3 +1,7 @@
+# rgeedim 0.2.1
+
+ * Updates to `.onLoad()` to avoid error messages related to Python 3 configuration discovery for {reticulate}
+
 # rgeedim 0.2.0
 
 * Updates to support new image export to asset functionality in geedim 1.6+
