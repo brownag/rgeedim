@@ -1,3 +1,7 @@
+# rgeedim 0.2.2
+
+ * Added `gd_install()` for installation of 'numpy', 'earthengine-api', and 'geedim' Python modules via `reticulate::py_install()`
+ 
 # rgeedim 0.2.1
 
  * Updates to `.onLoad()` to avoid error messages related to Python 3 configuration discovery for {reticulate}
