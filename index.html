@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.2.0 -- using geedim 1.5.3 w/ earthengine-api 0.1.330</span></span></code></pre></div>
+<span><span class="co">#&gt; rgeedim v0.2.2 -- using geedim 1.7.0 w/ earthengine-api 0.1.342</span></span></code></pre></div>
 <p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options are better for non-interactive use.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
@@ -162,8 +162,7 @@
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: package 'terra' was built under R version 4.2.2</span></span>
-<span><span class="co">#&gt; terra 1.6.49</span></span>
+<span><span class="co">#&gt; terra 1.7.3</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
@@ -291,10 +290,10 @@
 <span><span class="co">#&gt; 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-16 16:00:00 86.05</span></span>
 <span><span class="co">#&gt; 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-17 16:00:00 85.66</span></span>
 <span><span class="co">#&gt;   cloudless grmse    saa   sea</span></span>
-<span><span class="co">#&gt; 1     86.40  4.92 151.45 25.21</span></span>
-<span><span class="co">#&gt; 2     85.88  4.79 148.07 22.47</span></span>
-<span><span class="co">#&gt; 3     85.99  5.44 145.16 23.71</span></span>
-<span><span class="co">#&gt; 4     85.59  5.73 138.46 30.91</span></span>
+<span><span class="co">#&gt; 1     99.98  4.92 151.45 25.21</span></span>
+<span><span class="co">#&gt; 2     98.89  4.79 148.07 22.47</span></span>
+<span><span class="co">#&gt; 3     99.93  5.44 145.16 23.71</span></span>
+<span><span class="co">#&gt; 4     99.91  5.73 138.46 30.91</span></span>
 <span></span>
 <span><span class="co"># download a single image</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">|&gt;</span> </span>
