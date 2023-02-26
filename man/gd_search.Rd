@@ -30,7 +30,7 @@ gd_search(
 Search an Image Collection
 }
 \examples{
-\dontshow{if (gd_is_initialized() && requireNamespace("terra")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 \donttest{
 b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,

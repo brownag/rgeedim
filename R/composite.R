@@ -6,13 +6,17 @@
 #' @param ... [additional arguments](https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html) to `geedim.collection.MaskedCollection$composite()`
 #' @return a composite `geedim.mask.MaskedImage` object
 #' @export
-#' @examplesIf gd_is_initialized() && requireNamespace("terra")
+#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' @examples
 #' \donttest{
-#' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
-#'                     -121.35 37.555,-121.35 37.56,
-#'                     -121.355 37.56))',
-#'           crs = "OGC:CRS84")
+#' library(terra)
+#' 
+#' b <- terra::vect('POLYGON((-121.355 37.560, 
+#'                            -121.355 37.555,
+#'                            -121.350 37.555, 
+#'                            -121.350 37.560,
+#'                            -121.355 37.560))',
+#'                  crs = "OGC:CRS84")
 #'
 #' if (gd_is_initialized())
 #'   gd_composite(gd_search(gd_collection_from_name("USGS/3DEP/1m"),

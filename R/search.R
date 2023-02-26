@@ -9,7 +9,7 @@
 #' @param ... additional arguments to `geedim.MaskedCollection.search()` e.g. `cloudless_portion`, `fill_portion`
 #' @return `geedim.MaskedCollection` object suitable for querying properties
 #' @export
-#' @examplesIf gd_is_initialized() && requireNamespace("terra")
+#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' @examples
 #' \donttest{
 #' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
@@ -36,13 +36,17 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 #' @return `data.frame` containing properties table from `x`; `NULL` if no properties table.
 #' @importFrom utils read.table
 #' @export
-#' @examplesIf gd_is_initialized() && requireNamespace("terra")
+#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' @examples
 #' \donttest{
-#' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
-#'                     -121.35 37.555,-121.35 37.56,
-#'                     -121.355 37.56))',
-#'           crs = "OGC:CRS84")
+#' library(terra)
+#' 
+#' b <- terra::vect('POLYGON((-121.355 37.560, 
+#'                            -121.355 37.555,
+#'                            -121.350 37.555, 
+#'                            -121.350 37.560,
+#'                            -121.355 37.560))',
+#'                  crs = "OGC:CRS84")
 #'
 #' if (gd_is_initialized()) {
 #'   x <- gd_search(gd_collection_from_name("USGS/3DEP/1m"),
