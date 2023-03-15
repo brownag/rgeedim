@@ -64,6 +64,10 @@
 <p><code><a href="../reference/gd_bbox.html">gd_bbox()</a></code> will now calculate a bounding box extent from one or more {terra} <code>SpatRaster</code>, <code>SpatRasterCollection</code>, <code>SpatVector</code>, <code>SpatVectorProxy</code> input (in addition to existing support for <code>SpatExtent</code>)</p>
 <ul><li>Note that <code><a href="../reference/gd_region.html">gd_region()</a></code> allows for more complex boundary input via <code>SpatVector</code> or Well-Known Text (WKT) string</li>
 </ul></li>
+<li>
+<p>Improved coercion interface for non-terra objects</p>
+<ul><li>The following inputs are now converted to terra equivalents (or their extents) as needed: WKT string (OGC:CRS84), Spatial* (sp), Raster* &amp; Extent (raster), sf and bbox (sf).</li>
+</ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1" id="rgeedim-021">rgeedim 0.2.1<small>2023-02-14</small><a class="anchor" aria-label="anchor" href="#rgeedim-021"></a></h2>
