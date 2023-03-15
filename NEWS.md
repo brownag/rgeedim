@@ -2,6 +2,10 @@
 
  * Added `gd_install()` for installation of 'numpy', 'earthengine-api', and 'geedim' Python modules via `reticulate::py_install()`
  
+ * `gd_bbox()` will now calculate a bounding box extent from one or more {terra} `SpatRaster`, `SpatRasterCollection`, `SpatVector`, `SpatVectorProxy` input (in addition to existing support for `SpatExtent`)
+ 
+  * Note that `gd_region()` allows for more complex boundary input via `SpatVector` or GeoJSON-like `list` input.
+ 
 # rgeedim 0.2.1
 
  * Updates to `.onLoad()` to avoid error messages related to Python 3 configuration discovery for {reticulate}

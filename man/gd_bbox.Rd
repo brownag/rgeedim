@@ -7,7 +7,7 @@
 gd_bbox(...)
 }
 \arguments{
-\item{...}{Either a single terra \code{SpatExtent} object or arguments: \code{xmin}/\code{ymax}/\code{xmax}/\code{ymin}. If the four bounding arguments are not named they should be in order.}
+\item{...}{One or more \code{SpatRaster}, \code{SpatRasterCollection}, \code{SpatVector}, \code{SpatVectorProxy} or \code{SpatExtent} objects (whose combined bounding box extent will be returned); or the following \emph{named} numeric arguments: \code{xmin}/\code{ymax}/\code{xmax}/\code{ymin}. If these four limit arguments are not named they should be in the stated order.}
 }
 \value{
 a \emph{list} object describing a GeoJSON bounding rectangular polygon suitable for use as \code{regions} argument to \code{gd_download()} or \code{gd_search()}

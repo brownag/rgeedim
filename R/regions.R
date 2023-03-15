@@ -6,8 +6,10 @@
 #'
 #' @details Expecting total of 4 bounding box arguments, If arguments are unnamed they should be in the following order: "xmin", "ymax", "xmax", "ymin".
 #'
-#' @param ... Either a single terra `SpatExtent` object or arguments: `xmin`/`ymax`/`xmax`/`ymin`. If the four bounding arguments are not named they should be in order.
+#' @param ... One or more `SpatRaster`, `SpatRasterCollection`, `SpatVector`, `SpatVectorProxy` or `SpatExtent` objects (whose combined bounding box extent will be returned); or the following _named_ numeric arguments: `xmin`/`ymax`/`xmax`/`ymin`. If these four limit arguments are not named they should be in the stated order.
+#' 
 #' @return a _list_ object describing a GeoJSON bounding rectangular polygon suitable for use as `regions` argument to `gd_download()` or `gd_search()`
+#' 
 #' @export
 #' @examples
 #' gd_bbox(
@@ -27,15 +29,42 @@ gd_bbox <- function(...) {
              x[["xmax"]], x[["ymin"]]),
            ncol = 2, byrow = TRUE)
   }
-  # TODO: bbox around all args for multiple SpatExtent?
-  if (inherits(.args[[1]], 'SpatExtent')) {
+  
+  # if ... has an ext() method we will use it
+  tri <- vapply(.args, inherits, logical(1), c(
+    "SpatRaster",
+    "SpatRasterCollection",
+    "SpatVector",
+    "SpatVectorProxy",
+    "SpatExtent"
+  ))
+  
+  if (all(tri)) {
+    
     stopifnot(requireNamespace("terra", quietly = TRUE))
-    m <- do.call('cbind', .args[[1]]@ptr$as.points())
+    
+    # extend extent for each terra object in ...
+    if (!inherits(.args[[1]], 'SpatExtent')) {
+      out <- terra::ext(.args[[1]])
+    } else {
+      out <- .args[[1]]
+    }
+    
+    if (length(.args) > 1) {
+      for (a in .args[-1]) {
+        if (!inherits(a, 'SpatExtent')) {
+          a <- terra::ext(a)
+        }
+        out <- terra::union(out, a)
+      }
+    }
+    m <- terra::crds(terra::as.points(out))
+      
   } else if (all(.gdal_projwin %in% names(.args))) {
     m <- .mbbox(.args)
   } else {
     if (!length(.args) == 4) {
-      stop('Expecting total of 4 bounding box arguments, If arguments are unnamed they should be in the following order: "xmin", "ymax", "xmax", "ymin".', call. = FALSE)
+      stop('Expecting total of 4 numeric bounding box arguments.\nIf arguments are unnamed they should be in the following order: "xmin", "ymax", "xmax", "ymin".', call. = FALSE)
     }
     names(.args) <- .gdal_projwin
     m <- .mbbox(.args)

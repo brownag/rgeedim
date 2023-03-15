@@ -88,7 +88,10 @@ if (!inherits(gi, 'try-error')) {
     # image download
     tf <- tempfile()
     res <- gd_download(img, tf, scale = 1000, region = .regionlist)
-    expect_true(inherits(terra::rast(res), 'SpatRaster'))
+    ras <- terra::rast(res)
+    expect_true(inherits(ras, 'SpatRaster'))
+    expect_equal(gd_bbox(terra::ext(ras) / 2, terra::ext(ras)),
+                 gd_bbox(terra::ext(ras)))
     unlink(res)
 
     # collections
