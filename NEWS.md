@@ -8,7 +8,7 @@
  
  * Improved coercion interface for non-terra objects 
  
-   * The following inputs are now converted to terra equivalents (or their extents) as needed: WKT string (OGC:CRS84), Spatial* (sp), Raster* & Extent (raster), sf and bbox (sf).
+   * The following inputs are now converted to terra equivalents (or their extents) as needed: WKT string (OGC:CRS84), Spatial* (sp), Raster* & Extent (raster), sf* and bbox (sf). SpatExtent-like objects (Extent, bbox) are assumed to be in OGC:CRS84.
  
 # rgeedim 0.2.1
 

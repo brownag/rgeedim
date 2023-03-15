@@ -126,12 +126,6 @@ gd_region <- function(x) {
                     'SpatRaster',
                     'SpatVectorCollection',
                     'SpatRasterCollection'))) {
-    if (!inherits(x, 'SpatVector')) {
-      x <- terra::as.polygons(x, extent = TRUE)
-      # project everything. will fail if CRS in x not defined.
-      x <- terra::project(x, "OGC:CRS84")
-
-    }
     return(.gd_geojson(x))
   }
   gd_bbox(x)
@@ -185,7 +179,22 @@ gd_region <- function(x) {
     x <- terra::vect(x)
   }
   
+  # convert to simple geometries if we only want extent
+  if (extent && !inherits(x, 'SpatVector')) {
+    x <- terra::as.polygons(x, extent = TRUE)
+  }
+  
+  # project what we can to OGC:CRS84
+  if (inherits(x, 'SpatVector')) {
+    # will fail if CRS in x not defined
+    x <- try(terra::project(x, "OGC:CRS84"), silent = TRUE)
+    if (inherits(x, 'try-error')) {
+      stop(x[1], call. = FALSE)
+    }
+  }
+  
   # raster Extent, sf bbox, extent=TRUE
+  # assume these are already in correct CRS
   if (inherits(x, c('Extent', 'bbox')) || 
       (extent && !inherits(x, 'SpatExtent'))) {
     x <- terra::ext(x)
