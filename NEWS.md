@@ -6,6 +6,10 @@
  
    * Note that `gd_region()` allows for more complex boundary input via `SpatVector` or Well-Known Text (WKT) string
  
+ * Improved coercion interface for non-terra objects 
+ 
+   * The following inputs are now converted to terra equivalents (or their extents) as needed: WKT string (OGC:CRS84), Spatial* (sp), Raster* & Extent (raster), sf and bbox (sf).
+ 
 # rgeedim 0.2.1
 
  * Updates to `.onLoad()` to avoid error messages related to Python 3 configuration discovery for {reticulate}

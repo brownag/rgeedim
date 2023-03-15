@@ -43,9 +43,11 @@ gd_bbox <- function(...) {
     
     stopifnot(requireNamespace("terra", quietly = TRUE))
     
+    
     # extend extent for each terra object in ...
     if (!inherits(.args[[1]], 'SpatExtent')) {
-      out <- terra::ext(.args[[1]])
+      # convert non-terra to terra
+      out <- .cast_spatial_object(.args[[1]], extent = TRUE)
     } else {
       out <- .args[[1]]
     }
@@ -116,29 +118,9 @@ gd_region <- function(x) {
          See `gd_bbox()` for a simpler region interface that takes numeric values (xmin/xmax/ymin/ymax) directly.", .call = FALSE)
   }
 
-  # wkt string
-  if (is.character(x)) {
-    x <- terra::vect(x, crs = "OGC:CRS84")
-  }
-
-  # raster/sp support
-  if (inherits(x, 'Spatial')) {
-    if (requireNamespace('raster', quietly = TRUE)) {
-      x <- terra::vect(as(x, 'Spatial'))
-    }
-  }
-
-  if (inherits(x, 'RasterLayer') || inherits(x, 'RasterStack')) {
-    if (requireNamespace('raster', quietly = TRUE)) {
-      x <- terra::rast(x)
-    }
-  }
-
-  # sf objects
-  if (inherits(x, c('sf', 'sfc'))) {
-    x <- terra::vect(x)
-  }
-
+  # convert non-terra to terra
+  x <- .cast_spatial_object(x)
+  
   # terra
   if (inherits(x, c('SpatVector',
                     'SpatRaster',
@@ -168,4 +150,47 @@ gd_region <- function(x) {
   list(type = "Polygon", coordinates = list(lapply(apply(p, 1, function(x) {
     list(as.numeric(x))
   }), .subset2, 1)))
+}
+
+#' Cast Spatial Object to SpatVector or SpatRaster
+#' 
+#' This internal function allows for consistent interfaces for non-terra Spatial objects by coercion to the terra native objects `SpatVector` or `SpatRaster`.
+#' 
+#' @param x A WKT string, Spatial*, Raster*, or sf* object
+#' @param extent Return only SpatExtent of result? Default: `FALSE`
+#' @details WKT string coordinates should use the longitude latitude WGS84 decimal degrees (`"OGC:CRS84"` spatial reference system).
+#' @noRd
+.cast_spatial_object <- function(x, extent = FALSE) {
+  
+  # wkt string
+  if (is.character(x)) {
+    x <- terra::vect(x, crs = "OGC:CRS84")
+  }
+  
+  # raster/sp support
+  if (inherits(x, 'Spatial')) {
+    if (requireNamespace('raster', quietly = TRUE)) {
+      x <- terra::vect(as(x, 'Spatial'))
+    }
+  }
+  
+  if (inherits(x, c('RasterLayer', 'RasterStack'))) {
+    if (requireNamespace('raster', quietly = TRUE)) {
+      x <- terra::rast(x)
+    }
+  }
+  
+  # sf and sfc objects
+  if (inherits(x, c('sf', 'sfc'))) {
+    x <- terra::vect(x)
+  }
+  
+  # raster Extent, sf bbox, extent=TRUE
+  if (inherits(x, c('Extent', 'bbox')) || 
+      (extent && !inherits(x, 'SpatExtent'))) {
+    x <- terra::ext(x)
+  }
+  
+  # return object (possibly unchanged)
+  x
 }
