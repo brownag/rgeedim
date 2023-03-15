@@ -161,8 +161,8 @@
 <span>          <span class="op">)</span></span></code></pre></div>
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.3</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.7.21</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
@@ -183,7 +183,7 @@
 <p>This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -224,12 +224,12 @@
 <p>This example demonstrates how to access the 1m LiDAR data from USGS. A key step in this process is the use of <code><a href="reference/gd_composite.html">gd_composite()</a></code> to resample the component images prior to download.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># search and download from USGS 1m lidar data collection</span></span>
 <span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># wkt-&gt;SpatExtent</span></span>
+<span><span class="co"># wkt-&gt;SpatVector-&gt;GeoJSON</span></span>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="st">'POLYGON((-121.355 37.56,-121.355 37.555,</span></span>
 <span><span class="st">          -121.35 37.555,-121.35 37.56,</span></span>
 <span><span class="st">          -121.355 37.56))'</span> <span class="op">|&gt;</span></span>
@@ -260,7 +260,7 @@
 <p>This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the USGS Landsat 7 Level 2, Collection 2, Tier 1. This example is based on a <a href="https://geedim.readthedocs.io/en/latest/examples/l7_composite.html" class="external-link">tutorial</a> in the <code>geedim</code> manual.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
