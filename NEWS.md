@@ -4,7 +4,7 @@
  
  * `gd_bbox()` will now calculate a bounding box extent from one or more {terra} `SpatRaster`, `SpatRasterCollection`, `SpatVector`, `SpatVectorProxy` input (in addition to existing support for `SpatExtent`)
  
-  * Note that `gd_region()` allows for more complex boundary input via `SpatVector` or GeoJSON-like `list` input.
+   * Note that `gd_region()` allows for more complex boundary input via `SpatVector` or Well-Known Text (WKT) string
  
 # rgeedim 0.2.1
 
