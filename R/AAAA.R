@@ -107,3 +107,12 @@ gd_ee_version <- function() {
     gev
   )
 }
+
+.find_python <- function() {
+  # find python
+  py_path <- Sys.which("python")
+  if (nchar(py_path) == 0) {
+    py_path <- Sys.which("python3")
+  }
+  py_path
+}

@@ -4,10 +4,14 @@
 \alias{gd_install}
 \title{Install Required Python Modules}
 \usage{
-gd_install(pip = TRUE, ...)
+gd_install(pip = TRUE, system = FALSE, force = TRUE, ...)
 }
 \arguments{
 \item{pip}{Use \code{pip} package manager? Default: \code{TRUE}}
+
+\item{system}{Use a \code{system()} call to \verb{python -m pip install ...} instead of \code{reticulate::py_install()}. Default: \code{FALSE}.}
+
+\item{force}{Force update (uninstall/reinstall) and ignore existing installed packages? Default: \code{TRUE}. Applies only to \code{pip=TRUE}.}
 
 \item{...}{Additional arguments passed to \code{reticulate::py_install()}}
 }
@@ -25,6 +29,8 @@ that are passed to \code{reticulate::py_install()}.
 
 # install with pip
 gd_install()
+
+# install with pip
 
 # use virtual environment with default name "r-reticulate"
 gd_install(pip = FALSE, method = "virtualenv")
