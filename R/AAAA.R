@@ -19,16 +19,16 @@ gd_version <- function() {
   try(reticulate::py_eval("version('geedim')"), silent = TRUE)
 }
 
-#' Get Earth Engine `Module(ee)` Instance
+#' Get Earth Engine `Module(earthengine-api)` Instance
 #'
-#' Gets the `ee` module instance in use by `geedim` package in current session.
+#' Gets the `earthengine-api` module instance in use by `geedim` package in current session.
 #'
 #' @export
 earthengine <- function() {
   gd$utils$ee
 }
 
-#' @description `gd_ee_version()` Gets the `ee` version using `importlib.metadata.version()`
+#' @description `gd_ee_version()` Gets the `earthengine-api` version using `importlib.metadata.version()`
 #'
 #' @rdname earthengine
 #' @return character. Version Number.

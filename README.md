@@ -22,7 +22,7 @@ The [rgeedim manual](https://humus.rocks/rgeedim/) describes the R API.
 See the [geedim manual](https://geedim.readthedocs.io/) for more
 information on Python API and command line interface.
 
-By using `geedim` images larger than the [`Image.getDownloadURL()` size
+Using `geedim`, images larger than the [`Image.getDownloadURL()` size
 limit](https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl)
 are split and downloaded as separate tiles, then re-assembled into a
 single GeoTIFF.
@@ -46,6 +46,26 @@ remotes::install_github("brownag/rgeedim")
 
 You will need Python 3 with the `geedim` module installed to use
 {rgeedim}.
+
+#### Using `gd_install()`
+
+`gd_install()` provides a simple wrapper around
+`reticulate::py_install()` that allows you to install dependencies using
+`pip`, virtual, or Conda environments.
+
+``` r
+# install with pip (with reticulate)
+gd_install()
+
+# install with pip (system() call)
+gd_install(system = TRUE)
+
+# use virtual environment with default name "r-reticulate"
+gd_install(pip = FALSE, method = "virtualenv")
+
+# use "conda" environment named "foo"
+gd_install(pip = FALSE, method = "conda", envname = "foo")
+```
 
 #### Using `pip`
 
@@ -94,7 +114,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.2.2 -- using geedim 1.7.0 w/ earthengine-api 0.1.342
+#> rgeedim v0.2.2 -- using geedim 1.7.0 w/ earthengine-api 0.1.347
 ```
 
 If this is your first time using any Google Earth Engine tools,

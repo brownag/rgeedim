@@ -17,10 +17,26 @@ knitr::opts_chunk$set(
 
 This vignette shows how to extract a Google Earth Engine asset by name for an arbitrary extent and visualize it in R.
 
-First, we load {rgeedim} and call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
+
+First, we load {rgeedim}.
+
+```{r libr}
+library(rgeedim)
+```
+
+If you have the necessary Python dependencies installed (geedim, earthengine-api), you will see the versions printed out when the package is loaded.
+
+If this is your first time using any Google Earth Engine tools, authenticate with `gd_authenticate()`. 
+
+You can pass arguments to use several different authorization methods. Perhaps the easiest to use is `auth_mode="notebook"` in that does not rely on an existing `GOOGLE_APPLICATION_CREDENTIALS` file nor an installation of the `gcloud` CLI tools. However, the other options are better for non-interactive use.
+
+```r
+gd_authenticate(auth_mode = "notebook")
+```
+
+You only need to authenticate periodically, depending on the method you used. But in each session we need to call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
 
 ```{r setup}
-library(rgeedim)
 gd_initialize()
 ```
 

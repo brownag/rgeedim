@@ -3,7 +3,7 @@
 \name{earthengine}
 \alias{earthengine}
 \alias{gd_ee_version}
-\title{Get Earth Engine \code{Module(ee)} Instance}
+\title{Get Earth Engine \code{Module(earthengine-api)} Instance}
 \usage{
 earthengine()
 
@@ -13,7 +13,7 @@ gd_ee_version()
 character. Version Number.
 }
 \description{
-Gets the \code{ee} module instance in use by \code{geedim} package in current session.
+Gets the \code{earthengine-api} module instance in use by \code{geedim} package in current session.
 
-\code{gd_ee_version()} Gets the \code{ee} version using \code{importlib.metadata.version()}
+\code{gd_ee_version()} Gets the \code{earthengine-api} version using \code{importlib.metadata.version()}
 }

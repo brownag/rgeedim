@@ -15,10 +15,11 @@
 #' @examples
 #' \dontrun{
 #' 
-#' # install with pip
+#' # install with pip (with reticulate)
 #' gd_install()
 #' 
-#' # install with pip
+#' # install with pip (system() call)
+#' gd_install(system = TRUE)
 #' 
 #' # use virtual environment with default name "r-reticulate"
 #' gd_install(pip = FALSE, method = "virtualenv")
