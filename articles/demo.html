@@ -91,12 +91,29 @@
     
 <p>This vignette shows how to extract a Google Earth Engine asset by
 name for an arbitrary extent and visualize it in R.</p>
-<p>First, we load {rgeedim} and call <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>. This
-is a wrapper function around <code>geedim.Initialize()</code> that must
-be run before using the Python Google Earth Engine API.</p>
+<p>First, we load {rgeedim}.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span></code></pre></div>
+<p>If you have the necessary Python dependencies installed (geedim,
+earthengine-api), you will see the versions printed out when the package
+is loaded.</p>
+<p>If this is your first time using any Google Earth Engine tools,
+authenticate with <code><a href="../reference/gd_authenticate.html">gd_authenticate()</a></code>.</p>
+<p>You can pass arguments to use several different authorization
+methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code>
+in that does not rely on an existing
+<code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of
+the <code>gcloud</code> CLI tools. However, the other options are better
+for non-interactive use.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
+<p>You only need to authenticate periodically, depending on the method
+you used. But in each session we need to call
+<code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>. This is a wrapper function around
+<code>geedim.Initialize()</code> that must be run before using the
+Python Google Earth Engine API.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Perhaps the <em>simplest</em> way to specify the target extent is
 using the xmin/xmax/ymin/ymax arguments to <code><a href="../reference/gd_bbox.html">gd_bbox()</a></code>. This
 function returns a Python object equivalent to <em>GeoJSON</em>, which
@@ -105,7 +122,7 @@ is interchangeably represented as a simple <code>list</code> object in
 <div class="section level2">
 <h2 id="determine-target-region">Determine Target Region<a class="anchor" aria-label="anchor" href="#determine-target-region"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">121</span>,</span>
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5</span>,</span>
@@ -125,7 +142,7 @@ data catalog: <a href="https://developers.google.com/earth-engine/datasets/catal
 <code>"id"</code> to <code><a href="../reference/from.html">gd_image_from_id()</a></code>. For example here
 we use <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_Global_SRTM_topoDiversity" class="external-link">Global
 SRTM Topographic Diversity</a>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="st">'CSP/ERGo/1_0/Global/SRTM_topoDiversity'</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/from.html">gd_image_from_id()</a></code> will return
 <code>geedim.mask.MaskedImage</code> and
@@ -140,7 +157,7 @@ of making a region argument from bounding coordinates or a {terra}
 <code>BaseImage.download()</code> method include <code>scale</code>
 which allows warping of the result to a target resolution. Try modifying
 this example to use <code>scale=90</code> (~native SRTM resolution):</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_download.html">gd_download</a></span><span class="op">(</span><span class="va">x</span>, filename <span class="op">=</span> <span class="st">'image.tif'</span>,</span>
 <span>                   region <span class="op">=</span> <span class="va">r</span>, scale <span class="op">=</span> <span class="fl">900</span>,</span>
 <span>                   overwrite <span class="op">=</span> <span class="cn">TRUE</span>, silent <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -150,10 +167,10 @@ this example to use <code>scale=90</code> (~native SRTM resolution):</p>
 functions that might read the result.</p>
 <p>So we can use the {terra} <code><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast()</a></code> function to read the
 GeoTIFF <code><a href="../reference/gd_download.html">gd_download()</a></code> result.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>

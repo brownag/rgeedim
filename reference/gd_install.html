@@ -101,10 +101,11 @@ that are passed to <code><a href="https://rstudio.github.io/reticulate/reference
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># install with pip</span></span></span>
+<span class="r-in"><span><span class="co"># install with pip (with reticulate)</span></span></span>
 <span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># install with pip</span></span></span>
+<span class="r-in"><span><span class="co"># install with pip (system() call)</span></span></span>
+<span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>system <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use virtual environment with default name "r-reticulate"</span></span></span>
 <span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"virtualenv"</span><span class="op">)</span></span></span>

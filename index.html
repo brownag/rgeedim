@@ -86,7 +86,7 @@
 
 <p>{rgeedim} supports search and download of Google Earth Engine imagery with Python module <a href="https://github.com/dugalh/geedim" class="external-link"><code>geedim</code></a> by Dugal Harris. This package provides wrapper functions that make it more convenient to use <code>geedim</code> from R.</p>
 <p>The <a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim manual</a> describes the R API. See the <a href="https://geedim.readthedocs.io/" class="external-link">geedim manual</a> for more information on Python API and command line interface.</p>
-<p>By using <code>geedim</code> images larger than the <a href="https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl" class="external-link"><code>Image.getDownloadURL()</code> size limit</a> are split and downloaded as separate tiles, then re-assembled into a single GeoTIFF.</p>
+<p>Using <code>geedim</code>, images larger than the <a href="https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl" class="external-link"><code>Image.getDownloadURL()</code> size limit</a> are split and downloaded as separate tiles, then re-assembled into a single GeoTIFF.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -103,18 +103,36 @@
 </h2>
 <p>You will need Python 3 with the <code>geedim</code> module installed to use {rgeedim}.</p>
 <div class="section level4">
+<h4 id="using-gd_install">Using <code>gd_install()</code>
+<a class="anchor" aria-label="anchor" href="#using-gd_install"></a>
+</h4>
+<p><code><a href="reference/gd_install.html">gd_install()</a></code> provides a simple wrapper around <code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">reticulate::py_install()</a></code> that allows you to install dependencies using <code>pip</code>, virtual, or Conda environments.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install with pip (with reticulate)</span></span>
+<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># install with pip (system() call)</span></span>
+<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>system <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># use virtual environment with default name "r-reticulate"</span></span>
+<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"virtualenv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># use "conda" environment named "foo"</span></span>
+<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"conda"</span>, envname <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
 <h4 id="using-pip">Using <code>pip</code>
 <a class="anchor" aria-label="anchor" href="#using-pip"></a>
 </h4>
 <p>You can install <code>geedim</code> with <code>pip</code>, for example:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install geedim</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install geedim</span></code></pre></div>
 <p>This shell command assumes you have a Python 3 executable named (or aliased) as <code>python</code> on your PATH, or the command is being called from within an active Python virtual environment.</p>
 </div>
 <div class="section level4">
 <h4 id="using-miniconda">Using Miniconda<a class="anchor" aria-label="anchor" href="#using-miniconda"></a>
 </h4>
 <p>If you do not have a Python environment set up, an option that {reticulate} provides is <code><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">reticulate::install_miniconda()</a></code>. Once you install Miniconda, you can install packages into a conda environment such as <code>"r-reticulate"</code> (default). Customize the <code>envname</code> argument to create or add to a specific environment.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">install_miniconda</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="st">"geedim"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -129,17 +147,17 @@
 <h2 id="how-rgeedim-works">How {rgeedim} Works<a class="anchor" aria-label="anchor" href="#how-rgeedim-works"></a>
 </h2>
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.2.2 -- using geedim 1.7.0 w/ earthengine-api 0.1.342</span></span></code></pre></div>
-<p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options are better for non-interactive use.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; rgeedim v0.2.2 -- using geedim 1.7.0 w/ earthengine-api 0.1.347</span></span></code></pre></div>
+<p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options are better for non-interactive use.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
 <p>In each R session you will need to initialize the Earth Engine library</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="reference/gd_bbox.html">gd_bbox()</a></code> is a simple function for specifying extents to {rgeedim} functions like <code><a href="reference/gd_download.html">gd_download()</a></code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.6032</span>,</span>
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5377</span>,</span>
@@ -147,7 +165,7 @@
 <span>  ymax <span class="op">=</span> <span class="fl">38.1043</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We will download the US NED CHILI (Continuous Heat-Insolation Load Index) <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI" class="external-link uri">https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI</a>. We specify an equal-area coordinate reference system (NAD83 Albers), bilinear resampling, and a resolution of 10 meters.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="st">'CSP/ERGo/1_0/US/CHILI'</span> <span class="op">|&gt;</span></span>
 <span>          <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>          <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
@@ -160,7 +178,7 @@
 <span>            silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>          <span class="op">)</span></span></code></pre></div>
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; terra 1.7.21</span></span>
 <span></span>
@@ -181,7 +199,7 @@
 <h2 id="example-hillshade-from-dem">Example: Hillshade from DEM<a class="anchor" aria-label="anchor" href="#example-hillshade-from-dem"></a>
 </h2>
 <p>This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -222,7 +240,7 @@
 <h2 id="example-lidar-slope-map">Example: LiDAR Slope Map<a class="anchor" aria-label="anchor" href="#example-lidar-slope-map"></a>
 </h2>
 <p>This example demonstrates how to access the 1m LiDAR data from USGS. A key step in this process is the use of <code><a href="reference/gd_composite.html">gd_composite()</a></code> to resample the component images prior to download.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -258,7 +276,7 @@
 <h2 id="example-landsat-7-cloudshadow-free-composite">Example: Landsat-7 cloud/shadow-free composite<a class="anchor" aria-label="anchor" href="#example-landsat-7-cloudshadow-free-composite"></a>
 </h2>
 <p>This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the USGS Landsat 7 Level 2, Collection 2, Tier 1. This example is based on a <a href="https://geedim.readthedocs.io/en/latest/examples/l7_composite.html" class="external-link">tutorial</a> in the <code>geedim</code> manual.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -309,7 +327,7 @@
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># create composite landsat image near December 1st, 2020 and download  </span></span>
 <span><span class="co"># using q-mosaic method. </span></span>
