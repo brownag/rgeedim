@@ -4,14 +4,14 @@
 \alias{gd_install}
 \title{Install Required Python Modules}
 \usage{
-gd_install(pip = TRUE, system = FALSE, force = TRUE, ...)
+gd_install(pip = TRUE, system = FALSE, force = FALSE, ...)
 }
 \arguments{
-\item{pip}{Use \code{pip} package manager? Default: \code{TRUE}}
+\item{pip}{Use \code{pip} package manager? Default: \code{TRUE}. To use a virtual or conda environment specify \code{method="virtualenv"} or \verb{method="conda}, respectively. See details.}
 
-\item{system}{Use a \code{system()} call to \verb{python -m pip install ...} instead of \code{reticulate::py_install()}. Default: \code{FALSE}.}
+\item{system}{Use a \code{system()} call to \verb{python -m pip install --user ...} instead of \code{reticulate::py_install()}. Default: \code{FALSE}.}
 
-\item{force}{Force update (uninstall/reinstall) and ignore existing installed packages? Default: \code{TRUE}. Applies only to \code{pip=TRUE}.}
+\item{force}{Force update (uninstall/reinstall) and ignore existing installed packages? Default: \code{FALSE}. Applies to \code{pip=TRUE}.}
 
 \item{...}{Additional arguments passed to \code{reticulate::py_install()}}
 }
@@ -24,20 +24,23 @@ This function installs the latest \code{numpy}, \code{earthengine-api}, and
 configure custom environments with \code{pip=FALSE} and additional arguments
 that are passed to \code{reticulate::py_install()}.
 }
+\details{
+This function provides a basic wrapper around \code{reticulate::py_install()}, except it defaults to using the Python package manager \code{pip}. If you specify \code{method="virtualenv"} or \verb{method="conda} then the default \code{envname} is \code{"r-reticulate"} unless you set it to something else. If an environment of that name does not exist it is created.
+}
 \examples{
 \dontrun{
 
 # install with pip (with reticulate)
 gd_install()
 
-# install with pip (system() call)
-gd_install(system = TRUE)
-
 # use virtual environment with default name "r-reticulate"
-gd_install(pip = FALSE, method = "virtualenv")
+gd_install(method = "virtualenv")
 
 # use "conda" environment named "foo"
-gd_install(pip = FALSE, method = "conda", envname = "foo")
+gd_install(method = "conda", envname = "foo")
+
+# install with pip (system() call)
+gd_install(system = TRUE) 
 
 }
 }
