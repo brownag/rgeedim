@@ -11,7 +11,7 @@
 #' @param ... Additional arguments passed to `reticulate::py_install()`
 #' @return `NULL`, or `try-error` (invisibly) on R code execution error.
 #' @export
-#' @importFrom reticulate py_install
+#' @importFrom reticulate py_install virtualenv_exists virtualenv_create
 #' @examples
 #' \dontrun{
 #' 
@@ -28,7 +28,7 @@
 #' gd_install(pip = FALSE, method = "conda", envname = "foo")
 #' 
 #' }
-gd_install <- function(pip = TRUE, system = FALSE, force = TRUE, ...) {
+gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
   
   # alternately, just use a system() call to python -m pip install ...
   if (system && pip) {
@@ -37,12 +37,25 @@ gd_install <- function(pip = TRUE, system = FALSE, force = TRUE, ...) {
       return(invisible(system(
         paste(
           shQuote(fp),
-          "-m pip install",
+          "-m pip install --user",
           ifelse(force, "-U --force", ""),
           "geedim earthengine-api numpy"
         )
       )))
     }
+  }
+  
+  if (!missing(method) && method == "virtualenv") {
+    
+    if (missing(envname)) {
+      envname <- "r-reticulate"
+    }
+    
+    # create suitable reticulate envirionment if does not exist
+    if (!reticulate::virtualenv_exists(envname = envname)) {
+      reticulate::virtualenv_create(envname = envname)
+    }
+    
   }
   
   invisible(try(reticulate::py_install(
