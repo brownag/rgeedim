@@ -61,10 +61,10 @@ gd_install()
 gd_install(system = TRUE)
 
 # use virtual environment with default name "r-reticulate"
-gd_install(pip = FALSE, method = "virtualenv")
+gd_install(method = "virtualenv")
 
 # use "conda" environment named "foo"
-gd_install(pip = FALSE, method = "conda", envname = "foo")
+gd_install(method = "conda", envname = "foo")
 ```
 
 #### Using `pip`
@@ -114,7 +114,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.2.2 -- using geedim 1.7.0 w/ earthengine-api 0.1.347
+#> rgeedim v0.2.3 -- using geedim 1.7.0 w/ earthengine-api 0.1.347
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -174,7 +174,12 @@ where data are available).
 
 ``` r
 library(terra)
-#> terra 1.7.21
+#> terra 1.7.18
+#> WARNING: different compile-time and run-time versions of GEOS
+#> Compiled with:3.11.2-CAPI-1.17.2
+#>  Running with:3.11.1-CAPI-1.17.1
+#> 
+#> You should reinstall package 'terra'
 
 f <- rast(res)
 f

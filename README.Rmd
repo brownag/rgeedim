@@ -60,10 +60,10 @@ gd_install()
 gd_install(system = TRUE)
 
 # use virtual environment with default name "r-reticulate"
-gd_install(pip = FALSE, method = "virtualenv")
+gd_install(method = "virtualenv")
 
 # use "conda" environment named "foo"
-gd_install(pip = FALSE, method = "conda", envname = "foo")
+gd_install(method = "conda", envname = "foo")
 ```
 
 #### Using `pip`
