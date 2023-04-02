@@ -2,6 +2,8 @@
 
  * For `gd_install()` `method="virtualenv"` or `method="conda"` if an environment of `envname` (default: `"r-reticulate"`) does not exist, it gets created before running `py_install()`
 
+ * Add `gd_spectral_distance_metrics()` enum helper
+
 # rgeedim 0.2.2
 
  * Added `gd_install()` for installation of 'numpy', 'earthengine-api', and 'geedim' Python modules via `reticulate::py_install()` or a `system()` call 

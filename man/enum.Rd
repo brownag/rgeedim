@@ -7,6 +7,7 @@
 \alias{gd_cloud_mask_methods}
 \alias{gd_composite_methods}
 \alias{gd_export_types}
+\alias{gd_spectral_distance_metrics}
 \title{\code{geedim} Enums}
 \usage{
 gd_enum_names()
@@ -20,6 +21,8 @@ gd_cloud_mask_methods()
 gd_composite_methods()
 
 gd_export_types()
+
+gd_spectral_distance_metrics()
 }
 \arguments{
 \item{enum}{Enum name, one or more of: \code{"CloudMaskMethod"}, \code{"CompositeMethod"}, \code{"ResamplingMethod"}}
@@ -36,43 +39,44 @@ gd_export_types()
 \code{gd_composite_methods()}: character vector of composite methods (Enum \code{"CompositeMethod"})
 
 \code{gd_export_types()}: character vector of export types (Enum \code{"ExportType"})
+
+\code{gd_spectral_distance_metrics()}: character vector of spectral distance metrics (Enum \code{"SpectralDistanceMetric"})
 }
 \description{
 \code{geedim} Enums
 }
 \examples{
 \donttest{
-if (gd_is_initialized())
   gd_enum_names()
 }
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 \donttest{
-if (gd_is_initialized())
   gd_enum_elements()
 }
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 \donttest{
-if (gd_is_initialized())
   gd_resampling_methods()
 }
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 \donttest{
-if (gd_is_initialized())
   gd_cloud_mask_methods()
 }
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 \donttest{
-if (gd_is_initialized())
   gd_composite_methods()
 }
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 \donttest{
-if (gd_is_initialized())
   gd_export_types()
+}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
+\donttest{
+  gd_spectral_distance_metrics()
 }
 }

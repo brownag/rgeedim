@@ -57,14 +57,25 @@ gd_collection_from_name <- function(x) {
 #'   # search within region
 #'   y <- gd_search(x, r)
 #'
-#'   # select images with fill > 0
-#'   z <- subset(gd_properties(y), fill > 0)
+#'   # select images with some condition of interest
+
+#'   z <- subset(gd_properties(y),
+#'               grepl("UpperSouthAmerican_Eldorado_2019", id) > 0)
 #'
 #'   # create encapsulated images from IDs returned by search
 #'   l <- lapply(z$id, gd_image_from_id)
 #'
 #'   # create a new collection from the list of images
-#'   gd_collection_from_list(l)
+#'   l2 <- gd_collection_from_list(l)
+#'   l2
+#'   
+#' ### download composite of custom collection
+#' #  gd_download(gd_composite(l2),
+#' #              filename = "test.tif",
+#' #              region = r,
+#' #              crs = "EPSG:5070",
+#' #              scale = 30)
+#' 
 #' }
 gd_collection_from_list <- function(x) {
   y <- try(gd$MaskedCollection$from_list(x), silent = FALSE)

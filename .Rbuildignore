@@ -8,3 +8,4 @@ $\.github/*
 ^misc$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^.*\.tif$
