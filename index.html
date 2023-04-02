@@ -198,7 +198,7 @@
 <span><span class="co">#&gt; names       : constant, FILL_MASK</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-inspect-1.png" width="100%"></p>
+<p><img src="reference/figures/README-inspect-1.jpeg" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="example-hillshade-from-dem">Example: Hillshade from DEM<a class="anchor" aria-label="anchor" href="#example-hillshade-from-dem"></a>
@@ -239,7 +239,7 @@
 <span></span>
 <span><span class="co"># compare elevation v.s. hillshade</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">dem</span>, hillshade <span class="op">=</span> <span class="va">hsd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.jpeg" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="example-lidar-slope-map">Example: LiDAR Slope Map<a class="anchor" aria-label="anchor" href="#example-lidar-slope-map"></a>
@@ -275,7 +275,7 @@
 <span><span class="co"># inspect</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">elevation</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">b</span>, <span class="va">x</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.jpeg" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="example-landsat-7-cloudshadow-free-composite">Example: Landsat-7 cloud/shadow-free composite<a class="anchor" aria-label="anchor" href="#example-landsat-7-cloudshadow-free-composite"></a>
@@ -331,7 +331,7 @@
 <span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.jpeg" width="100%"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># create composite landsat image near December 1st, 2020 and download  </span></span>
@@ -351,7 +351,7 @@
 <span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-2.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-7-2.jpeg" width="100%"></p>
 <p>The <code>"q-mosaic"</code> method produces a composite largely free of artifacts; this is because it prioritizes pixels with higher distance from clouds.</p>
 </div>
 </div>
