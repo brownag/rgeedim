@@ -20,7 +20,7 @@ that are passed to reticulate::py_install()."><!-- mathjax --><script src="https
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -69,21 +69,21 @@ that are passed to <code><a href="https://rstudio.github.io/reticulate/reference
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gd_install</span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">TRUE</span>, system <span class="op">=</span> <span class="cn">FALSE</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gd_install</span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">TRUE</span>, system <span class="op">=</span> <span class="cn">FALSE</span>, force <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>pip</dt>
-<dd><p>Use <code>pip</code> package manager? Default: <code>TRUE</code></p></dd>
+<dd><p>Use <code>pip</code> package manager? Default: <code>TRUE</code>. To use a virtual or conda environment specify <code>method="virtualenv"</code> or <code>method="conda</code>, respectively. See details.</p></dd>
 
 
 <dt>system</dt>
-<dd><p>Use a <code><a href="https://rdrr.io/r/base/system.html" class="external-link">system()</a></code> call to <code>python -m pip install ...</code> instead of <code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">reticulate::py_install()</a></code>. Default: <code>FALSE</code>.</p></dd>
+<dd><p>Use a <code><a href="https://rdrr.io/r/base/system.html" class="external-link">system()</a></code> call to <code>python -m pip install --user ...</code> instead of <code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">reticulate::py_install()</a></code>. Default: <code>FALSE</code>.</p></dd>
 
 
 <dt>force</dt>
-<dd><p>Force update (uninstall/reinstall) and ignore existing installed packages? Default: <code>TRUE</code>. Applies only to <code>pip=TRUE</code>.</p></dd>
+<dd><p>Force update (uninstall/reinstall) and ignore existing installed packages? Default: <code>FALSE</code>. Applies to <code>pip=TRUE</code>.</p></dd>
 
 
 <dt>...</dt>
@@ -96,6 +96,10 @@ that are passed to <code><a href="https://rstudio.github.io/reticulate/reference
 
 <p><code>NULL</code>, or <code>try-error</code> (invisibly) on R code execution error.</p>
     </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>This function provides a basic wrapper around <code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">reticulate::py_install()</a></code>, except it defaults to using the Python package manager <code>pip</code>. If you specify <code>method="virtualenv"</code> or <code>method="conda</code> then the default <code>envname</code> is <code>"r-reticulate"</code> unless you set it to something else. If an environment of that name does not exist it is created.</p>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -104,14 +108,14 @@ that are passed to <code><a href="https://rstudio.github.io/reticulate/reference
 <span class="r-in"><span><span class="co"># install with pip (with reticulate)</span></span></span>
 <span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># install with pip (system() call)</span></span></span>
-<span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>system <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use virtual environment with default name "r-reticulate"</span></span></span>
-<span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"virtualenv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"virtualenv"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use "conda" environment named "foo"</span></span></span>
-<span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"conda"</span>, envname <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"conda"</span>, envname <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># install with pip (system() call)</span></span></span>
+<span class="r-in"><span><span class="fu">gd_install</span><span class="op">(</span>system <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> </span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

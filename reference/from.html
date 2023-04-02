@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -130,14 +130,24 @@
 <span class="r-in"><span>  <span class="co"># search within region</span></span></span>
 <span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="gd_search.html">gd_search</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">r</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># select images with fill &gt; 0</span></span></span>
-<span class="r-in"><span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="fu"><a href="gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>, <span class="va">fill</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># select images with some condition of interest</span></span></span>
+<span class="r-in"><span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="fu"><a href="gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>              <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"UpperSouthAmerican_Eldorado_2019"</span>, <span class="va">id</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># create encapsulated images from IDs returned by search</span></span></span>
 <span class="r-in"><span>  <span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">z</span><span class="op">$</span><span class="va">id</span>, <span class="va">gd_image_from_id</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># create a new collection from the list of images</span></span></span>
-<span class="r-in"><span>  <span class="fu">gd_collection_from_list</span><span class="op">(</span><span class="va">l</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">l2</span> <span class="op">&lt;-</span> <span class="fu">gd_collection_from_list</span><span class="op">(</span><span class="va">l</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">l2</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co">### download composite of custom collection</span></span></span>
+<span class="r-in"><span><span class="co">#  gd_download(gd_composite(l2),</span></span></span>
+<span class="r-in"><span><span class="co">#              filename = "test.tif",</span></span></span>
+<span class="r-in"><span><span class="co">#              region = r,</span></span></span>
+<span class="r-in"><span><span class="co">#              crs = "EPSG:5070",</span></span></span>
+<span class="r-in"><span><span class="co">#              scale = 30)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
