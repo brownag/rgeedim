@@ -115,10 +115,10 @@
 <span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>system <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use virtual environment with default name "r-reticulate"</span></span>
-<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"virtualenv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"virtualenv"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use "conda" environment named "foo"</span></span>
-<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>pip <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"conda"</span>, envname <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"conda"</span>, envname <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="using-pip">Using <code>pip</code>
@@ -149,7 +149,7 @@
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.2.2 -- using geedim 1.7.0 w/ earthengine-api 0.1.347</span></span></code></pre></div>
+<span><span class="co">#&gt; rgeedim v0.2.3 -- using geedim 1.7.0 w/ earthengine-api 0.1.347</span></span></code></pre></div>
 <p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options are better for non-interactive use.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
@@ -180,7 +180,12 @@
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.21</span></span>
+<span><span class="co">#&gt; terra 1.7.18</span></span>
+<span><span class="co">#&gt; WARNING: different compile-time and run-time versions of GEOS</span></span>
+<span><span class="co">#&gt; Compiled with:3.11.2-CAPI-1.17.2</span></span>
+<span><span class="co">#&gt;  Running with:3.11.1-CAPI-1.17.1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; You should reinstall package 'terra'</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
