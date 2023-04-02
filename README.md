@@ -194,7 +194,7 @@ f
 plot(f[[1]])
 ```
 
-<img src="man/figures/README-inspect-1.png" width="100%" />
+<img src="man/figures/README-inspect-1.jpeg" width="100%" />
 
 ## Example: Hillshade from DEM
 
@@ -239,7 +239,7 @@ hsd <- shade(slp, asp)
 plot(c(dem, hillshade = hsd))
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.jpeg" width="100%" />
 
 ## Example: LiDAR Slope Map
 
@@ -279,7 +279,7 @@ plot(terra::terrain(x$elevation))
 plot(project(b, x), add = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.jpeg" width="100%" />
 
 ## Example: Landsat-7 cloud/shadow-free composite
 
@@ -341,7 +341,7 @@ y <- gd_properties(x)$id[1] |>
 plot(rast(y)[[1:4]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.jpeg" width="100%" />
 
 ``` r
 
@@ -364,7 +364,7 @@ z <- x |>
 plot(rast(z)[[1:4]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-2.jpeg" width="100%" />
 
 The `"q-mosaic"` method produces a composite largely free of artifacts;
 this is because it prioritizes pixels with higher distance from clouds.
