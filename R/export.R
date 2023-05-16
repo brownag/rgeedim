@@ -44,5 +44,5 @@
 #' }
 #' }
 gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, ...) {
-  x$export(filename = filename, type = type, folder = folder, region = region, wait = wait, ...)
+  x$export(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait, ...)
 }

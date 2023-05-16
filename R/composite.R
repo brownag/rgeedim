@@ -20,14 +20,18 @@
 #'
 #' if (gd_is_initialized())
 #'   gd_composite(gd_search(gd_collection_from_name("USGS/3DEP/1m"),
-#'                          region = gd_region(b)),
+#'                          region = b),
 #'                resampling = "bilinear")
 #' }
 gd_composite <- function(x, ...) {
   if (!inherits(x, 'geedim.collection.MaskedCollection')) {
     stop("`x` should be a geedim.collection.MaskedCollection", call. = FALSE)
   }
-  y <- try(x$composite(...), silent = TRUE)
+  args <- list(...)
+  if (!is.null(args$region)) {
+    args$region <- gd_region(args$region)
+  }
+  y <- try(do.call(x$composite, args), silent = TRUE)
   if (inherits(y, 'try-error')) {
     message(y[1])
     return(invisible(y))

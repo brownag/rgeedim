@@ -32,7 +32,7 @@ b <- terra::vect('POLYGON((-121.355 37.560,
 
 if (gd_is_initialized())
   gd_composite(gd_search(gd_collection_from_name("USGS/3DEP/1m"),
-                         region = gd_region(b)),
+                         region = b),
                resampling = "bilinear")
 }
 }
