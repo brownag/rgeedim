@@ -58,6 +58,14 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.4" id="rgeedim-024">rgeedim 0.2.4<a class="anchor" aria-label="anchor" href="#rgeedim-024"></a></h2>
+<ul><li><p>Add <code><a href="../reference/gd_task.html">gd_task_status()</a></code> and <code><a href="../reference/gd_task.html">gd_task_uri()</a></code> for working with Task object produced by <code><a href="../reference/gd_export.html">gd_export()</a></code></p></li>
+<li><p>Fix for <code><a href="../reference/gd_composite.html">gd_composite()</a></code> and <code><a href="../reference/gd_export.html">gd_export()</a></code> errors when <code>region</code> argument is specified as an R spatial object (rather than GeoJSON-like list)</p></li>
+<li><p>Fix bug in <code><a href="../reference/enum.html">gd_enum_elements()</a></code> and add <code><a href="../reference/enum.html">gd_spectral_distance_metrics()</a></code></p></li>
+<li><p><code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>: Fix use of illogical use of <code>GOOGLE_APPLICATION_CREDENTIALS</code> environment variable contents for Google Cloud service accounts under some conditions</p></li>
+<li><p><code>EE_SERVICE_ACC_PRIVATE_KEY</code> is used for service accounts, whereas the former is used only for application credentials. <code>GOOGLE_APPLICATION_CREDENTIALS</code> is respected by <code><a href="../reference/gd_authenticate.html">gd_authenticate()</a></code> <code>auth_mode</code> <code>"gcloud"</code> and <code>"appdefault"</code>.</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.3" id="rgeedim-023">rgeedim 0.2.3<a class="anchor" aria-label="anchor" href="#rgeedim-023"></a></h2>
 <ul><li><p>For <code><a href="../reference/gd_install.html">gd_install()</a></code> <code>method="virtualenv"</code> or <code>method="conda"</code> if an environment of <code>envname</code> (default: <code>"r-reticulate"</code>) does not exist, it gets created before running <code>py_install()</code></p></li>
 <li><p>Add <code><a href="../reference/enum.html">gd_spectral_distance_metrics()</a></code> enum helper</p></li>

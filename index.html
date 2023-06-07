@@ -84,7 +84,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>{rgeedim} supports search and download of Google Earth Engine imagery with Python module <a href="https://github.com/dugalh/geedim" class="external-link"><code>geedim</code></a> by Dugal Harris. This package provides wrapper functions that make it more convenient to use <code>geedim</code> from R.</p>
+<p>{rgeedim} supports search and download of Google Earth Engine imagery with Python module <a href="https://github.com/leftfield-geospatial/geedim" class="external-link"><code>geedim</code></a> by Dugal Harris. This package provides wrapper functions that make it more convenient to use <code>geedim</code> from R.</p>
 <p>The <a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim manual</a> describes the R API. See the <a href="https://geedim.readthedocs.io/" class="external-link">geedim manual</a> for more information on Python API and command line interface.</p>
 <p>Using <code>geedim</code>, images larger than the <a href="https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl" class="external-link"><code>Image.getDownloadURL()</code> size limit</a> are split and downloaded as separate tiles, then re-assembled into a single GeoTIFF.</p>
 <div class="section level2">
@@ -149,15 +149,20 @@
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.2.3 -- using geedim 1.7.0 w/ earthengine-api 0.1.347</span></span></code></pre></div>
-<p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods. Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options are better for non-interactive use.</p>
+<span><span class="co">#&gt; rgeedim v0.2.4 -- using geedim 1.7.1 w/ earthengine-api 0.1.355</span></span></code></pre></div>
+<p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods.</p>
+<p>Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options (using <code>gcloud</code> or a service account) are better for non-interactive or long-term use.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
-<p>In each R session you will need to initialize the Earth Engine library</p>
+<code class="sourceCode R"><span><span class="co"># short duration token</span></span>
+<span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="reference/gd_bbox.html">gd_bbox()</a></code> is a simple function for specifying extents to {rgeedim} functions like <code><a href="reference/gd_download.html">gd_download()</a></code>:</p>
+<code class="sourceCode R"><span><span class="co"># longer duration (default); requires gcloud command-line tools</span></span>
+<span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"gcloud"</span><span class="op">)</span></span></code></pre></div>
+<p>In each R session you will need to initialize the Earth Engine library</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Then you can select an extent of interest. <code><a href="reference/gd_bbox.html">gd_bbox()</a></code> is a simple function for specifying extents to {rgeedim} functions like <code><a href="reference/gd_download.html">gd_download()</a></code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.6032</span>,</span>
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5377</span>,</span>
@@ -165,7 +170,7 @@
 <span>  ymax <span class="op">=</span> <span class="fl">38.1043</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We will download the US NED CHILI (Continuous Heat-Insolation Load Index) <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI" class="external-link uri">https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI</a>. We specify an equal-area coordinate reference system (NAD83 Albers), bilinear resampling, and a resolution of 10 meters.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="st">'CSP/ERGo/1_0/US/CHILI'</span> <span class="op">|&gt;</span></span>
 <span>          <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>          <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
@@ -178,14 +183,9 @@
 <span>            silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>          <span class="op">)</span></span></code></pre></div>
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.18</span></span>
-<span><span class="co">#&gt; WARNING: different compile-time and run-time versions of GEOS</span></span>
-<span><span class="co">#&gt; Compiled with:3.11.2-CAPI-1.17.2</span></span>
-<span><span class="co">#&gt;  Running with:3.11.1-CAPI-1.17.1</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; You should reinstall package 'terra'</span></span>
+<span><span class="co">#&gt; terra 1.7.33</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
@@ -204,7 +204,7 @@
 <h2 id="example-hillshade-from-dem">Example: Hillshade from DEM<a class="anchor" aria-label="anchor" href="#example-hillshade-from-dem"></a>
 </h2>
 <p>This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -244,8 +244,10 @@
 <div class="section level2">
 <h2 id="example-lidar-slope-map">Example: LiDAR Slope Map<a class="anchor" aria-label="anchor" href="#example-lidar-slope-map"></a>
 </h2>
-<p>This example demonstrates how to access the 1m LiDAR data from USGS. A key step in this process is the use of <code><a href="reference/gd_composite.html">gd_composite()</a></code> to resample the component images prior to download.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>This example demonstrates how to access 1-meter LiDAR data from the USGS 3D Elevation Program (3DEP).</p>
+<p>There are other methods to derive an area of interest from existing spatial data sources, here we use <code><a href="reference/gd_region.html">gd_region()</a></code> on a SpatVector object and pass resulting object to several functions that require a processing extent.</p>
+<p>LiDAR data are not available everywhere, and are generally available as collections of (tiled) layers. Therefore we use <code><a href="reference/gd_search.html">gd_search()</a></code> to narrow down the options. The small sample extent covers only one tile. Additional filters on date and data quality are also possible with <code><a href="reference/gd_search.html">gd_search()</a></code>. A key step in this process is the use of <code><a href="reference/gd_composite.html">gd_composite()</a></code> to resample the component images of interest from the collection on the server-side.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -257,13 +259,26 @@
 <span><span class="st">          -121.35 37.555,-121.35 37.56,</span></span>
 <span><span class="st">          -121.355 37.56))'</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="st">"OGC:CRS84"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a GeoJSON-like list from a SpatVector object</span></span>
+<span><span class="co"># (most rgeedim functions arguments for spatial inputs do this automatically)</span></span>
 <span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_region.html">gd_region</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># note that resampling is done on the images as part of compositing/before download</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"USGS/3DEP/1m"</span> <span class="op">|&gt;</span></span>
+<span><span class="co"># search collection for an area of interest</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="st">"USGS/3DEP/1m"</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/from.html">gd_collection_from_name</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/gd_search.html">gd_search</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">r</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/gd_composite.html">gd_composite</a></span><span class="op">(</span>resampling <span class="op">=</span> <span class="st">"bilinear"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/gd_search.html">gd_search</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">r</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># inspect individual image metadata in the collection</span></span>
+<span><span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                                                                        id</span></span>
+<span><span class="co">#&gt; 1 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19</span></span>
+<span><span class="co">#&gt;                  date</span></span>
+<span><span class="co">#&gt; 1 2005-12-31 16:00:00</span></span>
+<span></span>
+<span><span class="co"># resampling images as part of composite; before download</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">a</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/gd_composite.html">gd_composite</a></span><span class="op">(</span>resampling <span class="op">=</span> <span class="st">"bilinear"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">r</span>,</span>
 <span>              crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
 <span>              scale <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -280,8 +295,9 @@
 <div class="section level2">
 <h2 id="example-landsat-7-cloudshadow-free-composite">Example: Landsat-7 cloud/shadow-free composite<a class="anchor" aria-label="anchor" href="#example-landsat-7-cloudshadow-free-composite"></a>
 </h2>
-<p>This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the USGS Landsat 7 Level 2, Collection 2, Tier 1. This example is based on a <a href="https://geedim.readthedocs.io/en/latest/examples/l7_composite.html" class="external-link">tutorial</a> in the <code>geedim</code> manual.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the NASA/USGS Landsat 7 Level 2, Collection 2, Tier 1.</p>
+<p>This example is based on a <a href="https://geedim.readthedocs.io/en/latest/examples/l7_composite.html" class="external-link">tutorial</a> in the <code>geedim</code> manual.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -318,7 +334,7 @@
 <span><span class="co">#&gt; 3     99.93  5.44 145.16 23.71</span></span>
 <span><span class="co">#&gt; 4     99.91  5.73 138.46 30.91</span></span>
 <span></span>
-<span><span class="co"># download a single image</span></span>
+<span><span class="co"># download a single image, no compositing</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
@@ -330,11 +346,12 @@
 <span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-7-1.jpeg" width="100%"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># create composite landsat image near December 1st, 2020 and download  </span></span>
+<p>Now we have several images of interest, and also major issues with some of the inputs. In this case there were failures of sensors on the Landsat satellite, but other data gaps may occur due to masked cloudy areas or due to patchy coverage of the source product.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create composite landsat image near December 1st, 2020 and download  </span></span>
 <span><span class="co"># using q-mosaic method. </span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/gd_composite.html">gd_composite</a></span><span class="op">(</span></span>
@@ -350,9 +367,10 @@
 <span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-2.jpeg" width="100%"></p>
-<p>The <code>"q-mosaic"</code> method produces a composite largely free of artifacts; this is because it prioritizes pixels with higher distance from clouds.</p>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.jpeg" width="100%"></p>
+<p>The <code>"q-mosaic"</code> method produces a composite (largely) free of artifacts in this case; this is because it prioritizes pixels with higher distance from clouds to fill in the gaps. Other methods are available such as <code>"medoid"</code>; this may give better results when compositing more contrasting inputs such as several dates over a time period where vegetation or other cover changes appreciably.</p>
 </div>
 </div>
   </div>
