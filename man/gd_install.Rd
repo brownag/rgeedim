@@ -7,7 +7,7 @@
 gd_install(pip = TRUE, system = FALSE, force = FALSE, ...)
 }
 \arguments{
-\item{pip}{Use \code{pip} package manager? Default: \code{TRUE}. To use a virtual or conda environment specify \code{method="virtualenv"} or \verb{method="conda}, respectively. See details.}
+\item{pip}{Use \code{pip} package manager? Default: \code{TRUE}. To use a virtual or conda environment specify \code{method="virtualenv"} or \code{method="conda"}, respectively. See details.}
 
 \item{system}{Use a \code{system()} call to \verb{python -m pip install --user ...} instead of \code{reticulate::py_install()}. Default: \code{FALSE}.}
 

@@ -5,7 +5,7 @@
 #' configure custom environments with `pip=FALSE` and additional arguments
 #' that are passed to `reticulate::py_install()`.
 #' 
-#' @param pip Use `pip` package manager? Default: `TRUE`. To use a virtual or conda environment specify `method="virtualenv"` or `method="conda`, respectively. See details.
+#' @param pip Use `pip` package manager? Default: `TRUE`. To use a virtual or conda environment specify `method="virtualenv"` or `method="conda"`, respectively. See details.
 #' @param system Use a `system()` call to `python -m pip install --user ...` instead of `reticulate::py_install()`. Default: `FALSE`.
 #' @param force Force update (uninstall/reinstall) and ignore existing installed packages? Default: `FALSE`. Applies to `pip=TRUE`.
 #' @param ... Additional arguments passed to `reticulate::py_install()`

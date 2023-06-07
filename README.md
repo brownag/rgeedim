@@ -14,7 +14,8 @@ status](https://www.r-pkg.org/badges/version-last-release/rgeedim)](https://CRAN
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery
-with Python module [`geedim`](https://github.com/dugalh/geedim) by Dugal
+with Python module
+[`geedim`](https://github.com/leftfield-geospatial/geedim) by Dugal
 Harris. This package provides wrapper functions that make it more
 convenient to use `geedim` from R.
 
@@ -114,19 +115,27 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.2.3 -- using geedim 1.7.0 w/ earthengine-api 0.1.347
+#> rgeedim v0.2.4 -- using geedim 1.7.1 w/ earthengine-api 0.1.355
 ```
 
 If this is your first time using any Google Earth Engine tools,
 authenticate with `gd_authenticate()`. You can pass arguments to use
-several different authorization methods. Perhaps the easiest to use is
-`auth_mode="notebook"` in that does not rely on an existing
-`GOOGLE_APPLICATION_CREDENTIALS` file nor an installation of the
-`gcloud` CLI tools. However, the other options are better for
-non-interactive use.
+several different authorization methods.
+
+Perhaps the easiest to use is `auth_mode="notebook"` in that does not
+rely on an existing `GOOGLE_APPLICATION_CREDENTIALS` file nor an
+installation of the `gcloud` CLI tools. However, the other options
+(using `gcloud` or a service account) are better for non-interactive or
+long-term use.
 
 ``` r
+# short duration token
 gd_authenticate(auth_mode = "notebook")
+```
+
+``` r
+# longer duration (default); requires gcloud command-line tools
+gd_authenticate(auth_mode = "gcloud")
 ```
 
 In each R session you will need to initialize the Earth Engine library
@@ -135,8 +144,9 @@ In each R session you will need to initialize the Earth Engine library
 gd_initialize()
 ```
 
-`gd_bbox()` is a simple function for specifying extents to {rgeedim}
-functions like `gd_download()`:
+Then you can select an extent of interest. `gd_bbox()` is a simple
+function for specifying extents to {rgeedim} functions like
+`gd_download()`.
 
 ``` r
 r <- gd_bbox(
@@ -174,12 +184,7 @@ where data are available).
 
 ``` r
 library(terra)
-#> terra 1.7.18
-#> WARNING: different compile-time and run-time versions of GEOS
-#> Compiled with:3.11.2-CAPI-1.17.2
-#>  Running with:3.11.1-CAPI-1.17.1
-#> 
-#> You should reinstall package 'terra'
+#> terra 1.7.33
 
 f <- rast(res)
 f
@@ -243,9 +248,21 @@ plot(c(dem, hillshade = hsd))
 
 ## Example: LiDAR Slope Map
 
-This example demonstrates how to access the 1m LiDAR data from USGS. A
-key step in this process is the use of `gd_composite()` to resample the
-component images prior to download.
+This example demonstrates how to access 1-meter LiDAR data from the USGS
+3D Elevation Program (3DEP).
+
+There are other methods to derive an area of interest from existing
+spatial data sources, here we use `gd_region()` on a SpatVector object
+and pass resulting object to several functions that require a processing
+extent.
+
+LiDAR data are not available everywhere, and are generally available as
+collections of (tiled) layers. Therefore we use `gd_search()` to narrow
+down the options. The small sample extent covers only one tile.
+Additional filters on date and data quality are also possible with
+`gd_search()`. A key step in this process is the use of `gd_composite()`
+to resample the component images of interest from the collection on the
+server-side.
 
 ``` r
 library(rgeedim)
@@ -259,13 +276,26 @@ b <- 'POLYGON((-121.355 37.56,-121.355 37.555,
           -121.35 37.555,-121.35 37.56,
           -121.355 37.56))' |>
   vect(crs = "OGC:CRS84")
+
+# create a GeoJSON-like list from a SpatVector object
+# (most rgeedim functions arguments for spatial inputs do this automatically)
 r <- gd_region(b)
 
-# note that resampling is done on the images as part of compositing/before download
-x <- "USGS/3DEP/1m" |>
+# search collection for an area of interest
+a <- "USGS/3DEP/1m" |>
   gd_collection_from_name() |>
-  gd_search(region = r) |>
-  gd_composite(resampling = "bilinear") |>
+  gd_search(region = r) 
+
+# inspect individual image metadata in the collection
+gd_properties(a)
+#>                                                                        id
+#> 1 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19
+#>                  date
+#> 1 2005-12-31 16:00:00
+
+# resampling images as part of composite; before download
+x <- a |>
+  gd_composite(resampling = "bilinear") |> 
   gd_download(region = r,
               crs = "EPSG:5070",
               scale = 1,
@@ -284,8 +314,10 @@ plot(project(b, x), add = TRUE)
 ## Example: Landsat-7 cloud/shadow-free composite
 
 This example demonstrates download of a Landsat-7 cloud/shadow-free
-composite image. A collection is created from the USGS Landsat 7 Level
-2, Collection 2, Tier 1. This example is based on a
+composite image. A collection is created from the NASA/USGS Landsat 7
+Level 2, Collection 2, Tier 1.
+
+This example is based on a
 [tutorial](https://geedim.readthedocs.io/en/latest/examples/l7_composite.html)
 in the `geedim` manual.
 
@@ -326,7 +358,7 @@ gd_properties(x)
 #> 3     99.93  5.44 145.16 23.71
 #> 4     99.91  5.73 138.46 30.91
 
-# download a single image
+# download a single image, no compositing
 y <- gd_properties(x)$id[1] |> 
   gd_image_from_id() |>
   gd_download(
@@ -338,13 +370,18 @@ y <- gd_properties(x)$id[1] |>
     overwrite = TRUE,
     silent = FALSE
   )
+
 plot(rast(y)[[1:4]])
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.jpeg" width="100%" />
 
-``` r
+Now we have several images of interest, and also major issues with some
+of the inputs. In this case there were failures of sensors on the
+Landsat satellite, but other data gaps may occur due to masked cloudy
+areas or due to patchy coverage of the source product.
 
+``` r
 # create composite landsat image near December 1st, 2020 and download  
 # using q-mosaic method. 
 z <- x |> 
@@ -361,10 +398,15 @@ z <- x |>
     overwrite = TRUE,
     silent = FALSE
   )
+
 plot(rast(z)[[1:4]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.jpeg" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.jpeg" width="100%" />
 
-The `"q-mosaic"` method produces a composite largely free of artifacts;
-this is because it prioritizes pixels with higher distance from clouds.
+The `"q-mosaic"` method produces a composite (largely) free of artifacts
+in this case; this is because it prioritizes pixels with higher distance
+from clouds to fill in the gaps. Other methods are available such as
+`"medoid"`; this may give better results when compositing more
+contrasting inputs such as several dates over a time period where
+vegetation or other cover changes appreciably.

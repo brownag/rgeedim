@@ -2,7 +2,7 @@
 #'
 #' Calls `geedim` `Initialize()` method. This method should be called at the beginning of each session.
 #'
-#' @param private_key_file Optional: Path to JSON file containing client information and private key.
+#' @param private_key_file character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify `EE_SERVICE_ACC_PRIVATE_KEY` environment variable with path to JSON file.
 #' @param opt_url Base URL for API requests; defaults to "High Volume": `"https://earthengine-highvolume.googleapis.com"`
 #' @param quiet Suppress error messages on load? Default: `FALSE`
 #'
@@ -22,14 +22,11 @@ gd_initialize <- function(private_key_file = NULL, opt_url = 'https://earthengin
   if (!is.null(private_key_file) && file.exists(private_key_file)) {
     ek <- private_key_file
   } else {
-    # check possible places people would have a ref to private key
-    env_keys <- c('GOOGLE_APPLICATION_CREDENTIALS', 'EE_SERVICE_ACC_PRIVATE_KEY')
+    # check places people would have a ref to service account key
     ek <- NULL
-    for (e in env_keys) {
-      ev <- Sys.getenv(e, unset = NA_character_)
-      if (!is.na(ev)) {
-        ek <- ev
-      }
+    ev <- Sys.getenv('EE_SERVICE_ACC_PRIVATE_KEY', unset = NA_character_)
+    if (!is.na(ev)) {
+      ek <- ev
     }
   }
   if (!is.null(ek) && length(ek) == 1) {
@@ -65,11 +62,19 @@ gd_is_initialized <- function() {
 
 #' Authenticate with Google Earth Engine using `gcloud`, "Notebook Authenticator" or other method
 #'
-#' Calls `ee.Authenticate(...)` to authenticate with Earth Engine.
-#' @details This method should be called once to set up a machine/project with a particular authentication method. The `auth_mode="notebook"` argument is very convenient for interactive R use and will take you to a web page where you can sign into your Google Account and get a token to paste into a console prompt.
+#' Calls `ee.Authenticate(...)` to create a local instance of persistent credentials for  Google Earth Engine. These credentials are used on subsequent calls to `ee.Initialize(...)` via `gd_initialize()`.
+#' 
+#' @details This method should be called once to set up a machine/project with a particular authentication method. 
+#' 
+#'  - `auth_mode="gcloud"` (default) fetches credentials using `gcloud`. Requires installation of command-line Google Cloud tools; see \url{https://cloud.google.com/cli} for details. This mode will open a web page where you can sign into your Google Account, then a local JSON file will be stored in `gcloud` configuration folder with your credentials. These credentials will be used by any library that requests Application Default Credentials (ADC) which are preferred for long-term storage.
+#'  
+#'  - `auth_mode="notebook"` argument is intended primarily for interactive or other short-term use. This mode will open a web page where you can sign into your Google Account to generate a short-term, revocable token to paste into the console prompt.
+#'  
+#'  - `auth_mode="appdefault"` mode uses locally stored credentials `gcloud` configuration stored in 'application_default_credentials.json' or JSON file specified by `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
+
 #' @param authorization_code Default: `NULL`
 #' @param quiet Suppress warnings, errors, messages? Default: `FALSE`
-#' @param code_verifier Optional code verifier for security Default: `NULL`
+#' @param code_verifier Optional code verifier for security. Default: `NULL`
 #' @param auth_mode One of `"notebook"`, `"gcloud"`, `"appdefault"` or (default) `NULL` to guess based on the environment
 #' @return This function is primarily used for the side-effect of authentication with the 'Google Earth Engine' servers. Invisibly returns `try-error` on error.
 #' @export

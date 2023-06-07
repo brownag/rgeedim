@@ -1,3 +1,14 @@
+# rgeedim 0.2.4
+ 
+ * Add `gd_task_status()` and `gd_task_uri()` for working with Task object produced by `gd_export()`
+ 
+ * Fix for `gd_composite()` and `gd_export()` errors when `region` argument is specified as an R spatial object (rather than GeoJSON-like list)
+ 
+ * Fix bug in `gd_enum_elements()` and add `gd_spectral_distance_metrics()`
+ 
+ * `gd_initialize()`: Fix use of illogical use of `GOOGLE_APPLICATION_CREDENTIALS` environment variable contents for Google Cloud service accounts under some conditions
+  - `EE_SERVICE_ACC_PRIVATE_KEY` is used for service accounts, whereas the former is used only for application credentials. `GOOGLE_APPLICATION_CREDENTIALS` is respected by `gd_authenticate()` `auth_mode` `"gcloud"` and `"appdefault"`.
+ 
 # rgeedim 0.2.3
 
  * For `gd_install()` `method="virtualenv"` or `method="conda"` if an environment of `envname` (default: `"r-reticulate"`) does not exist, it gets created before running `py_install()`

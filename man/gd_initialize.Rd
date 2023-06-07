@@ -14,7 +14,7 @@ gd_initialize(
 gd_is_initialized()
 }
 \arguments{
-\item{private_key_file}{Optional: Path to JSON file containing client information and private key.}
+\item{private_key_file}{character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify \code{EE_SERVICE_ACC_PRIVATE_KEY} environment variable with path to JSON file.}
 
 \item{opt_url}{Base URL for API requests; defaults to "High Volume": \code{"https://earthengine-highvolume.googleapis.com"}}
 
