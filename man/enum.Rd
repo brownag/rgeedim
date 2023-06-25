@@ -46,6 +46,8 @@ gd_spectral_distance_metrics()
 \code{geedim} Enums
 }
 \examples{
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{\}) # examplesIf}
 \donttest{
   gd_enum_names()
 }

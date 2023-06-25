@@ -5,6 +5,7 @@
 #' @return `gd_enum_names()`: character vector containing names of Enums
 #' @export
 #' @rdname enum
+#' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
 #'   gd_enum_names()

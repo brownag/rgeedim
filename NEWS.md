@@ -1,3 +1,7 @@
+# rgeedim 0.2.5
+
+ * Update example for `gd_enum_names()`
+
 # rgeedim 0.2.4
  
  * Add `gd_task_status()` and `gd_task_uri()` for working with Task object produced by `gd_export()`
