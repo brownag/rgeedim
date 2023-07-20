@@ -1,6 +1,8 @@
 # rgeedim 0.2.5
 
  * Update example for `gd_enum_names()`
+ 
+ * Fix different value storage in `gd_enum_elements()` (required for reticulate >= 1.29)
 
 # rgeedim 0.2.4
  

@@ -29,7 +29,9 @@ gd_enum_elements <- function(enum = gd_enum_names()) {
     y <- gd$enums[[x]]
     do.call('c', lapply(names(y), function(z) {
       zz <- y[[z]]
-      if ("value" %in% names(zz)) {
+      if (is.character(zz) && length(zz) == 1) {
+        zz
+      } else if ("value" %in% names(zz)) {
         zz$value
       } else
         NULL
