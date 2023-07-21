@@ -185,6 +185,7 @@ x <- "USGS/NED" |>
     crs = "EPSG:5070",
     resampling = "bilinear",
     filename = "image.tif",
+    bands = list("elevation"),
     overwrite = TRUE,
     silent = FALSE
   )
@@ -198,6 +199,8 @@ hsd <- shade(slp, asp)
 # compare elevation v.s. hillshade
 plot(c(dem, hillshade = hsd))
 ```
+
+Subsets of the `"USGS/NED"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
 
 ## Example: LiDAR Slope Map
 

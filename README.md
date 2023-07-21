@@ -115,7 +115,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.2.4 -- using geedim 1.7.1 w/ earthengine-api 0.1.355
+#> rgeedim v0.2.5 -- using geedim 1.7.2 w/ earthengine-api 0.1.360
 ```
 
 If this is your first time using any Google Earth Engine tools,
@@ -184,7 +184,7 @@ where data are available).
 
 ``` r
 library(terra)
-#> terra 1.7.33
+#> terra 1.7.39
 
 f <- rast(res)
 f
@@ -230,6 +230,7 @@ x <- "USGS/NED" |>
     crs = "EPSG:5070",
     resampling = "bilinear",
     filename = "image.tif",
+    bands = list("elevation"),
     overwrite = TRUE,
     silent = FALSE
   )
@@ -245,6 +246,13 @@ plot(c(dem, hillshade = hsd))
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.jpeg" width="100%" />
+
+Subsets of the `"USGS/NED"` image result in multi-band GeoTIFF with
+`"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the
+DEM is continuous so the `FILL_MASK` is not that useful. With geedim
+\>1.7 we retrieve only the `"elevation"` band by specifying argument
+`bands = list("elevation")`. This cuts the raw image size that we need
+to download in half.
 
 ## Example: LiDAR Slope Map
 
@@ -290,8 +298,8 @@ a <- "USGS/3DEP/1m" |>
 gd_properties(a)
 #>                                                                        id
 #> 1 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19
-#>                  date
-#> 1 2005-12-31 16:00:00
+#>         date
+#> 1 2006-01-01
 
 # resampling images as part of composite; before download
 x <- a |>
@@ -347,16 +355,16 @@ x <- 'LANDSAT/LE07/C02/T1_L2' |>
 
 # inspect individual image metadata in the collection
 gd_properties(x)
-#>                                            id                date  fill
-#> 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-29 16:00:00 86.41
-#> 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2020-12-31 16:00:00 86.85
-#> 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-16 16:00:00 86.05
-#> 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-17 16:00:00 85.66
-#>   cloudless grmse    saa   sea
-#> 1     99.98  4.92 151.45 25.21
-#> 2     98.89  4.79 148.07 22.47
-#> 3     99.93  5.44 145.16 23.71
-#> 4     99.91  5.73 138.46 30.91
+#>                                            id       date  fill cloudless grmse
+#> 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-30 86.41     99.98  4.92
+#> 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2021-01-01 86.85     98.89  4.79
+#> 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-17 86.05     99.93  5.44
+#> 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-18 85.66     99.91  5.73
+#>      saa   sea
+#> 1 151.45 25.21
+#> 2 148.07 22.47
+#> 3 145.16 23.71
+#> 4 138.46 30.91
 
 # download a single image, no compositing
 y <- gd_properties(x)$id[1] |> 
