@@ -204,8 +204,8 @@ plot(f[[1]])
 ## Example: Hillshade from DEM
 
 This example demonstrates the download of a section of the USGS NED
-seamless 10m grid. This DEM is processed with {terra} to calculate some
-terrain derivatives (slope, aspect) and a hillshade.
+seamless 10m grid. This DEM is processed locally with {terra} to
+calculate some terrain derivatives (slope, aspect) and a hillshade.
 
 ``` r
 library(rgeedim)
@@ -245,7 +245,7 @@ hsd <- shade(slp, asp)
 plot(c(dem, hillshade = hsd))
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.jpeg" width="100%" />
+<img src="man/figures/README-dem10-hillshade-1.jpeg" width="100%" />
 
 Subsets of the `"USGS/NED"` image result in multi-band GeoTIFF with
 `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the
@@ -317,7 +317,7 @@ plot(terra::terrain(x$elevation))
 plot(project(b, x), add = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.jpeg" width="100%" />
+<img src="man/figures/README-lidar-composite-1.jpeg" width="100%" />
 
 ## Example: Landsat-7 cloud/shadow-free composite
 
@@ -382,7 +382,7 @@ y <- gd_properties(x)$id[1] |>
 plot(rast(y)[[1:4]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.jpeg" width="100%" />
+<img src="man/figures/README-landsat7-composite-1.jpeg" width="100%" />
 
 Now we have several images of interest, and also major issues with some
 of the inputs. In this case there were failures of sensors on the
@@ -410,7 +410,7 @@ z <- x |>
 plot(rast(z)[[1:4]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.jpeg" width="100%" />
+<img src="man/figures/README-landsat7-qmosaic-1.jpeg" width="100%" />
 
 The `"q-mosaic"` method produces a composite (largely) free of artifacts
 in this case; this is because it prioritizes pixels with higher distance

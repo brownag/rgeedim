@@ -160,9 +160,9 @@ plot(f[[1]])
 
 ## Example: Hillshade from DEM
 
-This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.
+This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed locally with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.
 
-```{r}
+```{r dem10-hillshade}
 library(rgeedim)
 library(terra)
 
@@ -210,7 +210,7 @@ There are other methods to derive an area of interest from existing spatial data
 
 LiDAR data are not available everywhere, and are generally available as collections of (tiled) layers. Therefore we use `gd_search()` to narrow down the options. The small sample extent covers only one tile. Additional filters on date and data quality are also possible with `gd_search()`. A key step in this process is the use of `gd_composite()` to resample the component images of interest from the collection on the server-side.
 
-```{r}
+```{r lidar-composite}
 library(rgeedim)
 library(terra)
 
@@ -257,7 +257,7 @@ This example demonstrates download of a Landsat-7 cloud/shadow-free composite im
 
 This example is based on a [tutorial](https://geedim.readthedocs.io/en/latest/examples/l7_composite.html) in the `geedim` manual.
 
-```{r}
+```{r landsat7-composite}
 library(rgeedim)
 library(terra)
 
@@ -302,7 +302,7 @@ plot(rast(y)[[1:4]])
 
 Now we have several images of interest, and also major issues with some of the inputs. In this case there were failures of sensors on the Landsat satellite, but other data gaps may occur due to masked cloudy areas or due to patchy coverage of the source product.
 
-```{r}
+```{r landsat7-qmosaic}
 # create composite landsat image near December 1st, 2020 and download  
 # using q-mosaic method. 
 z <- x |> 
