@@ -132,8 +132,8 @@ gd_download <- function(x,
     }
     if (is.null(prp)) stop("Empty properties table; your collection may have no features; expand your search parameters with `gd_search() or use `gd_collection_from_list()` to create a collection from desired images.", call. = FALSE)
     sapply(prp$id, function(y) {
-      if (file.exists(dest)) {
-        stop("When composite=FALSE, `filename` is a directory where multiple files will be downloaded", call. = FALSE)
+      if (file.exists(dest) && !dir.exists(dest)) {
+        stop("When composite=FALSE, `filename` should be a directory where multiple files will be downloaded", call. = FALSE)
       }
       if (!dir.exists(dest)) {
         if (all(grepl(dest, "\\.tiff?$", ignore.case = TRUE))) {
