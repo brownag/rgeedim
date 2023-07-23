@@ -7,3 +7,5 @@ rgeedim.Rproj
 inst/doc
 .github/*.html
 CRAN-SUBMISSION
+/doc/
+/Meta/
