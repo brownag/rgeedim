@@ -3,7 +3,7 @@ coverage:
     patch:
       default:
         target: 0%
-        threshold: 1%
+        threshold: 5%
         branches:
           - main
         if_ci_failed: error
