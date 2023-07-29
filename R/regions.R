@@ -19,8 +19,21 @@
 #'   ymin = 49.44781
 #' )
 gd_bbox <- function(...) {
+  
   .gdal_projwin <- c("xmin", "ymax", "xmax", "ymin")
   .args <- list(...)
+  
+  if (length(.args) == 0) {
+    stop("Must specify a spatial object, an Earth Engine Feature Collection or Geometry, or the X and Y minimum/maxiumum values", call. = FALSE)
+  }
+  
+  if (inherits(.args[[1]], "ee.featurecollection.FeatureCollection")) {
+    return(.args[[1]]$geometry()$bounds()$getInfo())
+  }
+  
+  if (inherits(.args[[1]], "ee.geometry.Geometry")) {
+    return(.args[[1]]$bounds()$getInfo())
+  }
 
   .mbbox <- function(x) {
     matrix(c(x[["xmin"]], x[["ymin"]],
@@ -105,11 +118,19 @@ gd_bbox <- function(...) {
 #' gd_region(b)
 #' }
 gd_region <- function(x) {
+  if (inherits(x, "ee.featurecollection.FeatureCollection")) {
+     x <- x$geometry()
+  }
+  
+  if (inherits(x, "ee.geometry.Geometry")) {
+    return(x$getInfo())
+  }
 
   if (is.list(x) &&
       !is.null(x$type) &&
-      !is.null(x$coordinates)) {
+      !is.null(x$coordinates))  {
     # short circuit, if already a suitable list object don't require any namespaces or do any conversion
+    
     return(x)
   }
 
