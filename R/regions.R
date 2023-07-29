@@ -224,3 +224,38 @@ gd_region <- function(x) {
   # return object (possibly unchanged)
   x
 }
+
+#' @description `gd_region_to_vect()` is the inverse function of gd_region/gd_bbox; convert GeoJSON-like list to Well-Known Text(WKT)/_SpatVector_. This may be useful, for example. when `gd_region()`-output was derived from an Earth Engine asset rather than local R object.
+#' @param crs character. Default for GeoJSON sources is `"OGC:CRS84"`.
+#' @param as_wkt logical. Return Well-Known Text (WKT) string as character? Default: `FALSE` returns a 'terra' _SpatRaster_.
+#' @param ... Additional arguments to `gd_region_to_vect()` are passed to `terra::vect()` when `as_wkt=FALSE` (default).
+#' @return `gd_region_to_vect()`: a 'terra' _SpatVector_ object, or _character_ containing Well-Known Text.
+#' @export
+#' @rdname gd_region
+gd_region_to_vect <- function(x, crs = "OGC:CRS84", as_wkt = FALSE, ...) {
+  
+  if (!inherits(x, "list") ||
+      is.null(x$coordinates) ||
+      is.null(x$type)) {
+    stop("Expected a GeoJSON-like list containing 'coordinates' and 'type' elements.", call. = FALSE)
+  }
+  
+  return(switch(x$type, "Polygon" = { # type=Polygon
+    # convert list to matrix
+    # TODO: only handles first polygon present; combine multiple polygons in geometrycollection
+    y <- do.call('rbind', lapply(x$coordinates[[1]], matrix, ncol = 2))
+    
+    # insert coordinates into WKT string
+    wkt <- sprintf("POLYGON((%s))", paste0(paste0(y[, 1], " ", y[, 2]), collapse = ","))
+    
+    # terra is required to return a SpatVector object
+    if (as_wkt) { 
+      return(wkt)
+    } else {
+      if (!requireNamespace("terra")) {
+        stop("package 'terra' is required, or use `as_wkt=TRUE` to return Well-Known Text instead of SpatVector object", call. = FALSE)
+      }
+      return(terra::vect(wkt, crs = crs, ...))
+    }
+  }, stop("'", x$type, "' geometry type is not supported", call. = FALSE)))
+}

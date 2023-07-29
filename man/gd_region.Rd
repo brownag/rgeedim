@@ -2,18 +2,31 @@
 % Please edit documentation in R/regions.R
 \name{gd_region}
 \alias{gd_region}
+\alias{gd_region_to_vect}
 \title{Create GeoJSON Region from R Spatial Objects}
 \usage{
 gd_region(x)
+
+gd_region_to_vect(x, crs = "OGC:CRS84", as_wkt = FALSE, ...)
 }
 \arguments{
 \item{x}{either a WKT string (character), a {terra} SpatRaster(Collection)/SpatVector(Collection)/SpatExtent, an {sf} object, an {sp} Spatial* object or a {raster} RasterLayer/RasterStack.}
+
+\item{crs}{character. Default for GeoJSON sources is \code{"OGC:CRS84"}.}
+
+\item{as_wkt}{logical. Return Well-Known Text (WKT) string as character? Default: \code{FALSE} returns a 'terra' \emph{SpatRaster}.}
+
+\item{...}{Additional arguments to \code{gd_region_to_vect()} are passed to \code{terra::vect()} when \code{as_wkt=FALSE} (default).}
 }
 \value{
 list representing a GeoJSON extent
+
+\code{gd_region_to_vect()}: a 'terra' \emph{SpatVector} object, or \emph{character} containing Well-Known Text.
 }
 \description{
 Creates a suitable input for the \code{region} argument to \verb{gd_download(<Image>)} or \code{gd_search()} for Image Collections.
+
+\code{gd_region_to_vect()} is the inverse function of gd_region/gd_bbox; convert GeoJSON-like list to Well-Known Text(WKT)/\emph{SpatVector}. This may be useful, for example. when \code{gd_region()}-output was derived from an Earth Engine asset rather than local R object.
 }
 \details{
 If \code{x} is an R spatial object, each vertex (possibly after converting object extent to vector) is used to create the GeoJSON object. Otherwise, the extent is determined and passed to \code{gd_bbox()}.
