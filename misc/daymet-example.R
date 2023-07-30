@@ -25,7 +25,7 @@ b <- gd_bbox(
 p <- gd_properties(res)
 td <- tempdir()
 
-# download each image in collection as separate GeoTIFF (no compositing)
+# download each daily image in collection as separate GeoTIFF (no compositing)
 # Note: `filename` is a directory
 gd_collection_from_list(p$id) |>
   gd_download(filename = td, 

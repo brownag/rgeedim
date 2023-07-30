@@ -222,7 +222,7 @@ b <- gd_bbox(
 
 ## hillshade example
 # download 10m NED DEM in AEA
-x <- "USGS/NED" |>
+x <- "USGS/3DEP/10m" |>
   gd_image_from_id() |>
   gd_download(
     region = b,
@@ -247,7 +247,7 @@ plot(c(dem, hillshade = hsd))
 
 <img src="man/figures/README-dem10-hillshade-1.jpeg" width="100%" />
 
-Subsets of the `"USGS/NED"` image result in multi-band GeoTIFF with
+Subsets of the `"USGS/3DEP/10m"` image result in multi-band GeoTIFF with
 `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the
 DEM is continuous so the `FILL_MASK` is not that useful. With geedim
 \>1.7 we retrieve only the `"elevation"` band by specifying argument
@@ -308,6 +308,7 @@ x <- a |>
               crs = "EPSG:5070",
               scale = 1,
               filename = "image.tif",
+              bands = list("elevation"),
               overwrite = TRUE,
               silent = FALSE) |>
   rast()
