@@ -4,7 +4,7 @@ library(terra)
 # search and download from USGS 1m lidar data collection
 gd_initialize()
 
-# wkt->SpatExtent
+# wkt->SpatVector->GeoJSON
 b <- 'POLYGON((-121.355 37.56,-121.355 37.555,
           -121.35 37.555,-121.35 37.56,
           -121.355 37.56))' |>
@@ -17,6 +17,7 @@ x <- "USGS/3DEP/1m" |>
   gd_search(region = r) |>
   gd_composite(resampling = "bilinear") |>
   gd_download(region = r,
+              bands = list("elevation"),
               crs = "EPSG:5070",
               scale = 1) |>
   rast()
