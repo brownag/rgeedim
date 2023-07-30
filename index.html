@@ -219,7 +219,7 @@
 <span></span>
 <span><span class="co">## hillshade example</span></span>
 <span><span class="co"># download 10m NED DEM in AEA</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"USGS/NED"</span> <span class="op">|&gt;</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"USGS/3DEP/10m"</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
 <span>    region <span class="op">=</span> <span class="va">b</span>,</span>
@@ -241,7 +241,7 @@
 <span><span class="co"># compare elevation v.s. hillshade</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">dem</span>, hillshade <span class="op">=</span> <span class="va">hsd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-dem10-hillshade-1.jpeg" width="100%"></p>
-<p>Subsets of the <code>"USGS/NED"</code> image result in multi-band GeoTIFF with <code>"elevation"</code> and <code>"FILL_MASK"</code> bands. In the contiguous US we know the DEM is continuous so the <code>FILL_MASK</code> is not that useful. With geedim &gt;1.7 we retrieve only the <code>"elevation"</code> band by specifying argument <code>bands = list("elevation")</code>. This cuts the raw image size that we need to download in half.</p>
+<p>Subsets of the <code>"USGS/3DEP/10m"</code> image result in multi-band GeoTIFF with <code>"elevation"</code> and <code>"FILL_MASK"</code> bands. In the contiguous US we know the DEM is continuous so the <code>FILL_MASK</code> is not that useful. With geedim &gt;1.7 we retrieve only the <code>"elevation"</code> band by specifying argument <code>bands = list("elevation")</code>. This cuts the raw image size that we need to download in half.</p>
 </div>
 <div class="section level2">
 <h2 id="example-lidar-slope-map">Example: LiDAR Slope Map<a class="anchor" aria-label="anchor" href="#example-lidar-slope-map"></a>
@@ -285,6 +285,7 @@
 <span>              crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
 <span>              scale <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>              filename <span class="op">=</span> <span class="st">"image.tif"</span>,</span>
+<span>              bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"elevation"</span><span class="op">)</span>,</span>
 <span>              overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>              silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="op">)</span></span>
