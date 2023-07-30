@@ -3,6 +3,11 @@
  * Update example for `gd_enum_names()`
  
  * Fix different value storage in `gd_enum_elements()` (required for reticulate >= 1.29)
+ 
+ * Update examples in /misc folder: <https://github.com/brownag/rgeedim/tree/main/misc>
+  - Add new example using `gd_export()` and the Earth Engine API directly via `earthengine()`
+ 
+ * Add `gd_region_to_vect()` an inverse method for `gd_bbox()`/`gd_region()` that creates a 'terra' _SpatVector_ from a GeoJSON-like list
 
 # rgeedim 0.2.4
  
