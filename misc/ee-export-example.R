@@ -4,7 +4,7 @@ library(terra)
 gd_initialize()
 ee <- earthengine()
 
-# use the earth engine API and reticulate to access 
+# use the earth engine API and reticulate to access
 # World Database of Protected Areas <https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons>
 # filter to a specific area (yellowstone)
 b <- ee$FeatureCollection("WCMC/WDPA/current/polygons")$filter(
@@ -13,16 +13,19 @@ b <- ee$FeatureCollection("WCMC/WDPA/current/polygons")$filter(
 g <- gd_bbox(b)
 
 # create a terra SpatVector from the GeoJSON-like list from gd_region()
-yellowstone <- gd_region(b) |> 
-  gd_region_to_vect() |> 
+yellowstone <- gd_region(b) |>
+  gd_region_to_vect() |>
   project("EPSG:5070")
+
+# inspect
+plot(yellowstone)
 
 # create an Earth Engine asset you can use again in the future
 # 250m resolution for Yellowstone extent
 gd_export(
   gd_image_from_id("USGS/3DEP/10m"),
   region = g,
-  scale = 250, 
+  scale = 250,
   bands = list("elevation"),
   resampling = "bilinear",
   type = "asset",
@@ -54,6 +57,6 @@ plot(yellowstone, add = TRUE)
 
 # # cleanup downloaded temp files
 # unlink(sources(x))
-# 
+#
 # # write in-memory hillshade to local GeoTIFF
 # writeRaster(shd, "yellowstone_hillshade.tif",overwrite = TRUE)

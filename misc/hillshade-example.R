@@ -12,16 +12,17 @@ b <- gd_bbox(
 )
 
 # download 10m DEM in AEA
-x <- rast("USGS/3DEP/10m" |>
-            gd_image_from_id() |>
-            gd_download(
-              region = b,
-              scale = 10,
-              crs = "EPSG:5070",
-              bands = list("elevation"),
-              resampling = "bilinear",
-              filename = "dem.tif"
-            ))
+x <- "USGS/3DEP/10m" |>
+  gd_image_from_id() |>
+  gd_download(
+    region = b,
+    scale = 10,
+    crs = "EPSG:5070",
+    bands = list("elevation"),
+    resampling = "bilinear",
+    filename = "dem.tif"
+  ) |>
+  rast()
 
 # calculate slope, aspect, and hillshade with terra
 slp <- terrain(x, "slope", unit = "radians")
