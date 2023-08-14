@@ -109,11 +109,7 @@ gd_list_assets <- function(parent) {
     parent <- paste0(parent, "/assets")
   res <- gd$utils$ee$data$listAssets(list(parent = parent))
   if (length(res) == 0 || length(res[[1]]) == 0) {
-    return(data.frame(type = character(0), name = character(0), id = character(0),
-                      updateTime = structure(numeric(0),
-                                             class = c("POSIXct", "POSIXt"),
-                                             tzone = "GMT"),
-                      stringsAsFactors = FALSE))
+    return(data.frame(type = character(0), name = character(0), id = character(0), updateTime = structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "GMT"), stringsAsFactors = FALSE))
   }
   res <- do.call('rbind', lapply(res, function(x) {
     data.frame(t(do.call('cbind', x)))
