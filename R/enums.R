@@ -8,6 +8,7 @@
 #' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
+#'  if (gd_is_initialized())
 #'   gd_enum_names()
 #' }
 gd_enum_names <- function() {
@@ -21,6 +22,7 @@ gd_enum_names <- function() {
 #' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
+#'  if (gd_is_initialized())
 #'   gd_enum_elements()
 #' }
 gd_enum_elements <- function(enum = gd_enum_names()) {
@@ -47,6 +49,7 @@ gd_enum_elements <- function(enum = gd_enum_names()) {
 #' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
+#'  if (gd_is_initialized())
 #'   gd_resampling_methods()
 #' }
 gd_resampling_methods <- function() {
@@ -59,6 +62,7 @@ gd_resampling_methods <- function() {
 #' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
+#'  if (gd_is_initialized())
 #'   gd_cloud_mask_methods()
 #' }
 gd_cloud_mask_methods <- function() {
@@ -71,6 +75,7 @@ gd_cloud_mask_methods <- function() {
 #' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
+#'  if (gd_is_initialized())
 #'   gd_composite_methods()
 #' }
 gd_composite_methods <- function() {
@@ -84,6 +89,7 @@ gd_composite_methods <- function() {
 #' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
+#'  if (gd_is_initialized())
 #'   gd_export_types()
 #' }
 gd_export_types <- function() {
@@ -96,6 +102,7 @@ gd_export_types <- function() {
 #' @examplesIf gd_is_initialized()
 #' @examples
 #' \donttest{
+#'  if (gd_is_initialized())
 #'   gd_spectral_distance_metrics()
 #' }
 gd_spectral_distance_metrics <- function() {
