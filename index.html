@@ -139,8 +139,7 @@
 <div class="section level3">
 <h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h3>
-<p>If using Python within RStudio for the first time, you may need to set your default interpreter in <em>Tools</em> &gt;&gt; <em>Global Options…</em> &gt;&gt; <em>Python</em>.</p>
-<p>If you have trouble compiling dependency packages on Windows, you can take advantage of the unofficial <code>pip</code> wheels (binaries) prepared by by <a href="https://www.cgohlke.com/" class="external-link">Christoph Gohlke</a>: <a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" class="external-link uri">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>. <em>Note the name of the package and the specific version of Python you are installing for.</em> Download the desired package/version and then call <code>pip install your-package.whl</code>.</p>
+<p>If using Python within RStudio, you may need to set your default interpreter in <em>Tools</em> &gt;&gt; <em>Global Options…</em> &gt;&gt; <em>Python</em>.</p>
 </div>
 </div>
 <div class="section level2">
@@ -149,7 +148,7 @@
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.2.5 -- using geedim 1.7.2 w/ earthengine-api 0.1.360</span></span></code></pre></div>
+<span><span class="co">#&gt; rgeedim v0.2.5 -- using geedim 1.7.2 w/ earthengine-api 0.1.363</span></span></code></pre></div>
 <p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods.</p>
 <p>Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options (using <code>gcloud</code> or a service account) are better for non-interactive or long-term use.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
