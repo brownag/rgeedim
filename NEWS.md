@@ -9,6 +9,8 @@
  
  * Add `gd_region_to_vect()` an inverse method for `gd_bbox()`/`gd_region()` that creates a 'terra' _SpatVector_ from a GeoJSON-like list
 
+ * Add `gd_list_assets()` a helper function for listing the assets associated with a particular Earth Engine project.
+
 # rgeedim 0.2.4
  
  * Add `gd_task_status()` and `gd_task_uri()` for working with Task object produced by `gd_export()`

@@ -68,14 +68,14 @@ gd_collection_from_name <- function(x) {
 #'   # create a new collection from the list of images
 #'   l2 <- gd_collection_from_list(l)
 #'   l2
-#'   
+#'
 #' ### download composite of custom collection
 #' #  gd_download(gd_composite(l2),
 #' #              filename = "test.tif",
 #' #              region = r,
 #' #              crs = "EPSG:5070",
 #' #              scale = 30)
-#' 
+#'
 #' }
 gd_collection_from_list <- function(x) {
   y <- try(gd$MaskedCollection$from_list(x), silent = FALSE)
@@ -94,4 +94,28 @@ gd_collection_from_list <- function(x) {
 #' }
 gd_asset_id <- function(filename, folder = NULL) {
   gd$utils$asset_id(filename, folder)
+}
+
+#' @export
+#' @param parent Full path to project folder (with or without `"/assets"` suffix)
+#' @rdname from
+#' @examplesIf gd_is_initialized()
+#' \donttest{
+#' if (gd_is_initialized())
+#'   gd_list_assets("projects/your-project-name")
+#' }
+gd_list_assets <- function(parent) {
+  if (!endsWith(parent, "/assets"))
+    parent <- paste0(parent, "/assets")
+  res <- gd$utils$ee$data$listAssets(list(parent = parent))
+  if (length(res) == 0 || length(res[[1]]) == 0) {
+    return(data.frame(type = character(0), name = character(0), id = character(0), updateTime = structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "GMT"), stringsAsFactors = FALSE))
+  }
+  res <- do.call('rbind', lapply(res, function(x) {
+    data.frame(t(do.call('cbind', x)))
+  }))
+  res[] <- lapply(res, unlist)
+  rownames(res) <- NULL
+  res$updateTime <- as.POSIXct(res$updateTime, format = "%Y-%m-%dT%H:%M:%OS", tz = "GMT")
+  res
 }

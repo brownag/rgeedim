@@ -5,6 +5,7 @@
 \alias{gd_collection_from_name}
 \alias{gd_collection_from_list}
 \alias{gd_asset_id}
+\alias{gd_list_assets}
 \title{Reference Google Earth Engine Image or Image Collection by ID or Name}
 \usage{
 gd_image_from_id(x)
@@ -14,6 +15,8 @@ gd_collection_from_name(x)
 gd_collection_from_list(x)
 
 gd_asset_id(filename, folder = NULL)
+
+gd_list_assets(parent)
 }
 \arguments{
 \item{x}{character. \code{id} of Image, \code{name} of Image Collection, or a vector of Image \code{id} to create a new Image Collection}
@@ -21,6 +24,8 @@ gd_asset_id(filename, folder = NULL)
 \item{filename}{File or Asset Name}
 
 \item{folder}{Optional: Project Name}
+
+\item{parent}{Full path to project folder (with or without \code{"/assets"} suffix)}
 }
 \value{
 \code{geedim.MaskedImage} or \code{geedim.MaskedCollection} object, or \code{try-error} on error
@@ -74,7 +79,7 @@ if (gd_is_initialized())
   # create a new collection from the list of images
   l2 <- gd_collection_from_list(l)
   l2
-  
+
 ### download composite of custom collection
 #  gd_download(gd_composite(l2),
 #              filename = "test.tif",
@@ -88,6 +93,12 @@ if (gd_is_initialized())
 \donttest{
 if (gd_is_initialized())
   gd_asset_id("RGEEDIM_TEST", "your-project-name")
+}
+\dontshow{\}) # examplesIf}
+\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\donttest{
+if (gd_is_initialized())
+  gd_list_assets("projects/your-project-name")
 }
 \dontshow{\}) # examplesIf}
 }
