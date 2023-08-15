@@ -88,9 +88,7 @@ reticulate::py_install("geedim")
 
 ### Troubleshooting 
 
-If using Python within RStudio for the first time, you may need to set your default interpreter in _Tools_ >> _Global Options..._ >> _Python_.
-
-If you have trouble compiling dependency packages on Windows, you can take advantage of the unofficial `pip` wheels (binaries) prepared by by [Christoph Gohlke](https://www.cgohlke.com/): <https://www.lfd.uci.edu/~gohlke/pythonlibs/>. _Note the name of the package and the specific version of Python you are installing for._ Download the desired package/version and then call `pip install your-package.whl`.
+If using Python within RStudio, you may need to set your default interpreter in _Tools_ >> _Global Options..._ >> _Python_.
 
 ## How {rgeedim} Works
 

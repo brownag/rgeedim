@@ -95,17 +95,8 @@ reticulate::py_install("geedim")
 
 ### Troubleshooting
 
-If using Python within RStudio for the first time, you may need to set
-your default interpreter in *Tools* \>\> *Global Options…* \>\>
-*Python*.
-
-If you have trouble compiling dependency packages on Windows, you can
-take advantage of the unofficial `pip` wheels (binaries) prepared by by
-[Christoph Gohlke](https://www.cgohlke.com/):
-<https://www.lfd.uci.edu/~gohlke/pythonlibs/>. *Note the name of the
-package and the specific version of Python you are installing for.*
-Download the desired package/version and then call
-`pip install your-package.whl`.
+If using Python within RStudio, you may need to set your default
+interpreter in *Tools* \>\> *Global Options…* \>\> *Python*.
 
 ## How {rgeedim} Works
 
@@ -115,7 +106,7 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.2.5 -- using geedim 1.7.2 w/ earthengine-api 0.1.360
+#> rgeedim v0.2.5 -- using geedim 1.7.2 w/ earthengine-api 0.1.363
 ```
 
 If this is your first time using any Google Earth Engine tools,
