@@ -9,17 +9,13 @@ vignette: >
 
 ```{r, include = FALSE}
 library(rgeedim)
-res <- try(gd_initialize(), silent = TRUE)
 knitr::opts_chunk$set(
-  eval = !inherits(res, 'try-error') && 
-          inherits(geedim(), "python.builtin.module") &&
-          gd_is_initialized(),
+  eval = FALSE,
   collapse = TRUE,
   fig.width = 8,
   fig.align = 'center',
   comment = "#>"
 )
-detach("package:rgeedim")
 ```
 
 This vignette shows how to extract a Google Earth Engine asset by name for an arbitrary extent and visualize it in R.
