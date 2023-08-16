@@ -82,10 +82,10 @@ gd_ee_version <- function() {
 .onLoad <- function(libname, pkgname) {
   if (.has_python3()) {
     if (!.loadModules()) {
-      x <- try(reticulate::configure_environment(pkgname), silent = TRUE)
-      if (!inherits(x, 'try-error')) {
-       .loadModules()
-      }
+      # x <- try(reticulate::configure_environment(pkgname), silent = TRUE)
+      # if (!inherits(x, 'try-error')) {
+      #  .loadModules()
+      # }
     }
   }
 }

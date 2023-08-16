@@ -10,6 +10,8 @@
  * Add `gd_region_to_vect()` an inverse method for `gd_bbox()`/`gd_region()` that creates a 'terra' _SpatVector_ from a GeoJSON-like list
 
  * Add `gd_list_assets()` a helper function for listing the assets associated with a particular Earth Engine project.
+ 
+ * `reticulate::configure_environment()` is no longer called on load, this is a precaution to avoid unintended impacts from the automatic routine installing on CRAN or similar.
 
 # rgeedim 0.2.4
  
