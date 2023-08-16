@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - '**.R'
+      - '**R-CMD-check.yml'
     branches:
       - main
       - master

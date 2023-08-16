@@ -8,7 +8,7 @@ on:
       - '**.Rd'
       - '**.Rmd'
       - '**.md'
-      - '*pkgdown.yml'
+      - '**pkgdown.yml'
     tags: ['*']
 
 name: pkgdown

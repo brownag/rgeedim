@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - '**.R'
+      - '**test-coverage.yml'
     branches:
       - main
   pull_request:
