@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - '**.R'
+      - '**.yml'
     branches:
       - main
       - master
