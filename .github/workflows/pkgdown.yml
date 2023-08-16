@@ -8,6 +8,7 @@ on:
       - '**.Rd'
       - '**.Rmd'
       - '**.md'
+      - '*pkgdown.yml'
     tags: ['*']
 
 name: pkgdown
@@ -22,7 +23,7 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - uses: r-lib/actions/setup-r@v4
+      - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
