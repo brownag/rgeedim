@@ -7,6 +7,7 @@ Authors@R: c(person("Andrew", "Brown", role = c("aut", "cre"), email = "brown.an
 Maintainer: Andrew Brown <brown.andrewg@gmail.com>
 URL: https://humus.rocks/rgeedim/, https://github.com/brownag/rgeedim, https://geedim.readthedocs.io/
 BugReports: https://github.com/brownag/rgeedim/issues
+Repository: CRAN
 Description: Search, composite, and download 'Google Earth Engine' imagery with 'reticulate' bindings for the 'Python' module 'geedim' by Dugal Harris. Read the 'geedim' documentation here: <https://geedim.readthedocs.io/>.
     Wrapper functions are provided to make it more convenient to use 'geedim' to download images larger than the 'Google Earth Engine' size limit <https://developers.google.com/earth-engine/apidocs/ee-image-getdownloadurl>.
     By default the "High Volume" API endpoint <https://developers.google.com/earth-engine/cloud/highvolume> is used to download data and this URL can be customized during initialization of the package.
