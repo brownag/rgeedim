@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6</span>
       </span>
     </div>
 
@@ -350,7 +350,7 @@ processed outside of Google Earth Engine.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">x2</span></span>
 <span></span>
 <span><span class="co"># filter to bands of interest (if neeeded)</span></span>
-<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">==</span> <span class="st">"prcp"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">==</span> <span class="st">"prcp"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># set time for each layer</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/time.html" class="external-link">time</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">p</span><span class="op">$</span><span class="va">date</span></span>

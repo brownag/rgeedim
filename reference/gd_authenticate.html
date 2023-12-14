@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6</span>
       </span>
     </div>
 
@@ -67,7 +67,9 @@
 <span>  authorization_code <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  code_verifier <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  auth_mode <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  auth_mode <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  scopes <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -82,11 +84,19 @@
 
 
 <dt>code_verifier</dt>
-<dd><p>Optional code verifier for security. Default: <code>NULL</code></p></dd>
+<dd><p>Code verifier (required if <code>authorization_code</code> is specified). Default: <code>NULL</code></p></dd>
 
 
 <dt>auth_mode</dt>
-<dd><p>One of <code>"notebook"</code>, <code>"gcloud"</code>, <code>"appdefault"</code> or (default) <code>NULL</code> to guess based on the environment</p></dd>
+<dd><p>One of <code>"notebook"</code>, <code>"colab"</code>, <code>"gcloud"</code>, <code>"gcloud-legacy"</code> or (default) <code>NULL</code> to guess based on the current environment.</p></dd>
+
+
+<dt>scopes</dt>
+<dd><p>List of scopes to use for authentication. Defaults <code>NULL</code> corresponds to <code>c('https://www.googleapis.com/auth/earthengine', 'https://www.googleapis.com/auth/devstorage.full_control')</code></p></dd>
+
+
+<dt>force</dt>
+<dd><p>Force authentication even if valid credentials exist? Default: <code>TRUE</code></p></dd>
 
 </dl></div>
     <div id="value">
