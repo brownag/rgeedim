@@ -8,7 +8,9 @@ gd_authenticate(
   authorization_code = NULL,
   quiet = FALSE,
   code_verifier = NULL,
-  auth_mode = NULL
+  auth_mode = NULL,
+  scopes = NULL,
+  force = TRUE
 )
 }
 \arguments{
@@ -16,9 +18,13 @@ gd_authenticate(
 
 \item{quiet}{Suppress warnings, errors, messages? Default: \code{FALSE}}
 
-\item{code_verifier}{Optional code verifier for security. Default: \code{NULL}}
+\item{code_verifier}{Code verifier (required if \code{authorization_code} is specified). Default: \code{NULL}}
 
-\item{auth_mode}{One of \code{"notebook"}, \code{"gcloud"}, \code{"appdefault"} or (default) \code{NULL} to guess based on the environment}
+\item{auth_mode}{One of \code{"notebook"}, \code{"colab"}, \code{"gcloud"}, \code{"gcloud-legacy"} or (default) \code{NULL} to guess based on the current environment.}
+
+\item{scopes}{List of scopes to use for authentication. Defaults \code{NULL} corresponds to \code{c('https://www.googleapis.com/auth/earthengine', 'https://www.googleapis.com/auth/devstorage.full_control')}}
+
+\item{force}{Force authentication even if valid credentials exist? Default: \code{TRUE}}
 }
 \value{
 This function is primarily used for the side-effect of authentication with the 'Google Earth Engine' servers. Invisibly returns \code{try-error} on error.

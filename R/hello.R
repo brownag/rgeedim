@@ -63,19 +63,21 @@ gd_is_initialized <- function() {
 #' Authenticate with Google Earth Engine using `gcloud`, "Notebook Authenticator" or other method
 #'
 #' Calls `ee.Authenticate(...)` to create a local instance of persistent credentials for  Google Earth Engine. These credentials are used on subsequent calls to `ee.Initialize(...)` via `gd_initialize()`.
-#' 
-#' @details This method should be called once to set up a machine/project with a particular authentication method. 
-#' 
+#'
+#' @details This method should be called once to set up a machine/project with a particular authentication method.
+#'
 #'  - `auth_mode="gcloud"` (default) fetches credentials using `gcloud`. Requires installation of command-line Google Cloud tools; see \url{https://cloud.google.com/cli} for details. This mode will open a web page where you can sign into your Google Account, then a local JSON file will be stored in `gcloud` configuration folder with your credentials. These credentials will be used by any library that requests Application Default Credentials (ADC) which are preferred for long-term storage.
-#'  
+#'
 #'  - `auth_mode="notebook"` argument is intended primarily for interactive or other short-term use. This mode will open a web page where you can sign into your Google Account to generate a short-term, revocable token to paste into the console prompt.
-#'  
+#'
 #'  - `auth_mode="appdefault"` mode uses locally stored credentials `gcloud` configuration stored in 'application_default_credentials.json' or JSON file specified by `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 
 #' @param authorization_code Default: `NULL`
 #' @param quiet Suppress warnings, errors, messages? Default: `FALSE`
-#' @param code_verifier Optional code verifier for security. Default: `NULL`
-#' @param auth_mode One of `"notebook"`, `"gcloud"`, `"appdefault"` or (default) `NULL` to guess based on the environment
+#' @param code_verifier Code verifier (required if `authorization_code` is specified). Default: `NULL`
+#' @param auth_mode One of `"notebook"`, `"colab"`, `"gcloud"`, `"gcloud-legacy"` or (default) `NULL` to guess based on the current environment.
+#' @param scopes List of scopes to use for authentication. Defaults `NULL` corresponds to `c('https://www.googleapis.com/auth/earthengine', 'https://www.googleapis.com/auth/devstorage.full_control')`
+#' @param force Force authentication even if valid credentials exist? Default: `TRUE`
 #' @return This function is primarily used for the side-effect of authentication with the 'Google Earth Engine' servers. Invisibly returns `try-error` on error.
 #' @export
 #' @examples
@@ -83,11 +85,29 @@ gd_is_initialized <- function() {
 #' # opens web page to complete authentication/provide authorization code
 #' gd_authenticate(auth_mode = "notebook")
 #' }
-gd_authenticate <- function(authorization_code = NULL, quiet = FALSE, code_verifier = NULL, auth_mode = NULL) {
-  invisible(try(gd$utils$ee$Authenticate(
+gd_authenticate <- function(authorization_code = NULL,
+                            quiet = FALSE,
+                            code_verifier = NULL,
+                            auth_mode = NULL,
+                            scopes = NULL,
+                            force = TRUE) {
+
+  eev <- gd$utils$ee$`__version__`
+
+  args <- list(
     authorization_code = authorization_code,
     quiet = quiet,
     code_verifier = code_verifier,
     auth_mode = auth_mode
-  ), silent = quiet))
+  )
+
+  if (!is.null(eev) && eev > "0.1.312") {
+    args <- c(args, list(scopes = scopes))
+  }
+
+  if (!is.null(eev) && eev > "0.1.382") {
+    args <- c(args, list(force = force))
+  }
+
+  invisible(try(do.call(gd$utils$ee$Authenticate, args), silent = quiet))
 }
