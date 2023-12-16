@@ -65,7 +65,12 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gd_initialize</span><span class="op">(</span></span>
 <span>  private_key_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  opt_url <span class="op">=</span> <span class="st">"https://earthengine-highvolume.googleapis.com"</span>,</span>
+<span>  credentials <span class="op">=</span> <span class="st">"persistent"</span>,</span>
+<span>  cloud_api_key <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  url <span class="op">=</span> <span class="st">"https://earthengine-highvolume.googleapis.com"</span>,</span>
+<span>  opt_url <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  http_transport <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  project <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -78,8 +83,28 @@
 <dd><p>character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify <code>EE_SERVICE_ACC_PRIVATE_KEY</code> environment variable with path to JSON file.</p></dd>
 
 
+<dt>credentials</dt>
+<dd><p>Default: <code>'persistent'</code> uses credentials already stored in the filesystem, or raise an explanatory exception guiding the user to create those credentials.</p></dd>
+
+
+<dt>cloud_api_key</dt>
+<dd><p>An optional API key to use the Cloud API. Default: <code>NULL</code>.</p></dd>
+
+
+<dt>url</dt>
+<dd><p>The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: <code>"https://earthengine-highvolume.googleapis.com"</code></p></dd>
+
+
 <dt>opt_url</dt>
-<dd><p>Base URL for API requests; defaults to "High Volume": <code>"https://earthengine-highvolume.googleapis.com"</code></p></dd>
+<dd><p>(deprecated) Use <code>url</code>.</p></dd>
+
+
+<dt>http_transport</dt>
+<dd><p>The HTTP transport method to use when making requests. Default: <code>NULL</code></p></dd>
+
+
+<dt>project</dt>
+<dd><p>The client project ID or number to use when making API calls. Default: <code>NULL</code></p></dd>
 
 
 <dt>quiet</dt>

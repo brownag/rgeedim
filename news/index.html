@@ -58,6 +58,24 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.6" id="rgeedim-026">rgeedim 0.2.6<a class="anchor" aria-label="anchor" href="#rgeedim-026"></a></h2>
+<ul><li>
+<code><a href="../reference/gd_authenticate.html">gd_authenticate()</a></code>: Updates
+<ul><li>Added <code>force</code> and <code>scopes</code> arguments from <code>earthengine()$Authenticate()</code>
+</li>
+<li>Updated documentation for other <code>auth_mode</code> e.g. <code>"colab"</code>
+</li>
+<li>Backward compatible with older versions of earthengine-api (&lt; 0.1.382)</li>
+</ul></li>
+<li>
+<code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>: Updates
+<ul><li>Added arguments <code>credentials</code>, <code>cloud_api_key</code>, <code>url</code>, <code>http_transport</code> and <code>project</code>
+</li>
+<li>Deprecated argument <code>opt_url</code> (in favor of <code>url</code>)</li>
+<li>Backward compatible with older versions of earthengine-api (&lt; 0.1.381)</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.5" id="rgeedim-025">rgeedim 0.2.5<small>2023-08-17</small><a class="anchor" aria-label="anchor" href="#rgeedim-025"></a></h2>
 <ul><li><p>Update example for <code><a href="../reference/enum.html">gd_enum_names()</a></code></p></li>
 <li><p>Fix different value storage in <code><a href="../reference/enum.html">gd_enum_elements()</a></code> (required for reticulate &gt;= 1.29)</p></li>
