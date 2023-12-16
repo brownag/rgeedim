@@ -7,7 +7,12 @@
 \usage{
 gd_initialize(
   private_key_file = NULL,
-  opt_url = "https://earthengine-highvolume.googleapis.com",
+  credentials = "persistent",
+  cloud_api_key = NULL,
+  url = "https://earthengine-highvolume.googleapis.com",
+  opt_url = NULL,
+  http_transport = NULL,
+  project = NULL,
   quiet = TRUE
 )
 
@@ -16,7 +21,17 @@ gd_is_initialized()
 \arguments{
 \item{private_key_file}{character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify \code{EE_SERVICE_ACC_PRIVATE_KEY} environment variable with path to JSON file.}
 
-\item{opt_url}{Base URL for API requests; defaults to "High Volume": \code{"https://earthengine-highvolume.googleapis.com"}}
+\item{credentials}{Default: \code{'persistent'} uses credentials already stored in the filesystem, or raise an explanatory exception guiding the user to create those credentials.}
+
+\item{cloud_api_key}{An optional API key to use the Cloud API. Default: \code{NULL}.}
+
+\item{url}{The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: \code{"https://earthengine-highvolume.googleapis.com"}}
+
+\item{opt_url}{(deprecated) Use \code{url}.}
+
+\item{http_transport}{The HTTP transport method to use when making requests. Default: \code{NULL}}
+
+\item{project}{The client project ID or number to use when making API calls. Default: \code{NULL}}
 
 \item{quiet}{Suppress error messages on load? Default: \code{FALSE}}
 }

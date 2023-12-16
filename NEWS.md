@@ -3,6 +3,10 @@
    - Added `force` and `scopes` arguments from `earthengine()$Authenticate()`
    - Updated documentation for other `auth_mode` e.g. `"colab"`
    - Backward compatible with older versions of earthengine-api (< 0.1.382)
+ * `gd_initialize()`: Updates
+   - Added arguments `credentials`, `cloud_api_key`, `url`, `http_transport` and `project`
+   - Deprecated argument `opt_url` (in favor of `url`)
+   - Backward compatible with older versions of earthengine-api (< 0.1.381)
    
 # rgeedim 0.2.5
 
