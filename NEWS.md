@@ -1,3 +1,9 @@
+# rgeedim 0.2.6
+ * `gd_authenticate()`: Updates
+   - Added `force` and `scopes` arguments from `earthengine()$Authenticate()`
+   - Updated documentation for other `auth_mode` e.g. `"colab"`
+   - Backward compatible with older versions of earthengine-api (< 0.1.382)
+   
 # rgeedim 0.2.5
 
  * Update example for `gd_enum_names()`
