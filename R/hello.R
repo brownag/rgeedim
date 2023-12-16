@@ -101,11 +101,11 @@ gd_authenticate <- function(authorization_code = NULL,
     auth_mode = auth_mode
   )
 
-  if (!is.null(eev) && eev > "0.1.312") {
+  if (!is.null(eev) && eev >= "0.1.312") {
     args <- c(args, list(scopes = scopes))
   }
 
-  if (!is.null(eev) && eev > "0.1.382") {
+  if (!is.null(eev) && eev >= "0.1.382") {
     args <- c(args, list(force = force))
   }
 
