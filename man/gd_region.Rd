@@ -10,7 +10,7 @@ gd_region(x)
 gd_region_to_vect(x, crs = "OGC:CRS84", as_wkt = FALSE, ...)
 }
 \arguments{
-\item{x}{either a WKT string (character), a {terra} SpatRaster(Collection)/SpatVector(Collection)/SpatExtent, an {sf} object, an {sp} Spatial* object or a {raster} RasterLayer/RasterStack.}
+\item{x}{either a WKT string (character), a SpatRaster(Collection)/SpatVector(Collection)/SpatExtent, an sf object, an Spatial* object or a RasterLayer/RasterStack.}
 
 \item{crs}{character. Default for GeoJSON sources is \code{"OGC:CRS84"}.}
 

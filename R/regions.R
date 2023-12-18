@@ -98,7 +98,7 @@ gd_bbox <- function(...) {
 #'
 #' If `x` is an R spatial object, each vertex (possibly after converting object extent to vector) is used to create the GeoJSON object. Otherwise, the extent is determined and passed to `gd_bbox()`.
 #'
-#' @param x either a WKT string (character), a {terra} SpatRaster(Collection)/SpatVector(Collection)/SpatExtent, an {sf} object, an {sp} Spatial* object or a {raster} RasterLayer/RasterStack.
+#' @param x either a WKT string (character), a SpatRaster(Collection)/SpatVector(Collection)/SpatExtent, an sf object, an Spatial* object or a RasterLayer/RasterStack.
 #' @seealso `gd_bbox()`
 #' @return list representing a GeoJSON extent
 #' @importFrom  methods as
