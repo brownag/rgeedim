@@ -128,14 +128,6 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install geedim</span></code></pre></div>
 <p>This shell command assumes you have a Python 3 executable named (or aliased) as <code>python</code> on your PATH, or the command is being called from within an active Python virtual environment.</p>
 </div>
-<div class="section level4">
-<h4 id="using-miniconda">Using Miniconda<a class="anchor" aria-label="anchor" href="#using-miniconda"></a>
-</h4>
-<p>If you do not have a Python environment set up, an option that {reticulate} provides is <code><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">reticulate::install_miniconda()</a></code>. Once you install Miniconda, you can install packages into a conda environment such as <code>"r-reticulate"</code> (default). Customize the <code>envname</code> argument to create or add to a specific environment.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_miniconda.html" class="external-link">install_miniconda</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></span><span class="op">(</span><span class="st">"geedim"</span><span class="op">)</span></span></code></pre></div>
-</div>
 <div class="section level3">
 <h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h3>
@@ -146,22 +138,22 @@
 <h2 id="how-rgeedim-works">How {rgeedim} Works<a class="anchor" aria-label="anchor" href="#how-rgeedim-works"></a>
 </h2>
 <p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.2.5 -- using geedim 1.7.2 w/ earthengine-api 0.1.363</span></span></code></pre></div>
+<span><span class="co">#&gt; rgeedim v0.2.6 -- using geedim 1.7.2 w/ earthengine-api 0.1.384</span></span></code></pre></div>
 <p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods.</p>
 <p>Perhaps the easiest to use is <code>auth_mode="notebook"</code> in that does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options (using <code>gcloud</code> or a service account) are better for non-interactive or long-term use.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># short duration token</span></span>
 <span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># longer duration (default); requires gcloud command-line tools</span></span>
 <span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"gcloud"</span><span class="op">)</span></span></code></pre></div>
 <p>In each R session you will need to initialize the Earth Engine library</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Then you can select an extent of interest. <code><a href="reference/gd_bbox.html">gd_bbox()</a></code> is a simple function for specifying extents to {rgeedim} functions like <code><a href="reference/gd_download.html">gd_download()</a></code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.6032</span>,</span>
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5377</span>,</span>
@@ -169,7 +161,7 @@
 <span>  ymax <span class="op">=</span> <span class="fl">38.1043</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We will download the US NED CHILI (Continuous Heat-Insolation Load Index) <a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI" class="external-link uri">https://developers.google.com/earth-engine/datasets/catalog/CSP_ERGo_1_0_US_CHILI</a>. We specify an equal-area coordinate reference system (NAD83 Albers), bilinear resampling, and a resolution of 10 meters.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="st">'CSP/ERGo/1_0/US/CHILI'</span> <span class="op">|&gt;</span></span>
 <span>          <span class="fu"><a href="reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>          <span class="fu"><a href="reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
@@ -182,9 +174,9 @@
 <span>            silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>          <span class="op">)</span></span></code></pre></div>
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.39</span></span>
+<span><span class="co">#&gt; terra 1.7.55</span></span>
 <span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
@@ -203,7 +195,7 @@
 <h2 id="example-hillshade-from-dem">Example: Hillshade from DEM<a class="anchor" aria-label="anchor" href="#example-hillshade-from-dem"></a>
 </h2>
 <p>This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed locally with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -248,7 +240,7 @@
 <p>This example demonstrates how to access 1-meter LiDAR data from the USGS 3D Elevation Program (3DEP).</p>
 <p>There are other methods to derive an area of interest from existing spatial data sources, here we use <code><a href="reference/gd_region.html">gd_region()</a></code> on a SpatVector object and pass resulting object to several functions that require a processing extent.</p>
 <p>LiDAR data are not available everywhere, and are generally available as collections of (tiled) layers. Therefore we use <code><a href="reference/gd_search.html">gd_search()</a></code> to narrow down the options. The small sample extent covers only one tile. Additional filters on date and data quality are also possible with <code><a href="reference/gd_search.html">gd_search()</a></code>. A key step in this process is the use of <code><a href="reference/gd_composite.html">gd_composite()</a></code> to resample the component images of interest from the collection on the server-side.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -274,8 +266,8 @@
 <span><span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                                                        id</span></span>
 <span><span class="co">#&gt; 1 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19</span></span>
-<span><span class="co">#&gt;         date</span></span>
-<span><span class="co">#&gt; 1 2006-01-01</span></span>
+<span><span class="co">#&gt;                  date</span></span>
+<span><span class="co">#&gt; 1 2005-12-31 16:00:00</span></span>
 <span></span>
 <span><span class="co"># resampling images as part of composite; before download</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">a</span> <span class="op">|&gt;</span></span>
@@ -299,7 +291,7 @@
 </h2>
 <p>This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the NASA/USGS Landsat 7 Level 2, Collection 2, Tier 1.</p>
 <p>This example is based on a <a href="https://geedim.readthedocs.io/en/latest/examples/l7_composite.html" class="external-link">tutorial</a> in the <code>geedim</code> manual.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
@@ -325,16 +317,16 @@
 <span></span>
 <span><span class="co"># inspect individual image metadata in the collection</span></span>
 <span><span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                            id       date  fill cloudless grmse</span></span>
-<span><span class="co">#&gt; 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-30 86.41     99.98  4.92</span></span>
-<span><span class="co">#&gt; 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2021-01-01 86.85     98.89  4.79</span></span>
-<span><span class="co">#&gt; 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-17 86.05     99.93  5.44</span></span>
-<span><span class="co">#&gt; 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-18 85.66     99.91  5.73</span></span>
-<span><span class="co">#&gt;      saa   sea</span></span>
-<span><span class="co">#&gt; 1 151.45 25.21</span></span>
-<span><span class="co">#&gt; 2 148.07 22.47</span></span>
-<span><span class="co">#&gt; 3 145.16 23.71</span></span>
-<span><span class="co">#&gt; 4 138.46 30.91</span></span>
+<span><span class="co">#&gt;                                            id                date  fill</span></span>
+<span><span class="co">#&gt; 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-29 16:00:00 86.41</span></span>
+<span><span class="co">#&gt; 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2020-12-31 16:00:00 86.85</span></span>
+<span><span class="co">#&gt; 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-16 16:00:00 86.05</span></span>
+<span><span class="co">#&gt; 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-17 16:00:00 85.66</span></span>
+<span><span class="co">#&gt;   cloudless grmse    saa   sea</span></span>
+<span><span class="co">#&gt; 1     99.98  4.92 151.45 25.21</span></span>
+<span><span class="co">#&gt; 2     98.89  4.79 148.07 22.47</span></span>
+<span><span class="co">#&gt; 3     99.93  5.44 145.16 23.71</span></span>
+<span><span class="co">#&gt; 4     99.91  5.73 138.46 30.91</span></span>
 <span></span>
 <span><span class="co"># download a single image, no compositing</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">|&gt;</span> </span>
@@ -352,7 +344,7 @@
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-landsat7-composite-1.jpeg" width="100%"></p>
 <p>Now we have several images of interest, and also major issues with some of the inputs. In this case there were failures of sensors on the Landsat satellite, but other data gaps may occur due to masked cloudy areas or due to patchy coverage of the source product.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create composite landsat image near December 1st, 2020 and download  </span></span>
 <span><span class="co"># using q-mosaic method. </span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">|&gt;</span> </span>
