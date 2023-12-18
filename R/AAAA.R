@@ -35,9 +35,9 @@ earthengine <- function() {
 #' @export
 #' @importFrom reticulate py_eval
 gd_ee_version <- function() {
-  try(reticulate::py_eval("version('earthengine-api')"), silent = TRUE)
+  try(gd$utils$ee$`__version__`, silent = TRUE)
+  # try(reticulate::py_eval("version('earthengine-api')"), silent = TRUE)
 }
-
 
 #' @importFrom reticulate import
 #' @importFrom reticulate py_run_string

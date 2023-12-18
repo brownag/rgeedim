@@ -36,7 +36,7 @@ gd_initialize <- function(private_key_file = NULL,
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
   
-  eev <- gd$utils$ee$`__version__`
+  eev <- gd_ee_version()
   
   args <- list(
     credentials = credentials,
@@ -122,8 +122,8 @@ gd_authenticate <- function(authorization_code = NULL,
                             auth_mode = NULL,
                             scopes = NULL,
                             force = TRUE) {
-
-  eev <- gd$utils$ee$`__version__`
+  
+  eev <- gd_ee_version()
 
   args <- list(
     authorization_code = authorization_code,
