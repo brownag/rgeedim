@@ -3,7 +3,7 @@
 #' Calls `geedim` `Initialize()` method. This method should be called at the beginning of each session.
 #' @param private_key_file character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify `EE_SERVICE_ACC_PRIVATE_KEY` environment variable with path to JSON file.
 #' @param credentials Default: `'persistent'` uses credentials already stored in the filesystem, or raise an explanatory exception guiding the user to create those credentials.
-#' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`. 
+#' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
 #' @param opt_url (deprecated) Use `url`.
 #' @param http_transport The HTTP transport method to use when making requests. Default: `NULL`
@@ -16,7 +16,7 @@
 #' @importFrom jsonlite read_json
 #' @seealso `gd_authenticate()`
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' gd_initialize()
 #' }
 gd_initialize <- function(private_key_file = NULL,
@@ -27,17 +27,17 @@ gd_initialize <- function(private_key_file = NULL,
                           http_transport = NULL,
                           project = NULL,
                           quiet = TRUE) {
-  
+
   if (!missing(opt_url)) {
     .Deprecated(msg = "`gd_initialize(opt_url=...)` is deprecated, use `url=` instead")
     url <- opt_url
   }
-  
+
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
-  
+
   eev <- gd$utils$ee$`__version__`
-  
+
   args <- list(
     credentials = credentials,
     cloud_api_key = cloud_api_key,
@@ -45,13 +45,13 @@ gd_initialize <- function(private_key_file = NULL,
     http_transport = http_transport,
     project = project
   )
-  
+
   # reticulate does not work w/ opt_ prefix decorators introduced in 0.1.381
   if (!is.null(eev) && eev >= "0.1.381") {
     args <- args[names(args) != "opt_url"] # remove opt_url=
     args <- c(args, list(url = url)) # add url=
   }
-  
+
   if (!is.null(private_key_file) && file.exists(private_key_file)) {
     ek <- private_key_file
   } else {

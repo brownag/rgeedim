@@ -44,7 +44,7 @@ gd_is_initialized()
 Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.
 }
 \examples{
-\donttest{
+\dontrun{
 gd_initialize()
 }
 gd_is_initialized()
