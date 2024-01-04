@@ -1,7 +1,7 @@
 Package: rgeedim
 Type: Package
 Title: Search, Composite, and Download 'Google Earth Engine' Imagery with the 'Python' Module 'geedim'
-Version: 0.2.6
+Version: 0.2.7
 Authors@R: c(person("Andrew", "Brown", role = c("aut", "cre"), email = "brown.andrewg@gmail.com"),
              person("Dugal", "Harris", role = "cph", comment = "'geedim' 'Python' module"))
 Maintainer: Andrew Brown <brown.andrewg@gmail.com>
