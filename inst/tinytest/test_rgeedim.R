@@ -1,7 +1,8 @@
 if (!inherits(gd_version(), 'try-error')) {
   # we are assuming gd_authenticate() has been called / set up
   # such that we can init modules and begin using them
-  gi <- gd_initialize()
+  gi <- gd_initialize(project = "rgeedim-demo")
+  # NB: you may need to either create a project of this name or customize
 } else {
   gi <- try(stop("geedim/earthengine-api not available"), silent = TRUE)
 }
