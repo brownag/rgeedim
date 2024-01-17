@@ -7,7 +7,6 @@
 #' @return a composite `geedim.mask.MaskedImage` object
 #' @export
 #' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
-#' @examples
 #' \donttest{
 #' library(terra)
 #' 

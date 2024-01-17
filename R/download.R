@@ -15,7 +15,6 @@
 #' @return Invisible path to downloaded image, or `try-error` on error
 #' @export
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #'  r <- gd_bbox(
 #'    xmin = -121,

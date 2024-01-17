@@ -20,7 +20,6 @@ gd_enum_names <- function() {
 #' @export
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_enum_elements()
@@ -47,7 +46,6 @@ gd_enum_elements <- function(enum = gd_enum_names()) {
 #' @export
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_resampling_methods()
@@ -60,7 +58,6 @@ gd_resampling_methods <- function() {
 #' @export
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_cloud_mask_methods()
@@ -73,7 +70,6 @@ gd_cloud_mask_methods <- function() {
 #' @export
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_composite_methods()
@@ -87,7 +83,6 @@ gd_composite_methods <- function() {
 #' @export
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_export_types()
@@ -100,7 +95,6 @@ gd_export_types <- function() {
 #' @export
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_spectral_distance_metrics()

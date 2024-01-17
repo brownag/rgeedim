@@ -19,7 +19,6 @@ Create a composite image from elements of an image collection.
 }
 \examples{
 \dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontshow{\}) # examplesIf}
 \donttest{
 library(terra)
 
@@ -35,4 +34,5 @@ if (gd_is_initialized())
                          region = b),
                resampling = "bilinear")
 }
+\dontshow{\}) # examplesIf}
 }

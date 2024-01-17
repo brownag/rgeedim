@@ -10,7 +10,6 @@
 #' @return `geedim.MaskedCollection` object suitable for querying properties
 #' @export
 #' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
-#' @examples
 #' \donttest{
 #' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
 #'                     -121.35 37.555,-121.35 37.56,
@@ -37,7 +36,6 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 #' @importFrom utils read.table
 #' @export
 #' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
-#' @examples
 #' \donttest{
 #' library(terra)
 #' 
@@ -92,7 +90,6 @@ gd_properties <- function(x) {
 #' @return character. Vector of names of each layer in an image.
 #' @export
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_band_names(gd_image_from_id("USGS/NED"))
@@ -118,7 +115,6 @@ gd_band_names <- function(x) {
 #' @return list. Each element is a list that corresponds to a layer in `x`, each with one or more elements for properties of that layer.
 #' @export
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_band_properties(gd_image_from_id("USGS/NED"))
@@ -145,7 +141,6 @@ gd_band_properties <- function(x) {
 #' @return list.
 #' @export
 #' @examplesIf gd_is_initialized()
-#' @examples
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_footprint(gd_image_from_id("USGS/NED"))

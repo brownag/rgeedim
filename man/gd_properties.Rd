@@ -17,7 +17,6 @@ Get Properties of an Image Collection
 }
 \examples{
 \dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\dontshow{\}) # examplesIf}
 \donttest{
 library(terra)
 
@@ -34,4 +33,5 @@ if (gd_is_initialized()) {
   gd_properties(x)
 }
 }
+\dontshow{\}) # examplesIf}
 }

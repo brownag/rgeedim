@@ -103,8 +103,7 @@ gd_bbox <- function(...) {
 #' @return list representing a GeoJSON extent
 #' @importFrom  methods as
 #' @export
-#' @examplesIf !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
-#' @examples
+#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
 #' library(terra)
 #' 
