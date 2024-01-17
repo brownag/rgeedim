@@ -168,14 +168,14 @@ this example to use <code>scale=90</code> (~native SRTM resolution):</p>
 <p><code><a href="../reference/gd_download.html">gd_download()</a></code> (invisibly) returns the
 <code>filename</code> on successful download, which helps to “pipe” into
 functions that might read the result.</p>
-<p>So we can use the {terra} <code><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast()</a></code> function to read the
+<p>So we can use the {terra} <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast()</a></code> function to read the
 GeoTIFF <code><a href="../reference/gd_download.html">gd_download()</a></code> result.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># inspect object</span></span>
 <span><span class="va">f</span></span></code></pre></div>
@@ -213,15 +213,15 @@ calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
 <span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    silent <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">elevation</span></span>
+<span><span class="va">dem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">elevation</span></span>
 <span></span>
 <span><span class="co"># calculate slope, aspect, and hillshade with terra</span></span>
-<span><span class="va">slp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"slope"</span>, unit <span class="op">=</span> <span class="st">"radians"</span><span class="op">)</span></span>
-<span><span class="va">asp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"aspect"</span>, unit <span class="op">=</span> <span class="st">"radians"</span><span class="op">)</span></span>
-<span><span class="va">hsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/shade.html" class="external-link">shade</a></span><span class="op">(</span><span class="va">slp</span>, <span class="va">asp</span><span class="op">)</span></span>
+<span><span class="va">slp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"slope"</span>, unit <span class="op">=</span> <span class="st">"radians"</span><span class="op">)</span></span>
+<span><span class="va">asp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"aspect"</span>, unit <span class="op">=</span> <span class="st">"radians"</span><span class="op">)</span></span>
+<span><span class="va">hsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/shade.html" class="external-link">shade</a></span><span class="op">(</span><span class="va">slp</span>, <span class="va">asp</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># compare elevation v.s. hillshade</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">dem</span>, hillshade <span class="op">=</span> <span class="va">hsd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">dem</span>, hillshade <span class="op">=</span> <span class="va">hsd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Subsets of the <code>"USGS/NED"</code> image result in multi-band
 GeoTIFF with <code>"elevation"</code> and <code>"FILL_MASK"</code>
 bands. In the contiguous US we know the DEM is continuous so the
@@ -271,7 +271,7 @@ options.</p>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="st">'POLYGON((-121.355 37.56,-121.355 37.555,</span></span>
 <span><span class="st">          -121.35 37.555,-121.35 37.56,</span></span>
 <span><span class="st">          -121.355 37.56))'</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="st">"OGC:CRS84"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="st">"OGC:CRS84"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create a GeoJSON-like list from a SpatVector object</span></span>
 <span><span class="co"># (most rgeedim functions arguments for spatial inputs do this automatically)</span></span>
@@ -294,11 +294,11 @@ options.</p>
 <span>              filename <span class="op">=</span> <span class="st">"image.tif"</span>,</span>
 <span>              overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>              silent <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># inspect</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">elevation</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">b</span>, <span class="va">x</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">elevation</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">b</span>, <span class="va">x</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>The small sample extent covers only one tile, but in larger examples
 LiDAR data sources co-occur or span larger extents with variable
 coverage.</p>
@@ -347,14 +347,14 @@ processed outside of Google Earth Engine.</p>
 <span>    crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
 <span>    scale <span class="op">=</span> <span class="fl">1000</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">x2</span></span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">x2</span></span>
 <span></span>
 <span><span class="co"># filter to bands of interest (if neeeded)</span></span>
-<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">==</span> <span class="st">"prcp"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">==</span> <span class="st">"prcp"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># set time for each layer</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/time.html" class="external-link">time</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">p</span><span class="op">$</span><span class="va">date</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/panel.html" class="external-link">panel</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/time.html" class="external-link">time</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">p</span><span class="op">$</span><span class="va">date</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/panel.html" class="external-link">panel</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Daily Precipitation (mm)"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>

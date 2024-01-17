@@ -85,7 +85,7 @@ gd_region_to_vect() is the inverse function of gd_region/gd_bbox; convert GeoJSO
 
 
 <dt>...</dt>
-<dd><p>Additional arguments to <code>gd_region_to_vect()</code> are passed to <code><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">terra::vect()</a></code> when <code>as_wkt=FALSE</code> (default).</p></dd>
+<dd><p>Additional arguments to <code>gd_region_to_vect()</code> are passed to <code><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">terra::vect()</a></code> when <code>as_wkt=FALSE</code> (default).</p></dd>
 
 </dl></div>
     <div id="value">
@@ -108,10 +108,11 @@ gd_region_to_vect() is the inverse function of gd_region/gd_bbox; convert GeoJSO
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized() &amp;&amp; !inherits(requireNamespace("terra", quietly = TRUE),      "try-error")</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">'POLYGON((-121.355 37.560, </span></span></span>
+<span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">'POLYGON((-121.355 37.560, </span></span></span>
 <span class="r-in"><span><span class="st">                           -121.355 37.555,</span></span></span>
 <span class="r-in"><span><span class="st">                           -121.350 37.555, </span></span></span>
 <span class="r-in"><span><span class="st">                           -121.350 37.560,</span></span></span>
@@ -119,29 +120,8 @@ gd_region_to_vect() is the inverse function of gd_region/gd_bbox; convert GeoJSO
 <span class="r-in"><span>                 crs <span class="op">=</span> <span class="st">"OGC:CRS84"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">gd_region</span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Polygon"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $coordinates</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $coordinates[[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $coordinates[[1]][[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -121.355   37.560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $coordinates[[1]][[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -121.35   37.56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $coordinates[[1]][[3]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -121.350   37.555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $coordinates[[1]][[4]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -121.355   37.555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $coordinates[[1]][[5]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -121.355   37.560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
