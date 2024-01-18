@@ -37,11 +37,15 @@ You can pass arguments to use several different authorization methods. Perhaps t
 gd_authenticate(auth_mode = "notebook")
 ```
 
-You only need to authenticate periodically, depending on the method you used. But in each session we need to call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
+You only need to authenticate periodically, depending on the method you used. 
+
+In each session we need to call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
 
 ```{r setup}
 gd_initialize()
 ```
+
+Note that with `auth_mode="gcloud"` you need to specify the project via `project=` argument, in your default configuration file or via system environment variable `GOOGLE_CLOUD_QUOTA_PROJECT`. The authorization tokens generated for `auth_mode="notebook"` are always associated with a specific project.
 
 Perhaps the _simplest_ way to specify the target extent is using the xmin/xmax/ymin/ymax arguments to `gd_bbox()`. This function returns a Python object equivalent to _GeoJSON_, which is interchangeably represented as a simple `list` object in **R** using {reticulate}. 
 
