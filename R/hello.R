@@ -83,12 +83,13 @@ gd_initialize <- function(private_key_file = NULL,
 }
 
 #' @export
+#' @param ... Additional arguments passed to `gd_initialize()`
 #' @return `gd_is_initialized()`: logical. `TRUE` if initialized successfully.
 #' @rdname gd_initialize
 #' @examples
 #' gd_is_initialized()
-gd_is_initialized <- function() {
-  return(length(geedim()) > 0 && !inherits(gd_initialize(), "try-error"))
+gd_is_initialized <- function(...) {
+  return(length(geedim()) > 0 && !inherits(gd_initialize(...), "try-error"))
 }
 
 #' Authenticate with Google Earth Engine using `gcloud`, "Notebook Authenticator" or other method

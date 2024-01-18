@@ -16,7 +16,7 @@ gd_initialize(
   quiet = TRUE
 )
 
-gd_is_initialized()
+gd_is_initialized(...)
 }
 \arguments{
 \item{private_key_file}{character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify \code{EE_SERVICE_ACC_PRIVATE_KEY} environment variable with path to JSON file.}
@@ -34,6 +34,8 @@ gd_is_initialized()
 \item{project}{The client project ID or number to use when making API calls. Default: \code{NULL}}
 
 \item{quiet}{Suppress error messages on load? Default: \code{FALSE}}
+
+\item{...}{Additional arguments passed to \code{gd_initialize()}}
 }
 \value{
 \code{gd_initialize()}: try-error (invisibly) on error.
