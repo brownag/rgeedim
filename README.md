@@ -7,7 +7,7 @@
 
 [![R-CMD-check](https://github.com/brownag/rgeedim/workflows/R-CMD-check/badge.svg)](https://github.com/brownag/rgeedim/actions)
 [![HTML
-Docs](https://camo.githubusercontent.com/f7ba98e46ecd14313e0e8a05bec3f92ca125b8f36302a5b1679d4a949bccbe31/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646f63732d48544d4c2d696e666f726d6174696f6e616c)](https://humus.rocks/rgeedim/)
+Docs](https://img.shields.io/badge/docs-HTML-informational)](https://humus.rocks/rgeedim/)
 [![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://app.codecov.io/gh/brownag/rgeedim)
 [![CRAN
 status](https://www.r-pkg.org/badges/version-last-release/rgeedim)](https://CRAN.R-project.org/package=rgeedim)
@@ -93,14 +93,14 @@ expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
 
 ``` r
 library(rgeedim)
-#> rgeedim v0.2.6 -- using geedim 1.7.2 w/ earthengine-api 0.1.384
+#> rgeedim v0.2.7 -- using geedim 1.7.2 w/ earthengine-api 0.1.385
 ```
 
 If this is your first time using any Google Earth Engine tools,
 authenticate with `gd_authenticate()`. You can pass arguments to use
 several different authorization methods.
 
-Perhaps the easiest to use is `auth_mode="notebook"` in that does not
+Perhaps the easiest to use is `auth_mode="notebook"` since it does not
 rely on an existing `GOOGLE_APPLICATION_CREDENTIALS` file nor an
 installation of the `gcloud` CLI tools. However, the other options
 (using `gcloud` or a service account) are better for non-interactive or
@@ -116,14 +116,20 @@ gd_authenticate(auth_mode = "notebook")
 gd_authenticate(auth_mode = "gcloud")
 ```
 
-In each R session you will need to initialize the Earth Engine library
+In each R session you will need to initialize the Earth Engine library.
 
 ``` r
 gd_initialize()
 ```
 
-Then you can select an extent of interest. `gd_bbox()` is a simple
-function for specifying extents to {rgeedim} functions like
+Note that with `auth_mode="gcloud"` you need to specify the project via
+`project=` argument, in your default configuration file or via system
+environment variable `GOOGLE_CLOUD_QUOTA_PROJECT`. The authorization
+tokens generated for `auth_mode="notebook"` are always associated with a
+specific project.
+
+Once initialized you can select an extent of interest. `gd_bbox()` is a
+simple function for specifying extents to {rgeedim} functions like
 `gd_download()`.
 
 ``` r
@@ -142,7 +148,7 @@ We specify an equal-area coordinate reference system (NAD83 Albers),
 bilinear resampling, and a resolution of 10 meters.
 
 ``` r
-res <- 'CSP/ERGo/1_0/US/CHILI' |>
+x <- 'CSP/ERGo/1_0/US/CHILI' |>
           gd_image_from_id() |>
           gd_download(
             filename = 'image.tif',
@@ -163,8 +169,7 @@ where data are available).
 ``` r
 library(terra)
 #> terra 1.7.65
-
-f <- rast(res)
+f <- rast(x)
 f
 #> class       : SpatRaster 
 #> dimensions  : 402, 618, 2  (nrow, ncol, nlyr)
@@ -219,7 +224,7 @@ slp <- terrain(dem, "slope", unit = "radians")
 asp <- terrain(dem, "aspect", unit = "radians")
 hsd <- shade(slp, asp)
 
-# compare elevation v.s. hillshade
+# compare elevation vs. hillshade
 plot(c(dem, hillshade = hsd))
 ```
 
