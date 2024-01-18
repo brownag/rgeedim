@@ -1,3 +1,11 @@
+# rgeedim 0.2.7
+
+ * `gd_download()` fix bug that prevented overwriting files with `overwrite=TRUE` when `composite=FALSE`
+   
+ * `gd_is_initialized()` now accepts additional arguments (`...`) which are passed to `gd_initialize()`
+
+ * Unit tests now specify `project=` argument to `gd_initialize()`
+
 # rgeedim 0.2.6
 
  * `gd_authenticate()`: Updates
@@ -14,7 +22,6 @@
    
  * Argument updates compatible with older versions of earthengine-api (< 0.1.382) 
  
- * `gd_download()` fix bug that prevented overwriting files with `overwrite=TRUE` when `composite=FALSE`
  
 # rgeedim 0.2.5
 
