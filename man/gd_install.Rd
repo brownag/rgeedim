@@ -40,7 +40,7 @@ gd_install(method = "virtualenv")
 gd_install(method = "conda", envname = "foo")
 
 # install with pip (system() call)
-gd_install(system = TRUE) 
+gd_install(system = TRUE)
 
 }
 }

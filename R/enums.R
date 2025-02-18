@@ -13,6 +13,9 @@
 #' }
 gd_enum_names <- function() {
   n <- names(gd$enums)
+  if (is.null(n)) {
+    .inform_missing_module("geedim")
+  }
   n[which(n != "Enum")]
 }
 
@@ -20,6 +23,7 @@ gd_enum_names <- function() {
 #' @export
 #' @rdname enum
 #' @examplesIf gd_is_initialized()
+#'
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_enum_elements()

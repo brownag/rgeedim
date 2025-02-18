@@ -14,6 +14,7 @@
 #' a <- gd_get_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
 #' }
 gd_get_asset <- function(x, silent = FALSE) {
+  .inform_missing_module(gd, "geedim")
   try(gd$utils$ee$data$getAsset(x), silent = silent)
 }
 
@@ -28,6 +29,7 @@ gd_get_asset <- function(x, silent = FALSE) {
 #' gd_update_asset("projects/your-project-name/assets/YOUR_ASSET_ID", a, "properties")
 #' }
 gd_update_asset <- function(x, asset, update = c("start_time", "end_time", "properties"), silent = FALSE) {
+  .inform_missing_module(gd, "geedim")
   try(gd$utils$ee$data$updateAsset(x, asset, update), silent = silent)
 }
 
@@ -40,5 +42,6 @@ gd_update_asset <- function(x, asset, update = c("start_time", "end_time", "prop
 #' gd_delete_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
 #' }
 gd_delete_asset <- function(x, silent = FALSE) {
+  .inform_missing_module(gd, "geedim")
   try(gd$utils$ee$data$deleteAsset(x), silent = silent)
 }
