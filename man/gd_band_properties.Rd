@@ -19,7 +19,7 @@ Gets combined Earth Engine and STAC properties.
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
-  gd_band_properties(gd_image_from_id("USGS/NED"))
+  gd_band_properties(gd_image_from_id("USGS/3DEP/10m"))
 }
 \dontshow{\}) # examplesIf}
 }

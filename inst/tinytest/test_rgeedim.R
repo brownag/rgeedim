@@ -48,7 +48,7 @@ if (!inherits(gi, 'try-error')) {
   expect_equal(.modules_available(), c(TRUE, TRUE))
 
   .auth_available <- function() {
-    !inherits(gd_image_from_id("USGS/NED"), 'try-error')
+    !inherits(gd_image_from_id("USGS/3DEP/10m"), 'try-error')
   }
 
   if (all(.modules_available()) && .auth_available()) {
@@ -79,7 +79,7 @@ if (!inherits(gi, 'try-error')) {
     expect_equal(id, "projects/your-project-name/assets/RGEEDIM_TEST")
 
     # images
-    img <- gd_image_from_id("USGS/NED")
+    img <- gd_image_from_id("USGS/3DEP/10m")
     expect_true(inherits(img, "geedim.mask.MaskedImage"))
 
     # projection
@@ -108,7 +108,7 @@ if (!inherits(gi, 'try-error')) {
     expect_true(inherits(p, 'data.frame'))
 
     # TODO: better example that does more than just run this function
-    expect_null(gd_mask_clouds(gd_image_from_id("USGS/NED")))
+    expect_null(gd_mask_clouds(gd_image_from_id("USGS/3DEP/10m")))
 
     # collection download
     res <- gd_download(scol, tf, scale = 5000, region = .regionlist, crs = "EPSG:5070")
