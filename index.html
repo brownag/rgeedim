@@ -97,6 +97,15 @@
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"brownag/rgeedim"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="how-rgeedim-works">How {rgeedim} Works<a class="anchor" aria-label="anchor" href="#how-rgeedim-works"></a>
+</h2>
+<p>{rgeedim} uses on the <code>geedim</code> and <code>earthengine-api</code> Python modules via {reticulate}. If you do not have Python installed on your computer you can use <code><a href="https://rstudio.github.io/reticulate/reference/install_python.html" class="external-link">reticulate::install_python()</a></code> to download and set up a Python binary and virtual environment.</p>
+<p>If you are running {rgeedim} interactively for the first time you may be prompted to create a default Python environment called <code>"r-reticulate"</code> for {reticulate} to use. Select ‘Yes’ at the prompt. If you select ‘No’ you will need to manually configure a Python environment. {rgeedim} provides a helper function, <code><a href="reference/gd_install.html">gd_install()</a></code>, to facilitate installing the required Python dependencies.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; rgeedim v0.2.8 -- using geedim 1.9.0 w/ earthengine-api 1.5.2</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
 </h2>
 <p>You will need Python 3 with the <code>geedim</code> module installed to use {rgeedim}.</p>
@@ -105,7 +114,7 @@
 <a class="anchor" aria-label="anchor" href="#using-gd_install"></a>
 </h4>
 <p><code><a href="reference/gd_install.html">gd_install()</a></code> provides a simple wrapper around <code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">reticulate::py_install()</a></code> that allows you to install dependencies using <code>pip</code>, virtual, or Conda environments.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install with pip (with reticulate)</span></span>
 <span><span class="fu"><a href="reference/gd_install.html">gd_install</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -123,7 +132,7 @@
 <a class="anchor" aria-label="anchor" href="#using-pip"></a>
 </h4>
 <p>You can install <code>geedim</code> with <code>pip</code>, for example:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install geedim</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install geedim</span></code></pre></div>
 <p>This shell command assumes you have a Python 3 executable named (or aliased) as <code>python</code> on your PATH, or the command is being called from within an active Python virtual environment.</p>
 </div>
 <div class="section level3">
@@ -133,12 +142,8 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="how-rgeedim-works">How {rgeedim} Works<a class="anchor" aria-label="anchor" href="#how-rgeedim-works"></a>
+<h2 id="authentication--initialization">Authentication &amp; Initialization<a class="anchor" aria-label="anchor" href="#authentication--initialization"></a>
 </h2>
-<p>This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (<code>"OGC:CRS84"</code>).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; rgeedim v0.2.7 -- using geedim 1.7.2 w/ earthengine-api 0.1.385</span></span></code></pre></div>
 <p>If this is your first time using any Google Earth Engine tools, authenticate with <code><a href="reference/gd_authenticate.html">gd_authenticate()</a></code>. You can pass arguments to use several different authorization methods.</p>
 <p>Perhaps the easiest to use is <code>auth_mode="notebook"</code> since it does not rely on an existing <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of the <code>gcloud</code> CLI tools. However, the other options (using <code>gcloud</code> or a service account) are better for non-interactive or long-term use.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -149,7 +154,7 @@
 <span><span class="fu"><a href="reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"gcloud"</span><span class="op">)</span></span></code></pre></div>
 <p>In each R session you will need to initialize the Earth Engine library.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"rgeedim-demo"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that with <code>auth_mode="gcloud"</code> you need to specify the project via <code>project=</code> argument, in your default configuration file or via system environment variable <code>GOOGLE_CLOUD_QUOTA_PROJECT</code>. The authorization tokens generated for <code>auth_mode="notebook"</code> are always associated with a specific project.</p>
 <p>Once initialized you can select an extent of interest. <code><a href="reference/gd_bbox.html">gd_bbox()</a></code> is a simple function for specifying extents to {rgeedim} functions like <code><a href="reference/gd_download.html">gd_download()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -175,7 +180,7 @@
 <p>We can inspect our results with {terra}. The resulting GeoTIFF has two layers, <code>"constant"</code> and <code>"FILL_MASK"</code>. The former contains the data, and the latter contains a mask reflecting data availability (value = 1 where data are available).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.65</span></span>
+<span><span class="co">#&gt; terra 1.8.25</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="va">f</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
@@ -197,7 +202,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"rgeedim-demo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.296</span>,</span>
@@ -243,7 +248,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># search and download from USGS 1m lidar data collection</span></span>
-<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"rgeedim-demo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># wkt-&gt;SpatVector-&gt;GeoJSON</span></span>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="st">'POLYGON((-121.355 37.56,-121.355 37.555,</span></span>
@@ -262,10 +267,9 @@
 <span></span>
 <span><span class="co"># inspect individual image metadata in the collection</span></span>
 <span><span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                                                        id</span></span>
-<span><span class="co">#&gt; 1 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19</span></span>
-<span><span class="co">#&gt;         date</span></span>
-<span><span class="co">#&gt; 1 2006-01-01</span></span>
+<span><span class="co">#&gt;                                                                        id       date</span></span>
+<span><span class="co">#&gt; 1                  USGS/3DEP/1m/USGS_1M_10_x64y416_CA_SanJoaquin_2021_A21 2006-01-01</span></span>
+<span><span class="co">#&gt; 2 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19 2006-01-01</span></span>
 <span></span>
 <span><span class="co"># resampling images as part of composite; before download</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">a</span> <span class="op">|&gt;</span></span>
@@ -293,7 +297,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="st">"rgeedim-demo"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.296</span>,</span>
@@ -315,16 +319,11 @@
 <span></span>
 <span><span class="co"># inspect individual image metadata in the collection</span></span>
 <span><span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                            id       date  fill cloudless grmse</span></span>
-<span><span class="co">#&gt; 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-30 86.41     99.98  4.92</span></span>
-<span><span class="co">#&gt; 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2021-01-01 86.85     98.89  4.79</span></span>
-<span><span class="co">#&gt; 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-17 86.05     99.93  5.44</span></span>
-<span><span class="co">#&gt; 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-18 85.66     99.91  5.73</span></span>
-<span><span class="co">#&gt;      saa   sea</span></span>
-<span><span class="co">#&gt; 1 151.45 25.21</span></span>
-<span><span class="co">#&gt; 2 148.07 22.47</span></span>
-<span><span class="co">#&gt; 3 145.16 23.71</span></span>
-<span><span class="co">#&gt; 4 138.46 30.91</span></span>
+<span><span class="co">#&gt;                                            id       date  fill cloudless grmse    saa   sea</span></span>
+<span><span class="co">#&gt; 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-30 86.41     99.98  4.92 151.45 25.21</span></span>
+<span><span class="co">#&gt; 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2021-01-01 86.85     98.89  4.79 148.07 22.47</span></span>
+<span><span class="co">#&gt; 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-17 86.05     99.93  5.44 145.16 23.71</span></span>
+<span><span class="co">#&gt; 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-18 85.66     99.91  5.73 138.46 30.91</span></span>
 <span></span>
 <span><span class="co"># download a single image, no compositing</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">|&gt;</span> </span>
@@ -362,7 +361,7 @@
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-landsat7-qmosaic-1.jpeg" width="100%"></p>
-<p>The <code>"q-mosaic"</code> method produces a composite (largely) free of artifacts in this case; this is because it prioritizes pixels with higher distance from clouds to fill in the gaps. Other methods are available such as <code>"medoid"</code>; this may give better results when compositing more contrasting inputs such as several dates over a time period where vegetation or other cover changes appreciably.</p>
+<p>The <code>"q-mosaic"</code> method produces a composite largely free of artifacts; this is because it prioritizes pixels with higher distance from clouds to fill in the gaps. Other methods are available such as <code>"medoid"</code>; this may give better results when compositing more contrasting inputs such as several dates over a time period where vegetation or other cover changes appreciably.</p>
 </div>
 </div>
   </div>
