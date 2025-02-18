@@ -84,7 +84,7 @@ if (!inherits(gi, 'try-error')) {
 
     # projection
     prj <- gd_projection(img)
-    expect_true(inherits(prj, "ee.Projection"))
+    expect_true(inherits(prj, "ee.projection.Projection"))
 
     # image download
     tf <- tempfile()
