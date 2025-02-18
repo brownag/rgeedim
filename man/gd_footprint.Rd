@@ -19,7 +19,7 @@ Gets GeoJSON-style list containing footprint of a \code{geedim.mask.MaskedImage}
 \dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
-  gd_footprint(gd_image_from_id("USGS/NED"))
+  gd_footprint(gd_image_from_id("USGS/3DEP/10m"))
 }
 \dontshow{\}) # examplesIf}
 }
