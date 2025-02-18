@@ -1,93 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/demo.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/earthengine.html</loc>
-  </url>
-  <url>
-    <loc>/reference/enum.html</loc>
-  </url>
-  <url>
-    <loc>/reference/existing-assets.html</loc>
-  </url>
-  <url>
-    <loc>/reference/from.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_authenticate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_band_names.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_band_properties.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_bbox.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_composite.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_download.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_export.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_footprint.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_initialize.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_install.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_mask_clouds.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_projection.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_properties.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_region.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_search.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gd_task.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geedim.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rgeedim-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/demo.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/earthengine.html</loc></url>
+<url><loc>/reference/enum.html</loc></url>
+<url><loc>/reference/existing-assets.html</loc></url>
+<url><loc>/reference/from.html</loc></url>
+<url><loc>/reference/gd_authenticate.html</loc></url>
+<url><loc>/reference/gd_band_names.html</loc></url>
+<url><loc>/reference/gd_band_properties.html</loc></url>
+<url><loc>/reference/gd_bbox.html</loc></url>
+<url><loc>/reference/gd_composite.html</loc></url>
+<url><loc>/reference/gd_download.html</loc></url>
+<url><loc>/reference/gd_export.html</loc></url>
+<url><loc>/reference/gd_footprint.html</loc></url>
+<url><loc>/reference/gd_initialize.html</loc></url>
+<url><loc>/reference/gd_install.html</loc></url>
+<url><loc>/reference/gd_mask_clouds.html</loc></url>
+<url><loc>/reference/gd_projection.html</loc></url>
+<url><loc>/reference/gd_properties.html</loc></url>
+<url><loc>/reference/gd_region.html</loc></url>
+<url><loc>/reference/gd_search.html</loc></url>
+<url><loc>/reference/gd_task.html</loc></url>
+<url><loc>/reference/geedim.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/rgeedim-package.html</loc></url>
 </urlset>
+
