@@ -36,6 +36,8 @@ gd_initialize <- function(private_key_file = NULL,
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
 
+  .inform_missing_module(gd, "geedim")
+
   eev <- gd$utils$ee$`__version__`
 
   args <- list(
@@ -123,6 +125,7 @@ gd_authenticate <- function(authorization_code = NULL,
                             auth_mode = NULL,
                             scopes = NULL,
                             force = TRUE) {
+  .inform_missing_module(gd, "geedim")
 
   eev <- gd$utils$ee$`__version__`
 

@@ -44,5 +44,6 @@
 #' }
 #' }
 gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, ...) {
+  .inform_missing_module(x, "geedim")
   x$export(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait, ...)
 }

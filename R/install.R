@@ -1,43 +1,43 @@
 #' Install Required Python Modules
 #'
 #' This function installs the latest `numpy`, `earthengine-api`, and
-#' `geedim` modules. The default uses `pip` for package installation. You can 
+#' `geedim` modules. The default uses `pip` for package installation. You can
 #' configure custom environments with `pip=FALSE` and additional arguments
 #' that are passed to `reticulate::py_install()`.
-#' 
+#'
 #' @param pip Use `pip` package manager? Default: `TRUE`. To use a virtual or conda environment specify `method="virtualenv"` or `method="conda"`, respectively. See details.
 #' @param system Use a `system()` call to `python -m pip install --user ...` instead of `reticulate::py_install()`. Default: `FALSE`.
 #' @param force Force update (uninstall/reinstall) and ignore existing installed packages? Default: `FALSE`. Applies to `pip=TRUE`.
 #' @param ... Additional arguments passed to `reticulate::py_install()`
 #' @return `NULL`, or `try-error` (invisibly) on R code execution error.
 #' @export
-#' @details This function provides a basic wrapper around `reticulate::py_install()`, except it defaults to using the Python package manager `pip`. If you specify `method="virtualenv"` or `method="conda` then the default `envname` is `"r-reticulate"` unless you set it to something else. If an environment of that name does not exist it is created. 
+#' @details This function provides a basic wrapper around `reticulate::py_install()`, except it defaults to using the Python package manager `pip`. If you specify `method="virtualenv"` or `method="conda` then the default `envname` is `"r-reticulate"` unless you set it to something else. If an environment of that name does not exist it is created.
 #' @importFrom reticulate py_install virtualenv_exists virtualenv_create conda_list conda_create
 #' @examples
 #' \dontrun{
-#' 
+#'
 #' # install with pip (with reticulate)
 #' gd_install()
-#' 
+#'
 #' # use virtual environment with default name "r-reticulate"
 #' gd_install(method = "virtualenv")
-#' 
+#'
 #' # use "conda" environment named "foo"
 #' gd_install(method = "conda", envname = "foo")
-#' 
+#'
 #' # install with pip (system() call)
-#' gd_install(system = TRUE) 
-#' 
+#' gd_install(system = TRUE)
+#'
 #' }
 gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
-  
+
   args <- list(...)
-  
+
   # if virtualenv/conda method specified, pip=FALSE
   if (!is.null(args[["method"]])) {
     pip <- FALSE
   }
-  
+
   # alternately, just use a system() call to python -m pip install ...
   if (system && pip) {
     fp <- .find_python()
@@ -52,14 +52,14 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
       )))
     }
   }
-  
+
   if ("method" %in% names(args)) {
-    
+
     if (!"envname" %in% names(args)) {
       args[["envname"]] <- "r-reticulate"
     }
-    
-    if (args[["method"]] == "virtualenv"){
+
+    if (args[["method"]] == "virtualenv") {
       # create suitable virtualenv if does not exist
       if (!reticulate::virtualenv_exists(envname = args[["envname"]])) {
         reticulate::virtualenv_create(envname = args[["envname"]])
@@ -74,7 +74,7 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
       }
     }
   }
-  
+
   invisible(try({
     reticulate::py_install(
       c("numpy", "earthengine-api", "geedim"),

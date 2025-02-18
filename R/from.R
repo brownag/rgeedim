@@ -14,8 +14,10 @@
 #'   gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
 #' }
 gd_image_from_id <- function(x) {
+  .inform_missing_module(gd, "geedim")
   y <- try(gd$MaskedImage$from_id(x), silent = FALSE)
-  if (inherits(y, 'try-error')) return(invisible(y))
+  if (inherits(y, 'try-error'))
+    return(invisible(y))
   y
 }
 
@@ -38,6 +40,7 @@ gd_image_from_id <- function(x) {
 #'
 #' }
 gd_collection_from_name <- function(x) {
+  .inform_missing_module(gd, "geedim")
   y <- try(gd$MaskedCollection$from_name(x), silent = FALSE)
   if (inherits(y, 'try-error')) return(invisible(y))
   y
@@ -78,6 +81,7 @@ gd_collection_from_name <- function(x) {
 #'
 #' }
 gd_collection_from_list <- function(x) {
+  .inform_missing_module(gd, "geedim")
   y <- try(gd$MaskedCollection$from_list(x), silent = FALSE)
   if (inherits(y, 'try-error')) return(invisible(y))
   y
@@ -93,6 +97,7 @@ gd_collection_from_list <- function(x) {
 #'   gd_asset_id("RGEEDIM_TEST", "your-project-name")
 #' }
 gd_asset_id <- function(filename, folder = NULL) {
+  .inform_missing_module(gd, "geedim")
   gd$utils$asset_id(filename, folder)
 }
 
@@ -107,6 +112,7 @@ gd_asset_id <- function(filename, folder = NULL) {
 gd_list_assets <- function(parent) {
   if (!endsWith(parent, "/assets"))
     parent <- paste0(parent, "/assets")
+  .inform_missing_module(gd, "geedim")
   res <- gd$utils$ee$data$listAssets(list(parent = parent))
   if (length(res) == 0 || length(res[[1]]) == 0) {
     return(data.frame(type = character(0), name = character(0), id = character(0), updateTime = structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "GMT"), stringsAsFactors = FALSE))
