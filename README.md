@@ -43,6 +43,25 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("brownag/rgeedim")
 ```
 
+## How {rgeedim} Works
+
+{rgeedim} uses on the `geedim` and `earthengine-api` Python modules via
+{reticulate}. If you do not have Python installed on your computer you
+can use `reticulate::install_python()` to download and set up a Python
+binary and virtual environment.
+
+If you are running {rgeedim} interactively for the first time you may be
+prompted to create a default Python environment called `"r-reticulate"`
+for {reticulate} to use. Select ‘Yes’ at the prompt. If you select ‘No’
+you will need to manually configure a Python environment. {rgeedim}
+provides a helper function, `gd_install()`, to facilitate installing the
+required Python dependencies.
+
+``` r
+library(rgeedim)
+#> rgeedim v0.2.8 -- using geedim 1.9.0 w/ earthengine-api 1.5.2
+```
+
 ## Dependencies
 
 You will need Python 3 with the `geedim` module installed to use
@@ -85,16 +104,7 @@ within an active Python virtual environment.
 If using Python within RStudio, you may need to set your default
 interpreter in *Tools* \>\> *Global Options…* \>\> *Python*.
 
-## How {rgeedim} Works
-
-This example shows how to extract a Google Earth Engine asset by name
-for an arbitrary extent. The coordinates of the bounding box are
-expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
-
-``` r
-library(rgeedim)
-#> rgeedim v0.2.7 -- using geedim 1.7.2 w/ earthengine-api 0.1.385
-```
+## Authentication & Initialization
 
 If this is your first time using any Google Earth Engine tools,
 authenticate with `gd_authenticate()`. You can pass arguments to use
@@ -119,7 +129,7 @@ gd_authenticate(auth_mode = "gcloud")
 In each R session you will need to initialize the Earth Engine library.
 
 ``` r
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 ```
 
 Note that with `auth_mode="gcloud"` you need to specify the project via
@@ -168,7 +178,7 @@ where data are available).
 
 ``` r
 library(terra)
-#> terra 1.7.65
+#> terra 1.8.25
 f <- rast(x)
 f
 #> class       : SpatRaster 
@@ -194,7 +204,7 @@ calculate some terrain derivatives (slope, aspect) and a hillshade.
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 
 b <- gd_bbox(
   xmin = -120.296,
@@ -260,7 +270,7 @@ library(rgeedim)
 library(terra)
 
 # search and download from USGS 1m lidar data collection
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 
 # wkt->SpatVector->GeoJSON
 b <- 'POLYGON((-121.355 37.56,-121.355 37.555,
@@ -279,10 +289,9 @@ a <- "USGS/3DEP/1m" |>
 
 # inspect individual image metadata in the collection
 gd_properties(a)
-#>                                                                        id
-#> 1 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19
-#>         date
-#> 1 2006-01-01
+#>                                                                        id       date
+#> 1                  USGS/3DEP/1m/USGS_1M_10_x64y416_CA_SanJoaquin_2021_A21 2006-01-01
+#> 2 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19 2006-01-01
 
 # resampling images as part of composite; before download
 x <- a |>
@@ -317,7 +326,7 @@ in the `geedim` manual.
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 
 b <- gd_bbox(
   xmin = -120.296,
@@ -339,16 +348,11 @@ x <- 'LANDSAT/LE07/C02/T1_L2' |>
 
 # inspect individual image metadata in the collection
 gd_properties(x)
-#>                                            id       date  fill cloudless grmse
-#> 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-30 86.41     99.98  4.92
-#> 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2021-01-01 86.85     98.89  4.79
-#> 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-17 86.05     99.93  5.44
-#> 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-18 85.66     99.91  5.73
-#>      saa   sea
-#> 1 151.45 25.21
-#> 2 148.07 22.47
-#> 3 145.16 23.71
-#> 4 138.46 30.91
+#>                                            id       date  fill cloudless grmse    saa   sea
+#> 1 LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130 2020-11-30 86.41     99.98  4.92 151.45 25.21
+#> 2 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101 2021-01-01 86.85     98.89  4.79 148.07 22.47
+#> 3 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117 2021-01-17 86.05     99.93  5.44 145.16 23.71
+#> 4 LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218 2021-02-18 85.66     99.91  5.73 138.46 30.91
 
 # download a single image, no compositing
 y <- gd_properties(x)$id[1] |> 
@@ -396,9 +400,9 @@ plot(rast(z)[[1:4]])
 
 <img src="man/figures/README-landsat7-qmosaic-1.jpeg" width="100%" />
 
-The `"q-mosaic"` method produces a composite (largely) free of artifacts
-in this case; this is because it prioritizes pixels with higher distance
-from clouds to fill in the gaps. Other methods are available such as
-`"medoid"`; this may give better results when compositing more
-contrasting inputs such as several dates over a time period where
-vegetation or other cover changes appreciably.
+The `"q-mosaic"` method produces a composite largely free of artifacts;
+this is because it prioritizes pixels with higher distance from clouds
+to fill in the gaps. Other methods are available such as `"medoid"`;
+this may give better results when compositing more contrasting inputs
+such as several dates over a time period where vegetation or other cover
+changes appreciably.

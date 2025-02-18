@@ -45,6 +45,16 @@ if (!require("remotes")) install.packages("remotes")
 remotes::install_github("brownag/rgeedim")
 ```
 
+## How {rgeedim} Works
+
+{rgeedim} uses on the `geedim` and `earthengine-api` Python modules via {reticulate}. If you do not have Python installed on your computer you can use `reticulate::install_python()` to download and set up a Python binary and virtual environment.
+
+If you are running {rgeedim} interactively for the first time you may be prompted to create a default Python environment called `"r-reticulate"` for {reticulate} to use. Select 'Yes' at the prompt. If you select 'No' you will need to manually configure a Python environment. {rgeedim} provides a helper function, `gd_install()`, to facilitate installing the required Python dependencies.
+
+```{r example}
+library(rgeedim)
+```
+
 ## Dependencies
 
 You will need Python 3 with the `geedim` module installed to use {rgeedim}.
@@ -81,13 +91,7 @@ This shell command assumes you have a Python 3 executable named (or aliased) as 
 
 If using Python within RStudio, you may need to set your default interpreter in _Tools_ >> _Global Options..._ >> _Python_.
 
-## How {rgeedim} Works
-
-This example shows how to extract a Google Earth Engine asset by name for an arbitrary extent. The coordinates of the bounding box are expressed in WGS84 decimal degrees (`"OGC:CRS84"`).
-
-```{r example}
-library(rgeedim)
-```
+## Authentication & Initialization
 
 If this is your first time using any Google Earth Engine tools, authenticate with `gd_authenticate()`. You can pass arguments to use several different authorization methods.
 
@@ -106,7 +110,7 @@ gd_authenticate(auth_mode = "gcloud")
 In each R session you will need to initialize the Earth Engine library.
 
 ```{r}
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 ```
 
 Note that with `auth_mode="gcloud"` you need to specify the project via `project=` argument, in your default configuration file or via system environment variable `GOOGLE_CLOUD_QUOTA_PROJECT`. The authorization tokens generated for `auth_mode="notebook"` are always associated with a specific project.
@@ -156,7 +160,7 @@ This example demonstrates the download of a section of the USGS NED seamless 10m
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 
 b <- gd_bbox(
   xmin = -120.296,
@@ -205,7 +209,7 @@ library(rgeedim)
 library(terra)
 
 # search and download from USGS 1m lidar data collection
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 
 # wkt->SpatVector->GeoJSON
 b <- 'POLYGON((-121.355 37.56,-121.355 37.555,
@@ -252,7 +256,7 @@ This example is based on a [tutorial](https://geedim.readthedocs.io/en/latest/ex
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+gd_initialize(project = "rgeedim-demo")
 
 b <- gd_bbox(
   xmin = -120.296,
@@ -314,7 +318,7 @@ z <- x |>
 plot(rast(z)[[1:4]])
 ```
 
-The `"q-mosaic"` method produces a composite (largely) free of artifacts in this case; this is because it prioritizes pixels with higher distance from clouds to fill in the gaps. Other methods are available such as `"medoid"`; this may give better results when compositing more contrasting inputs such as several dates over a time period where vegetation or other cover changes appreciably.
+The `"q-mosaic"` method produces a composite largely free of artifacts; this is because it prioritizes pixels with higher distance from clouds to fill in the gaps. Other methods are available such as `"medoid"`; this may give better results when compositing more contrasting inputs such as several dates over a time period where vegetation or other cover changes appreciably.
 
 ```{r include=FALSE}
 unlink('image.tif')
