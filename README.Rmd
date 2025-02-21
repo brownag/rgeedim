@@ -47,7 +47,7 @@ remotes::install_github("brownag/rgeedim")
 
 ## How {rgeedim} Works
 
-{rgeedim} uses on the `geedim` and `earthengine-api` Python modules via {reticulate}. If you do not have Python installed on your computer you can use `reticulate::install_python()` to download and set up a Python binary and virtual environment.
+{rgeedim} uses the `geedim` and `earthengine-api` Python modules via {reticulate}. If you do not have Python installed on your computer you can use `reticulate::install_python()` to download and set up a Python binary and virtual environment.
 
 If you are running {rgeedim} interactively for the first time you may be prompted to create a default Python environment called `"r-reticulate"` for {reticulate} to use. Select 'Yes' at the prompt. If you select 'No' you will need to manually configure a Python environment. {rgeedim} provides a helper function, `gd_install()`, to facilitate installing the required Python dependencies.
 

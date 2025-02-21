@@ -45,7 +45,7 @@ remotes::install_github("brownag/rgeedim")
 
 ## How {rgeedim} Works
 
-{rgeedim} uses on the `geedim` and `earthengine-api` Python modules via
+{rgeedim} uses the `geedim` and `earthengine-api` Python modules via
 {reticulate}. If you do not have Python installed on your computer you
 can use `reticulate::install_python()` to download and set up a Python
 binary and virtual environment.
