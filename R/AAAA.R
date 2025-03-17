@@ -1,6 +1,20 @@
 gd <- NULL
 collections_module <- NULL
 
+gd_python_envname <- function(envname = "") {
+  if (!missing(envname)) {
+    reticulate::use_virtualenv(envname, required = FALSE)
+    en <- envname
+  } else if (is.null(envname)) {
+    en <- ""
+  } else {
+    en <- getOption("rgeedim.python.envname",
+                    default = Sys.getenv("R_RGEEDIM_PYTHON_ENVNAME", 
+                                         unset = "r-rgeedim"))
+  }
+  en
+}
+
 #' `Module(geedim)` - Get `geedim` Module Instance
 #'
 #' Gets the `geedim` module instance in use by the package in current **R**/`reticulate` session.
@@ -43,18 +57,29 @@ gd_ee_version <- function() {
 #' @importFrom reticulate py_run_string
 .loadModules <-  function() {
   # TODO: store modules in package environment not global variables?
-
-  if (is.null(collections_module)) {
-    try(collections_module <<- reticulate::import('collections', delay_load = TRUE), silent = TRUE)
+  envname <- gd_python_envname()
+  if (reticulate::virtualenv_exists(envname)) {
+    reticulate::use_virtualenv(envname, required = FALSE)
+  } else if (reticulate::condaenv_exists(envname)) {
+    reticulate::use_condaenv(envname, required = FALSE)
   }
-
-  if (is.null(gd)) {
-    try(gd <<- reticulate::import("geedim", delay_load = TRUE), silent = TRUE)
+  
+  if (packageVersion("reticulate") >= "1.41.0") {
+    reticulate::py_require(c("earthengine-api", "geedim"))
   }
-
-  # note: requires Python >= 3.8; but is not essential for functioning of package
-  try(reticulate::py_run_string("from importlib.metadata import version"), silent = TRUE)
-
+  
+  suppressWarnings({
+    if (is.null(collections_module)) {
+      try(collections_module <<- reticulate::import('collections', delay_load = TRUE), silent = TRUE)
+    }
+  
+    if (is.null(gd)) {
+      try(gd <<- reticulate::import("geedim", delay_load = TRUE), silent = TRUE)
+    }
+  
+    # note: requires Python >= 3.8; but is not essential for functioning of package
+    try(reticulate::py_run_string("from importlib.metadata import version"), silent = TRUE)
+  })
   !is.null(gd)
 }
 
@@ -63,7 +88,7 @@ gd_ee_version <- function() {
   # get reticulate python information
   # NB: reticulate::py_config() calls configure_environment() etc.
   #     .:. use py_discover_config()
-  x <- try(reticulate::py_discover_config(), silent = TRUE)
+  x <- try(suppressWarnings(reticulate::py_discover_config(use_environment = gd_python_envname())), silent = TRUE)
 
   # need python 3 for reticulate
   # need python 3.6+ for geedim
@@ -92,8 +117,8 @@ gd_ee_version <- function() {
 
 #' @importFrom utils packageVersion
 .onAttach <- function(libname, pkgname) {
-  gdv <- gd_version()
-  gev <- gd_ee_version()
+  gdv <- suppressWarnings(gd_version())
+  gev <- suppressWarnings(gd_ee_version())
   if (inherits(gdv, 'try-error'))
     gdv <- "<Not Found>"
   if (inherits(gev, 'try-error'))

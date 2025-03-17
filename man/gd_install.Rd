@@ -25,7 +25,7 @@ configure custom environments with \code{pip=FALSE} and additional arguments
 that are passed to \code{reticulate::py_install()}.
 }
 \details{
-This function provides a basic wrapper around \code{reticulate::py_install()}, except it defaults to using the Python package manager \code{pip}. If you specify \code{method="virtualenv"} or \verb{method="conda} then the default \code{envname} is \code{"r-reticulate"} unless you set it to something else. If an environment of that name does not exist it is created.
+This function provides a basic wrapper around \code{reticulate::py_install()}, except it defaults to using the Python package manager \code{pip}. If you specify \code{method="virtualenv"} or \verb{method="conda} then the default \code{envname} is \code{"r-rgeedim"} unless you set it to something else. If an environment of that name does not exist it is created.
 }
 \examples{
 \dontrun{
@@ -33,7 +33,7 @@ This function provides a basic wrapper around \code{reticulate::py_install()}, e
 # install with pip (with reticulate)
 gd_install()
 
-# use virtual environment with default name "r-reticulate"
+# use virtual environment with default name "r-rgeedim"
 gd_install(method = "virtualenv")
 
 # use "conda" environment named "foo"

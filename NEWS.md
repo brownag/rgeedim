@@ -1,3 +1,11 @@
+# rgeedim 0.2.8
+
+ * Default Python virtual environment name changed from `"r-reticulate"` to `"r-rgeedim"`
+ 
+   * Use `gd_install()` to initialize a new environment if needed.
+ 
+ * `gd_projection()`: update for earthengine-api usage of `ee.projection.Projection` class
+ 
 # rgeedim 0.2.7
 
  * `gd_download()` fix bug that prevented overwriting files with `overwrite=TRUE` when `composite=FALSE`

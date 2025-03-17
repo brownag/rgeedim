@@ -70,7 +70,7 @@ gd_install()
 # install with pip (system() call)
 gd_install(system = TRUE)
 
-# use virtual environment with default name "r-reticulate"
+# use virtual environment with default name "r-rgeedim"
 gd_install(method = "virtualenv")
 
 # use "conda" environment named "foo"
