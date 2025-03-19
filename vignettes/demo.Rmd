@@ -1,15 +1,15 @@
 ---
 title: "`rgeedim` Demo"
-output: rmarkdown::html_vignette
+output: html
+knit: litedown:::knit
 vignette: >
   %\VignetteIndexEntry{`rgeedim` Demo}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{litedown::book}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
-library(rgeedim)
-knitr::opts_chunk$set(
+litedown::reactor(
   eval = FALSE,
   collapse = TRUE,
   fig.width = 8,
