@@ -39,8 +39,8 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          reticulate::virtualenv_create("r-reticulate")
-          reticulate::virtualenv_install("r-reticulate", "geedim")
+          reticulate::virtualenv_create("r-rgeedim")
+          reticulate::virtualenv_install("r-rgeedim", "geedim")
         shell: Rscript {0}
 
       - name: Install terra from r-universe

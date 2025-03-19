@@ -11,7 +11,7 @@
 #' @param ... Additional arguments passed to `reticulate::py_install()`
 #' @return `NULL`, or `try-error` (invisibly) on R code execution error.
 #' @export
-#' @details This function provides a basic wrapper around `reticulate::py_install()`, except it defaults to using the Python package manager `pip`. If you specify `method="virtualenv"` or `method="conda` then the default `envname` is `"r-reticulate"` unless you set it to something else. If an environment of that name does not exist it is created.
+#' @details This function provides a basic wrapper around `reticulate::py_install()`, except it defaults to using the Python package manager `pip`. If you specify `method="virtualenv"` or `method="conda` then the default `envname` is `"r-rgeedim"` unless you set it to something else. If an environment of that name does not exist it is created.
 #' @importFrom reticulate py_install virtualenv_exists virtualenv_create conda_list conda_create
 #' @examples
 #' \dontrun{
@@ -19,7 +19,7 @@
 #' # install with pip (with reticulate)
 #' gd_install()
 #'
-#' # use virtual environment with default name "r-reticulate"
+#' # use virtual environment with default name "r-rgeedim"
 #' gd_install(method = "virtualenv")
 #'
 #' # use "conda" environment named "foo"
@@ -52,12 +52,12 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
       )))
     }
   }
+  
+  if (!"envname" %in% names(args)) {
+    args[["envname"]] <- "r-rgeedim"
+  }
 
   if ("method" %in% names(args)) {
-
-    if (!"envname" %in% names(args)) {
-      args[["envname"]] <- "r-reticulate"
-    }
 
     if (args[["method"]] == "virtualenv") {
       # create suitable virtualenv if does not exist
@@ -76,11 +76,10 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
   }
 
   invisible(try({
-    reticulate::py_install(
+    do.call(reticulate::py_install, c(list(
       c("numpy", "earthengine-api", "geedim"),
       pip = pip,
-      pip_ignore_installed = force,
-      ...
-    )
+      pip_ignore_installed = force
+    ), args))
   }, silent = FALSE))
 }

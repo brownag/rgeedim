@@ -1,11 +1,12 @@
 ---
-output: github_document
+output: markdown
+knit: litedown:::knit
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
+litedown::reactor(
   eval = !inherits(rgeedim::gd_version(), 'try-error'),
   collapse = TRUE,
   comment = "#>",
@@ -70,7 +71,7 @@ gd_install()
 # install with pip (system() call)
 gd_install(system = TRUE)
 
-# use virtual environment with default name "r-reticulate"
+# use virtual environment with default name "r-rgeedim"
 gd_install(method = "virtualenv")
 
 # use "conda" environment named "foo"
