@@ -1,10 +1,9 @@
 ---
 title: "`rgeedim` Demo"
-output: html
 knit: litedown:::knit
 vignette: >
   %\VignetteIndexEntry{`rgeedim` Demo}
-  %\VignetteEngine{litedown::book}
+  %\VignetteEngine{litedown::vignette}
   %\VignetteEncoding{UTF-8}
 ---
 
