@@ -1,5 +1,7 @@
 # rgeedim 0.2.8
 
+ * With reticulate >= 1.41.0 call `py_require("earthengine-api" , "geedim")` on load
+
  * Default Python virtual environment name changed from `"r-reticulate"` to `"r-rgeedim"`
  
    * Use `gd_install()` to initialize a new environment if needed.
