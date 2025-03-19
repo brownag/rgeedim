@@ -58,6 +58,16 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.8" id="rgeedim-028">rgeedim 0.2.8<a class="anchor" aria-label="anchor" href="#rgeedim-028"></a></h2>
+<ul><li><p>With reticulate &gt;= 1.41.0 call <code>py_require(c("earthengine-api" , "geedim"))</code> on load</p></li>
+<li>
+<p>Default Python virtual environment name changed from <code>"r-reticulate"</code> to <code>"r-rgeedim"</code></p>
+<ul><li>Use <code><a href="../reference/gd_install.html">gd_install()</a></code> to initialize a new environment if needed.</li>
+</ul></li>
+<li><p><code><a href="../reference/gd_projection.html">gd_projection()</a></code>: update for earthengine-api usage of <code>ee.projection.Projection</code> class</p></li>
+<li><p>Replace use of <code>knitr</code> + <code>rmarkdown</code> with <code>litedown</code> for readme/vignette building</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.7" id="rgeedim-027">rgeedim 0.2.7<small>2024-01-18</small><a class="anchor" aria-label="anchor" href="#rgeedim-027"></a></h2>
 <ul><li><p><code><a href="../reference/gd_download.html">gd_download()</a></code> fix bug that prevented overwriting files with <code>overwrite=TRUE</code> when <code>composite=FALSE</code></p></li>
 <li><p><code><a href="../reference/gd_initialize.html">gd_is_initialized()</a></code> now accepts additional arguments (<code>...</code>) which are passed to <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code></p></li>
