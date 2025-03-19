@@ -8,8 +8,9 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+EVAL <- FALSE
 litedown::reactor(
-  eval = FALSE,
+  eval = EVAL,
   collapse = TRUE,
   fig.width = 8,
   fig.align = 'center',
@@ -22,7 +23,7 @@ This vignette shows how to extract a Google Earth Engine asset by name for an ar
 
 First, we load {rgeedim}.
 
-```{r libr}
+```{r libr, eval = EVAL}
 library(rgeedim)
 ```
 
@@ -40,7 +41,7 @@ You only need to authenticate periodically, depending on the method you used.
 
 In each session we need to call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
 
-```{r setup}
+```{r setup, eval = EVAL}
 gd_initialize()
 ```
 
@@ -50,7 +51,7 @@ Perhaps the _simplest_ way to specify the target extent is using the xmin/xmax/y
 
 ## Determine Target Region
 
-```{r bbox}
+```{r bbox, eval = EVAL}
 r <- gd_bbox(
   xmin = -121,
   xmax = -120.5,
@@ -69,7 +70,7 @@ To obtain an R object reference to the asset we pass the `"id"` to `gd_image_fro
 
 ### Download SRTM Topographic Diversity product
 
-```{r image-from-id}
+```{r image-from-id, eval = EVAL}
 x <- gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
 ```
 
@@ -79,7 +80,7 @@ Now we pass the image result to `gd_download()`. We can specify output `filename
 
 Other options that can be passed to the `BaseImage.download()` method include `scale` which allows warping of the result to a target resolution. Try modifying this example to use `scale=90` (~native SRTM resolution):
 
-```{r download}
+```{r download, eval = EVAL}
 img <- gd_download(x, filename = 'image.tif',
                    region = r, scale = 900,
                    overwrite = TRUE, silent = FALSE
@@ -90,12 +91,12 @@ img <- gd_download(x, filename = 'image.tif',
 
 So we can use the {terra} `rast()` function to read the GeoTIFF `gd_download()` result. 
 
-```{r terrarast, fig.align='center', fig.width=4}
+```{r terrarast, eval = FALSE, fig.align='center', fig.width=4}
 library(terra)
 f <- rast(img)
 ```
 
-```{r inspect}
+```{r inspect, eval = EVAL}
 par(mar = c(1, 1, 1, 1))
 plot(f[[1]])
 
@@ -107,7 +108,7 @@ f
 
 This example demonstrates the download of a section of the USGS NED seamless 10m grid. This DEM is processed locally with {terra} to calculate some terrain derivatives (slope, aspect) and a hillshade.
 
-```{r, dem10-hillshade}
+```{r, dem10-hillshade, eval = EVAL}
 library(rgeedim)
 library(terra)
 
@@ -159,7 +160,7 @@ A key step in many processes involving image collections is the use of `gd_compo
 
 This example demonstrates how to access 1-meter LiDAR data from the USGS 3D Elevation Program (3DEP). LiDAR data are not available everywhere, and are generally available as collections of tiles for specific dates. We will use `gd_search()` to narrow down the options. 
 
-```{r lidar-composite}
+```{r lidar-composite, eval = EVAL}
 # search and download composite from USGS 1m lidar data collection
 library(rgeedim)
 library(terra)
@@ -206,7 +207,7 @@ The small sample extent covers only one tile, but in larger examples LiDAR data 
 
 This example downloads each component image of the DAYMET climate collection "daily precipitation" layers into a temporary folder as separate GeoTIFFs. These individual images can be further aggregated or processed outside of Google Earth Engine.
 
-```{r, daymet-nocomposite}
+```{r, daymet-nocomposite, eval = EVAL}
 # search and download individual images from daymet V4
 library(rgeedim)
 library(terra)
@@ -254,7 +255,7 @@ panel(x2)
 title(ylab = "Daily Precipitation (mm)")
 ```
 
-```{r, include=FALSE}
+```{r, include=FALSE, eval = EVAL}
 unlink("image.tif")
 unlink(td, recursive = TRUE)
 ```
