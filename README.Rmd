@@ -9,7 +9,6 @@ knit: litedown:::knit
 litedown::reactor(
   eval = !inherits(rgeedim::gd_version(), 'try-error'),
   collapse = TRUE,
-  comment = "#>",
   dev = 'jpeg',
   fig.path = "man/figures/README-",
   out.width = "100%"

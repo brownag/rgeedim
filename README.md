@@ -1,11 +1,5 @@
----
-output: markdown
-knit: litedown:::knit
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-
 
 # {rgeedim}
 
@@ -48,7 +42,7 @@ library(rgeedim)
 ```
 
 ``` {.plain .message}
-#>rgeedim v0.2.8 -- using geedim 1.9.0 w/ earthengine-api 1.4.0
+#> rgeedim v0.2.8 -- using geedim 1.9.0 w/ earthengine-api 1.5.7
 ```
 
 ## Dependencies
@@ -145,19 +139,19 @@ library(terra)
 ```
 
 ``` {.plain .message}
-#>terra 1.8.29
+#> terra 1.8.29
 ```
 
 ``` {.r}
 f <- rast(x)
 f
-#>class       : SpatRaster 
-#>dimensions  : 402, 618, 2  (nrow, ncol, nlyr)
-#>resolution  : 10, 10  (x, y)
-#>extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)
-#>coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
-#>source      : image.tif 
-#>names       : constant, FILL_MASK 
+#> class       : SpatRaster 
+#> dimensions  : 402, 618, 2  (nrow, ncol, nlyr)
+#> resolution  : 10, 10  (x, y)
+#> extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)
+#> coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
+#> source      : image.tif 
+#> names       : constant, FILL_MASK 
 plot(f[[1]])
 ```
 ![](<man/figures/README-inspect-1.jpeg>)

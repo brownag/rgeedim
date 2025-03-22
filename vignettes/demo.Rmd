@@ -14,7 +14,6 @@ litedown::reactor(
   collapse = TRUE,
   fig.width = 8,
   fig.align = 'center',
-  comment = "#>"
 )
 ```
 
