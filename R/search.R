@@ -20,10 +20,19 @@
 #'             region = gd_region(b))
 #' }
 gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.character(Sys.Date()), ...) {
-  y <- try(x$search(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
+  FUN <- NULL
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    FUN <- x$filter
+  } else {
+    FUN <- x$search
+  }
+  y <- try(FUN(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
   if (inherits(y, "try-error")) {
     message(y[1])
     return(invisible(y))
+  }
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    return(y$gd)
   }
   y
 }
@@ -53,7 +62,15 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 #' }
 #' }
 gd_properties <- function(x) {
-  pt <- try(x$properties_table)
+  
+  pt <- NULL
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    pt <- try(x$propertiesTable, silent = TRUE)
+  } else if (inherits(x, c("geedim.collection.MaskedCollection",
+                           "geedim.download.BaseImage"))) {
+    pt <- try(x$properties_table, silent = TRUE)
+  } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
+  
   if (inherits(pt, 'try-error')) {
     message(pt[1])
     return(invisible(pt))
@@ -96,7 +113,9 @@ gd_properties <- function(x) {
 #' }
 gd_band_names <- function(x) {
   y <- NULL
-  if (inherits(x, 'geedim.download.BaseImage')) {
+  if (inherits(x, 'geedim.image.ImageAccessor')) {
+    y <- try(x$bandNames, silent = TRUE)
+  } else if (inherits(x, 'geedim.download.BaseImage')) {
     y <- try(x$ee_image$bandNames()$getInfo(), silent = TRUE)
   } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
   if (inherits(y, 'try-error')) {
@@ -121,7 +140,9 @@ gd_band_names <- function(x) {
 #' }
 gd_band_properties <- function(x) {
   y <- NULL
-  if (inherits(x, 'geedim.download.BaseImage')) {
+  if (inherits(x, 'geedim.image.ImageAccessor')) {
+    y <- try(x$bandProps, silent = TRUE)
+  } else if (inherits(x, 'geedim.download.BaseImage')) {
     y <- try(x$band_properties, silent = TRUE)
   } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
   if (inherits(y, 'try-error')) {
@@ -147,9 +168,11 @@ gd_band_properties <- function(x) {
 #' }
 gd_footprint <- function(x) {
   y <- NULL
-  if (inherits(x, 'geedim.mask.MaskedImage')) {
+  if (inherits(x, 'geedim.image.ImageAccessor')) {
+    y <- try(x$geometry, silent = TRUE)
+  } else if (inherits(x, 'geedim.mask.MaskedImage')) {
     y <- try(x$footprint, silent = TRUE)
-  } else stop("`x` should inherit from geedim.mask.MaskedImage", call. = FALSE)
+  } else stop("`x` should inherit from geedim.image.ImageAccessor (or geedim.mask.MaskedImage with geedim < 2.0.0)", call. = FALSE)
   if (inherits(y, 'try-error')) {
     message(y[1])
     return(invisible(y))

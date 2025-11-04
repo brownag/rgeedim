@@ -23,8 +23,9 @@
 #'                resampling = "bilinear")
 #' }
 gd_composite <- function(x, ...) {
-  if (!inherits(x, 'geedim.collection.MaskedCollection')) {
-    stop("`x` should be a geedim.collection.MaskedCollection", call. = FALSE)
+  if (!inherits(x, c ("geedim.collection.ImageCollectionAccessor",
+                      "geedim.collection.MaskedCollection"))) {
+    stop("`x` should be a geedim.collection.ImageCollectionAccessor or geedim.collection.MaskedCollection", call. = FALSE)
   }
   args <- list(...)
   if (!is.null(args$region)) {
@@ -34,6 +35,9 @@ gd_composite <- function(x, ...) {
   if (inherits(y, 'try-error')) {
     message(y[1])
     return(invisible(y))
+  }
+  if (inherits(y, "ee.image.Image")) {
+    return(y$gd)
   }
   y
 }

@@ -1,4 +1,4 @@
-if (!inherits(gd_version(), 'try-error')) {
+if (!inherits(gd_version(), "try-error")) {
   # we are assuming gd_authenticate() has been called / set up
   # such that we can init modules and begin using them
   gi <- gd_initialize(project = "rgeedim-demo")
@@ -34,7 +34,7 @@ expect_equal(
 )
 
 # only run tests if modules are available
-if (!inherits(gi, 'try-error')) {
+if (!inherits(gi, "try-error")) {
 
   gd <- geedim()
   ee <- earthengine()
@@ -48,7 +48,7 @@ if (!inherits(gi, 'try-error')) {
   expect_equal(.modules_available(), c(TRUE, TRUE))
 
   .auth_available <- function() {
-    !inherits(gd_image_from_id("USGS/3DEP/10m"), 'try-error')
+    !inherits(gd_image_from_id("USGS/3DEP/10m"), "try-error")
   }
 
   if (all(.modules_available()) && .auth_available()) {
@@ -80,17 +80,17 @@ if (!inherits(gi, 'try-error')) {
 
     # images
     img <- gd_image_from_id("USGS/3DEP/10m")
-    expect_true(inherits(img, "geedim.mask.MaskedImage"))
+    expect_true(inherits(img, c("geedim.image.ImageAccessor", "geedim.mask.MaskedImage")))
 
     # projection
     prj <- gd_projection(img)
     expect_true(inherits(prj, "ee.projection.Projection"))
 
     # image download
-    tf <- tempfile()
+    tf <- tempfile(fileext = ".tif")
     res <- gd_download(img, tf, scale = 1000, region = .regionlist)
     ras <- terra::rast(res)
-    expect_true(inherits(ras, 'SpatRaster'))
+    expect_true(inherits(ras, "SpatRaster"))
     expect_equal(gd_bbox(terra::ext(ras) / 2, terra::ext(ras)),
                  gd_bbox(terra::ext(ras)))
     unlink(res)
@@ -98,21 +98,22 @@ if (!inherits(gi, 'try-error')) {
     # collections
     col <- gd_collection_from_name("LANDSAT/LC08/C02/T1_L2")
     col2 <- gd_collection_from_list(c("CSP/ERGo/1_0/Global/SRTM_landforms",
-                                      'CSP/ERGo/1_0/Global/SRTM_topoDiversity'))
+                                      "CSP/ERGo/1_0/Global/SRTM_topoDiversity"))
     # search a collection
     scol <- gd_search(col, region = .regionlist,
-                      start_date = '2019-01-01', end_date = '2019-02-15')
-    expect_true(inherits(scol, 'geedim.collection.MaskedCollection'))
-    expect_true(inherits(col2, 'geedim.collection.MaskedCollection'))
-    p <- gd_properties(scol)
-    expect_true(inherits(p, 'data.frame'))
+                      start_date = "2019-01-01", end_date = "2019-02-15")
+    expect_true(inherits(scol, c("geedim.collection.ImageCollectionAccessor", 
+                                 "geedim.collection.MaskedCollection")))
+    expect_true(inherits(col2, c("geedim.collection.ImageCollectionAccessor",
+                                 "geedim.collection.MaskedCollection")))
+    expect_true(inherits(gd_properties(scol), "data.frame"))
 
-    # TODO: better example that does more than just run this function
-    expect_null(gd_mask_clouds(gd_image_from_id("USGS/3DEP/10m")))
+    expect_inherits(gd_mask_clouds(gd_image_from_id("USGS/3DEP/10m")), 
+                    c("geedim.image.ImageAccessor", "NULL"))
 
     # collection download
     res <- gd_download(scol, tf, scale = 5000, region = .regionlist, crs = "EPSG:5070")
-    expect_true(inherits(terra::rast(res), 'SpatRaster'))
+    expect_true(inherits(terra::rast(res), "SpatRaster"))
     unlink(res)
   }
 }

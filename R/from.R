@@ -15,7 +15,11 @@
 #' }
 gd_image_from_id <- function(x) {
   .inform_missing_module(gd, "geedim")
-  y <- try(gd$MaskedImage$from_id(x), silent = FALSE)
+  if (gd_version() >= "2.0.0") {
+    y <- try(gd$utils$ee$Image(x)$gd, silent = FALSE)
+  } else {
+    y <- try(gd$MaskedImage$from_id(x), silent = FALSE)
+  }
   if (inherits(y, 'try-error'))
     return(invisible(y))
   y
@@ -41,7 +45,11 @@ gd_image_from_id <- function(x) {
 #' }
 gd_collection_from_name <- function(x) {
   .inform_missing_module(gd, "geedim")
-  y <- try(gd$MaskedCollection$from_name(x), silent = FALSE)
+  if (gd_version() >= "2.0.0") {
+    y <- try(gd$utils$ee$ImageCollection(x)$gd, silent = FALSE)
+  } else {
+    y <- try(gd$MaskedCollection$from_name(x), silent = FALSE)
+  }
   if (inherits(y, 'try-error')) return(invisible(y))
   y
 }
@@ -82,7 +90,11 @@ gd_collection_from_name <- function(x) {
 #' }
 gd_collection_from_list <- function(x) {
   .inform_missing_module(gd, "geedim")
-  y <- try(gd$MaskedCollection$from_list(x), silent = FALSE)
+  if (gd_version() >= "2.0.0"){
+    y <- try(gd$utils$ee$ImageCollection(x)$gd, silent = FALSE)
+  } else {
+    y <- try(gd$MaskedCollection$from_list(x), silent = FALSE) 
+  } 
   if (inherits(y, 'try-error')) return(invisible(y))
   y
 }

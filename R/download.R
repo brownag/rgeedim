@@ -77,7 +77,22 @@ gd_download <- function(x,
     } else stop("Could not create Image or Image Collection from '", x, "'", call. = FALSE)
   }
 
-  if (inherits(x, "geedim.download.BaseImage")) {
+  if (inherits(x, "geedim.image.ImageAccessor")) {
+    if (is.null(region)) {
+      x <- x$prepareForExport(...)$gd
+    } else {
+      x <- x$prepareForExport(region = gd_region(region), ...)$gd
+    }
+    res <- try(x$toGeoTIFF(file = filename, overwrite = overwrite), silent = silent)
+    if (file.exists(filename) && !inherits(res, 'try-error')) {
+      return(filename)
+    } else if (inherits(res, 'try-error')) {
+      message(res[1]) # silent only handles the actual try() blocks, messages can be suppressed if needed
+      return(invisible(res))
+    } else {
+      return(invisible(NULL))
+    }
+  } else if (inherits(x, "geedim.download.BaseImage")) {
     if (is.null(region)) {
       res <- try(x$download(filename = filename, overwrite = overwrite, ...), silent = silent)
     } else {
@@ -91,11 +106,13 @@ gd_download <- function(x,
     } else {
       return(invisible(NULL))
     }
-  } else if (inherits(x, "geedim.collection.MaskedCollection")) {
+  } else if (inherits(x, c("geedim.collection.ImageCollectionAccessor", 
+                           "geedim.collection.MaskedCollection"))) {
     .args <- list(...)
     scale <- .args[["scale"]]
-    if (is.null(scale))
+    if (is.null(scale)) {
       stop("Downloading an Image Collection requires that the `scale` argument be set.", call. = FALSE)
+    }
     .gd_download_collection(x,
                             dest = filename,
                             region = region,

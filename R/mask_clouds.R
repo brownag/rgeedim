@@ -7,8 +7,13 @@
 #' @return a `geedim.mask.MaskedImage`
 #' @export
 gd_mask_clouds <- function(x) {
-  if (!inherits(x, 'geedim.mask.MaskedImage')) {
-    stop("`x` should be a geedim.mask.MaskedImage")
+  if (!inherits(x, c('geedim.image.ImageAccessor',
+                     'geedim.mask.MaskedImage'))) {
+    stop("`x` should be a geedim.image.ImageAccessor or geedim.mask.MaskedImage")
   }
-  x$mask_clouds()
+  if (inherits(x, "geedim.image.ImageAccessor")) {
+    return(x$maskClouds()$gd) 
+  } else {
+    return(x$mask_clouds())
+  }
 }
