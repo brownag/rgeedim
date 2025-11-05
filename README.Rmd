@@ -22,6 +22,7 @@ litedown::reactor(
 [![HTML Docs](https://img.shields.io/badge/docs-HTML-informational)](https://humus.rocks/rgeedim/)
 [![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://app.codecov.io/gh/brownag/rgeedim)
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/rgeedim)](https://CRAN.R-project.org/package=rgeedim)
+[![Codecov test coverage](https://codecov.io/gh/brownag/rgeedim/graph/badge.svg)](https://app.codecov.io/gh/brownag/rgeedim)
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery with Python module [`geedim`](https://github.com/leftfield-geospatial/geedim)  by Dugal Harris. This package provides wrapper functions that make it more convenient to use `geedim` from R. 

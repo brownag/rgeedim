@@ -11,3 +11,4 @@ $\.github/*
 ^.*\.tif$
 ^doc$
 ^Meta$
+^codecov\.yml$
