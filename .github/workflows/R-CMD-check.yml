@@ -68,6 +68,13 @@ jobs:
           extra-packages: any::rcmdcheck, rstudio/reticulate
           needs: check
 
+      - name: Install GDAL for Windows
+        if: runner.os == 'Windows'
+        run: |
+          remotes::install_github("brownag/rgeowheels")
+          rgeowheels::install_wheel("GDAL")
+        shell: Rscript {0}
+
       - name: Install Python dependencies
         run: |
           reticulate::virtualenv_create("r-rgeedim")
