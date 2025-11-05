@@ -20,7 +20,7 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) - geedim ${{ matrix.config.geedim-version }}
 
     strategy:
       fail-fast: false
@@ -31,7 +31,7 @@ jobs:
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', geedim-version: 'latest', authenticate: false}
           - {os: ubuntu-latest,   r: 'release', geedim-version: 'latest', authenticate: true}
           - {os: ubuntu-latest,   r: 'release', geedim-version: '1.9.0', authenticate: true}
-          - {os: ubuntu-20.04,   r: '3.6', geedim-version: 'latest', authenticate: false}
+          - {os: ubuntu-22.04,   r: '3.6', geedim-version: 'latest', authenticate: false}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
