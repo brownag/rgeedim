@@ -8,6 +8,7 @@
 #' @param pip Use `pip` package manager? Default: `TRUE`. To use a virtual or conda environment specify `method="virtualenv"` or `method="conda"`, respectively. See details.
 #' @param system Use a `system()` call to `python -m pip install --user ...` instead of `reticulate::py_install()`. Default: `FALSE`.
 #' @param force Force update (uninstall/reinstall) and ignore existing installed packages? Default: `FALSE`. Applies to `pip=TRUE`.
+#' @param version The version of `geedim` to install. If `NULL` (the default), the latest version will be installed.
 #' @param ... Additional arguments passed to `reticulate::py_install()`
 #' @return `NULL`, or `try-error` (invisibly) on R code execution error.
 #' @export
@@ -29,7 +30,7 @@
 #' gd_install(system = TRUE)
 #'
 #' }
-gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
+gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, version = NULL, ...) {
 
   args <- list(...)
 
@@ -47,7 +48,7 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
           shQuote(fp),
           "-m pip install --user",
           ifelse(force, "-U --force", ""),
-          "geedim earthengine-api numpy"
+          paste0("geedim", if (!is.null(version)) paste0("==", version) else ""), "earthengine-api numpy"
         )
       )))
     }
@@ -77,7 +78,7 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, ...) {
 
   invisible(try({
     do.call(reticulate::py_install, c(list(
-      c("numpy", "earthengine-api", "geedim"),
+      c("numpy", "earthengine-api", paste0("geedim", if (!is.null(version)) paste0("==", version) else "")),
       pip = pip,
       pip_ignore_installed = force
     ), args))
