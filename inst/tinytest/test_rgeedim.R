@@ -48,7 +48,7 @@ if (!inherits(gi, "try-error")) {
   expect_equal(.modules_available(), c(TRUE, TRUE))
 
   .auth_available <- function() {
-    !inherits(gd_image_from_id("USGS/3DEP/10m"), "try-error")
+    !inherits(gd_image_from_id("USGS/SRTMGL1_003"), "try-error")
   }
 
   if (all(.modules_available()) && .auth_available()) {
@@ -79,7 +79,7 @@ if (!inherits(gi, "try-error")) {
     expect_equal(id, "projects/your-project-name/assets/RGEEDIM_TEST")
 
     # images
-    img <- gd_image_from_id("USGS/3DEP/10m")
+    img <- gd_image_from_id("USGS/SRTMGL1_003")
     expect_true(inherits(img, c("geedim.image.ImageAccessor", "geedim.mask.MaskedImage")))
 
     # projection
@@ -108,7 +108,9 @@ if (!inherits(gi, "try-error")) {
                                  "geedim.collection.MaskedCollection")))
     expect_true(inherits(gd_properties(scol), "data.frame"))
 
-    expect_inherits(gd_mask_clouds(gd_image_from_id("USGS/3DEP/10m")), 
+    expect_inherits(gd_mask_clouds(gd_image_from_id("USGS/SRTMGL1_003")),
+
+     
                     c("geedim.image.ImageAccessor", "NULL"))
 
     # collection download

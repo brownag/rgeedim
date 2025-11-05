@@ -171,7 +171,7 @@ b <- gd_bbox(
 
 ## hillshade example
 # download 10m NED DEM in AEA
-x <- "USGS/3DEP/10m" |>
+x <- "USGS/SRTMGL1_003" |>
   gd_image_from_id() |>
   gd_download(
     region = b,
@@ -194,7 +194,7 @@ hsd <- shade(slp, asp)
 plot(c(dem, hillshade = hsd))
 ```
 
-Subsets of the `"USGS/3DEP/10m"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
+Subsets of the `"USGS/SRTMGL1_003"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
 
 ## Example: LiDAR Slope Map
 

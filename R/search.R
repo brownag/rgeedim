@@ -109,7 +109,7 @@ gd_properties <- function(x) {
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_band_names(gd_image_from_id("USGS/3DEP/10m"))
+#'   gd_band_names(gd_image_from_id("USGS/SRTMGL1_003"))
 #' }
 gd_band_names <- function(x) {
   y <- NULL
@@ -136,7 +136,7 @@ gd_band_names <- function(x) {
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_band_properties(gd_image_from_id("USGS/3DEP/10m"))
+#'   gd_band_properties(gd_image_from_id("USGS/SRTMGL1_003"))
 #' }
 gd_band_properties <- function(x) {
   y <- NULL
@@ -164,7 +164,7 @@ gd_band_properties <- function(x) {
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_footprint(gd_image_from_id("USGS/3DEP/10m"))
+#'   gd_footprint(gd_image_from_id("USGS/SRTMGL1_003"))
 #' }
 gd_footprint <- function(x) {
   y <- NULL

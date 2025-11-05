@@ -19,7 +19,7 @@ Gets GeoJSON-style list containing footprint of a \code{geedim.image.ImageAccess
 \dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
-  gd_footprint(gd_image_from_id("USGS/3DEP/10m"))
+  gd_footprint(gd_image_from_id("USGS/SRTMGL1_003"))
 }
 \dontshow{\}) # examplesIf}
 }

@@ -23,7 +23,7 @@ plot(yellowstone)
 # create an Earth Engine asset you can use again in the future
 # 250m resolution for Yellowstone extent
 gd_export(
-  gd_image_from_id("USGS/3DEP/10m"),
+  gd_image_from_id("USGS/SRTMGL1_003"),
   region = g,
   scale = 250,
   bands = list("elevation"),

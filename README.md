@@ -1,5 +1,11 @@
+---
+output: markdown
+knit: litedown:::knit
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 
 # {rgeedim}
 
@@ -39,10 +45,6 @@ If you are running {rgeedim} interactively for the first time you may be prompte
 
 ``` {.r}
 library(rgeedim)
-```
-
-``` {.plain .message}
-#> rgeedim v0.2.8 -- using geedim 1.9.0 w/ earthengine-api 1.5.7
 ```
 
 ## Dependencies
@@ -139,14 +141,14 @@ library(terra)
 ```
 
 ``` {.plain .message}
-#> terra 1.8.29
+#> terra 1.8.80
 ```
 
 ``` {.r}
 f <- rast(x)
 f
 #> class       : SpatRaster 
-#> dimensions  : 402, 618, 2  (nrow, ncol, nlyr)
+#> size        : 402, 618, 2  (nrow, ncol, nlyr)
 #> resolution  : 10, 10  (x, y)
 #> extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)
 #> coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
@@ -175,7 +177,7 @@ b <- gd_bbox(
 
 ## hillshade example
 # download 10m NED DEM in AEA
-x <- "USGS/3DEP/10m" |>
+x <- "USGS/SRTMGL1_003" |>
   gd_image_from_id() |>
   gd_download(
     region = b,
@@ -199,7 +201,7 @@ plot(c(dem, hillshade = hsd))
 ```
 ![](<man/figures/README-dem10-hillshade-1.jpeg>)
 
-Subsets of the `"USGS/3DEP/10m"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
+Subsets of the `"USGS/SRTMGL1_003"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
 
 ## Example: LiDAR Slope Map
 
