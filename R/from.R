@@ -95,8 +95,8 @@ gd_collection_from_list <- function(x) {
   if (gd_version() >= "2.0.0"){
     y <- try(gd$utils$ee$ImageCollection(x)$gd, silent = FALSE)
   } else {
-    y <- try(gd$MaskedCollection$from_list(x), silent = FALSE) 
-  } 
+    y <- try(gd$MaskedCollection$from_list(x), silent = FALSE)
+  }
   if (inherits(y, 'try-error')) return(invisible(y))
   y
 }

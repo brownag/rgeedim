@@ -21,10 +21,12 @@ gd_projection <- function(x) {
       return(gd$utils$get_projection(x$ee_image))
     } else {
       if (gd_version() >= "2.0.0") {
-        return(x$projection())   
+        return(x$projection())
       } else {
-        gd$utils$get_projection(gd$utils$ee$Image(x))
+        return(gd$utils$get_projection(gd$utils$ee$Image(x)))
       }
     }
+  } else {
+    return(gd$utils$get_projection(x))
   }
 }

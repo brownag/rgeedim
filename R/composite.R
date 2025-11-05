@@ -23,7 +23,7 @@
 #'                resampling = "bilinear")
 #' }
 gd_composite <- function(x, ...) {
-  if (!inherits(x, c ("geedim.collection.ImageCollectionAccessor",
+  if (!inherits(x, c("geedim.collection.ImageCollectionAccessor",
                       "geedim.collection.MaskedCollection"))) {
     stop("`x` should be a geedim.collection.ImageCollectionAccessor or geedim.collection.MaskedCollection", call. = FALSE)
   }
