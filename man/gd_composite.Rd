@@ -7,18 +7,18 @@
 gd_composite(x, ...)
 }
 \arguments{
-\item{x}{an object inheriting from \code{geedim.collection.MaskedCollection}, such as from \code{gd_search()} or \code{gd_collection_from_list()}}
+\item{x}{an object inheriting from \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.collection.MaskedCollection} (for geedim < 2.0.0), such as from \code{gd_search()} or \code{gd_collection_from_list()}. See \verb{\link{geedim-versions}} for more details.}
 
-\item{...}{\href{https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html}{additional arguments} to \code{geedim.collection.MaskedCollection$composite()}}
+\item{...}{\href{https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.ImageCollectionAccessor.composite.html}{additional arguments} to \code{geedim.collection.ImageCollectionAccessor$composite()}}
 }
 \value{
-a composite \code{geedim.mask.MaskedImage} object
+a composite \code{ee.image.Image} object
 }
 \description{
 Create a composite image from elements of an image collection.
 }
 \examples{
-\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
 \donttest{
 library(terra)
 

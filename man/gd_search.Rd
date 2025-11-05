@@ -13,7 +13,7 @@ gd_search(
 )
 }
 \arguments{
-\item{x}{\code{geedim.collection.MaskedCollection} object}
+\item{x}{A \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.MaskedCollection} (for geedim < 2.0.0) object. See \verb{\link{geedim-versions}} for more details.}
 
 \item{region}{list / Python GeoJSON object describing region, e.g. as created by \code{gd_bbox()}}
 
@@ -24,13 +24,13 @@ gd_search(
 \item{...}{additional arguments to \code{geedim.MaskedCollection.search()} e.g. \code{cloudless_portion}, \code{fill_portion}}
 }
 \value{
-\code{geedim.MaskedCollection} object suitable for querying properties
+A \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.MaskedCollection} (for geedim < 2.0.0) object suitable for querying properties. See \verb{\link{geedim-versions}} for more details.
 }
 \description{
 Search an Image Collection
 }
 \examples{
-\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
 \donttest{
 b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
                     -121.35 37.555,-121.35 37.56,

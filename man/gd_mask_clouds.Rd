@@ -7,10 +7,10 @@
 gd_mask_clouds(x)
 }
 \arguments{
-\item{x}{a \code{geedim.mask.MaskedImage}}
+\item{x}{a \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.mask.MaskedImage} (for geedim < 2.0.0). See \verb{\link{geedim-versions}} for more details.}
 }
 \value{
-a \code{geedim.mask.MaskedImage}
+a \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.mask.MaskedImage} (for geedim < 2.0.0). See \verb{\link{geedim-versions}} for more details.
 }
 \description{
 Apply the cloud/shadow mask if supported, otherwise apply the fill mask.

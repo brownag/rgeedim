@@ -28,19 +28,23 @@ gd_list_assets(parent)
 \item{parent}{Full path to project folder (with or without \code{"/assets"} suffix)}
 }
 \value{
-\code{geedim.MaskedImage} or \code{geedim.MaskedCollection} object, or \code{try-error} on error
+A \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.MaskedImage} (for geedim < 2.0.0) object, or \code{try-error} on error. See \verb{\link{geedim-versions}} for more details.
+
+A \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.MaskedCollection} (for geedim < 2.0.0) object, or \code{try-error} on error. See \verb{\link{geedim-versions}} for more details.
+
+A \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.MaskedCollection} (for geedim < 2.0.0) object, or \code{try-error} on error. See \verb{\link{geedim-versions}} for more details.
 }
 \description{
 Create references to a Google Earth Engine Image or Image Collection based on IDs or names, or combine Images into Image Collections.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
 
@@ -57,7 +61,7 @@ if (gd_is_initialized())
 
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   # Find 1m DEM in arbitrary extent
@@ -89,13 +93,13 @@ if (gd_is_initialized())
 
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_asset_id("RGEEDIM_TEST", "your-project-name")
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_list_assets("projects/your-project-name")

@@ -1,6 +1,6 @@
 #' Get Projection Information from Google Earth Engine Asset
 #'
-#' @param x character ID referencing asset, or an image object (subclass of `ee.image.Image` or `geedim.download.BaseImage`)
+#' @param x character ID referencing asset, or an image object (subclass of `ee.image.Image`, `geedim.image.ImageAccessor` for geedim >= 2.0.0, or `geedim.download.BaseImage` for geedim < 2.0.0). See `\link{geedim-versions}` for more details.
 #'
 #' @return `ee.Projection` object
 #' @export

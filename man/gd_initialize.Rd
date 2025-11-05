@@ -13,7 +13,7 @@ gd_initialize(
   opt_url = NULL,
   http_transport = NULL,
   project = NULL,
-  quiet = TRUE
+  quiet = FALSE
 )
 
 gd_is_initialized(...)

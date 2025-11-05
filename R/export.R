@@ -1,7 +1,7 @@
 #' Export image to Earth Engine Asset, Google Cloud Storage Bucket, or Google Drive
 #' @description Exports an encapsulated image to the destination specified by `type`, `folder` and `filename`
-#' @details See the [geedim.mask.MaskedImage.export() documentation](https://geedim.readthedocs.io/en/latest/_generated/geedim.mask.MaskedImage.export.html) for details on additional arguments. Requires 'geedim' >1.6.0.
-#' @param x An object that inherits from `geedim.download.BaseImage`
+#' @details See the [geedim.image.ImageAccessor.export() documentation](https://geedim.readthedocs.io/en/latest/_generated/geedim.image.ImageAccessor.export.html) for details on additional arguments. Requires 'geedim' >1.6.0.
+#' @param x An object that inherits from `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.download.BaseImage` (for geedim < 2.0.0). See `\link{geedim-versions}` for more details.
 #' @param filename Output filename. If `type` is `"asset"` and `folder` is not specified, `filename` should be a valid Earth Engine asset ID.
 #' @param type Export type. Defaults to `"drive"`; other options include `"asset"`, and "`cloud`". See `gd_export_types()`
 #' @param folder Destination folder. Defaults to `dirname(filename)`.

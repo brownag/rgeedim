@@ -2,9 +2,9 @@
 #'
 #' Create a composite image from elements of an image collection.
 #'
-#' @param x an object inheriting from `geedim.collection.MaskedCollection`, such as from `gd_search()` or `gd_collection_from_list()`
-#' @param ... [additional arguments](https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html) to `geedim.collection.MaskedCollection$composite()`
-#' @return a composite `geedim.mask.MaskedImage` object
+#' @param x an object inheriting from `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.collection.MaskedCollection` (for geedim < 2.0.0), such as from `gd_search()` or `gd_collection_from_list()`. See `\link{geedim-versions}` for more details.
+#' @param ... [additional arguments](https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.ImageCollectionAccessor.composite.html) to `geedim.collection.ImageCollectionAccessor$composite()`
+#' @return a composite `ee.image.Image` object
 #' @export
 #' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{

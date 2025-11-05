@@ -4,7 +4,7 @@
 #'
 #' @param x character. `id` of Image, `name` of Image Collection, or a vector of Image `id` to create a new Image Collection
 #'
-#' @return `geedim.MaskedImage` or `geedim.MaskedCollection` object, or `try-error` on error
+#' @return A `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.MaskedImage` (for geedim < 2.0.0) object, or `try-error` on error. See `\link{geedim-versions}` for more details.
 #'
 #' @export
 #' @rdname from
@@ -25,6 +25,7 @@ gd_image_from_id <- function(x) {
   y
 }
 
+#' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object, or `try-error` on error. See `\link{geedim-versions}` for more details.
 #' @export
 #' @rdname from
 #' @examplesIf gd_is_initialized()
@@ -54,6 +55,7 @@ gd_collection_from_name <- function(x) {
   y
 }
 
+#' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object, or `try-error` on error. See `\link{geedim-versions}` for more details.
 #' @export
 #' @rdname from
 #' @examplesIf gd_is_initialized()

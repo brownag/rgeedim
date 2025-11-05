@@ -2,12 +2,12 @@
 
 #' Search an Image Collection
 #'
-#' @param x `geedim.collection.MaskedCollection` object
+#' @param x A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @param region list / Python GeoJSON object describing region, e.g. as created by `gd_bbox()`
 #' @param start_date Default: `'2020-01-01'`
 #' @param end_date Default: `Sys.Date()`
 #' @param ... additional arguments to `geedim.MaskedCollection.search()` e.g. `cloudless_portion`, `fill_portion`
-#' @return `geedim.MaskedCollection` object suitable for querying properties
+#' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object suitable for querying properties. See `\link{geedim-versions}` for more details.
 #' @export
 #' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
@@ -40,7 +40,7 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 
 #' Get Properties of an Image Collection
 #'
-#' @param x `geedim.collection.MaskedCollection` object
+#' @param x A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.collection.MaskedCollection` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @return `data.frame` containing properties table from `x`; `NULL` if no properties table.
 #' @importFrom utils read.table
 #' @export
@@ -102,7 +102,7 @@ gd_properties <- function(x) {
 #'
 #' Calls `bandNames()` method from `ee.Image` class.
 #'
-#' @param x a Google Earth Engine Image object, such as from `gd_image_from_id()`
+#' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.download.BaseImage` (for geedim < 2.0.0) object, such as from `gd_image_from_id()`. See `\link{geedim-versions}` for more details.
 #'
 #' @return character. Vector of names of each layer in an image.
 #' @export
@@ -129,7 +129,7 @@ gd_band_names <- function(x) {
 #'
 #' Gets combined Earth Engine and STAC properties.
 #'
-#' @param x a Google Earth Engine Image object, such as from `gd_image_from_id()`
+#' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.download.BaseImage` (for geedim < 2.0.0) object, such as from `gd_image_from_id()`. See `\link{geedim-versions}` for more details.
 #'
 #' @return list. Each element is a list that corresponds to a layer in `x`, each with one or more elements for properties of that layer.
 #' @export
@@ -156,9 +156,9 @@ gd_band_properties <- function(x) {
 
 #' Get Footprint of Masked Image
 #'
-#' Gets GeoJSON-style list containing footprint of a `geedim.mask.MaskedImage` object
+#' Gets GeoJSON-style list containing footprint of a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #'
-#' @param x a `geedim.mask.MaskedImage` object
+#' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @return list.
 #' @export
 #' @examplesIf gd_is_initialized()

@@ -26,7 +26,7 @@ gd_initialize <- function(private_key_file = NULL,
                           opt_url = NULL,
                           http_transport = NULL,
                           project = NULL,
-                          quiet = TRUE) {
+                          quiet = FALSE) {
 
   if (!missing(opt_url)) {
     .Deprecated(msg = "`gd_initialize(opt_url=...)` is deprecated, use `url=` instead")

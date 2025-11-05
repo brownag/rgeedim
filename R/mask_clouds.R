@@ -2,9 +2,9 @@
 #'
 #' Apply the cloud/shadow mask if supported, otherwise apply the fill mask.
 #'
-#' @param x a `geedim.mask.MaskedImage`
+#' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0). See `\link{geedim-versions}` for more details.
 #'
-#' @return a `geedim.mask.MaskedImage`
+#' @return a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0). See `\link{geedim-versions}` for more details.
 #' @export
 gd_mask_clouds <- function(x) {
   if (!inherits(x, c('geedim.image.ImageAccessor',

@@ -26,15 +26,17 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-20.04,   r: '3.6'}
+          - {os: macos-latest,   r: 'release', geedim-version: 'latest', authenticate: false}
+          - {os: windows-latest, r: 'release', geedim-version: 'latest', authenticate: false}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', geedim-version: 'latest', authenticate: false}
+          - {os: ubuntu-latest,   r: 'release', geedim-version: 'latest', authenticate: true}
+          - {os: ubuntu-latest,   r: 'release', geedim-version: '1.9.0', authenticate: true}
+          - {os: ubuntu-20.04,   r: '3.6', geedim-version: 'latest', authenticate: false}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      EE_PRIVATE_KEY: ${{ secrets.EE_PRIVATE_KEY }}
 
     steps:
       - uses: actions/checkout@v3
@@ -69,7 +71,17 @@ jobs:
       - name: Install Python dependencies
         run: |
           reticulate::virtualenv_create("r-rgeedim")
-          reticulate::virtualenv_install("r-rgeedim", "geedim")
+          if ("${{ matrix.config.geedim-version }}" == "latest") {
+            reticulate::virtualenv_install("r-rgeedim", "geedim")
+          } else {
+            reticulate::virtualenv_install("r-rgeedim", paste0("geedim==", "${{ matrix.config.geedim-version }}"))
+          }
+        shell: Rscript {0}
+
+      - name: Authenticate with Earth Engine
+        if: matrix.config.authenticate == true && env.EE_PRIVATE_KEY != ''
+        run: |
+          rgeedim::gd_initialize(private_key_file = Sys.getenv("EE_PRIVATE_KEY"))
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2

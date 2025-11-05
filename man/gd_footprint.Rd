@@ -7,16 +7,16 @@
 gd_footprint(x)
 }
 \arguments{
-\item{x}{a \code{geedim.mask.MaskedImage} object}
+\item{x}{a \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.mask.MaskedImage} (for geedim < 2.0.0) object. See \verb{\link{geedim-versions}} for more details.}
 }
 \value{
 list.
 }
 \description{
-Gets GeoJSON-style list containing footprint of a \code{geedim.mask.MaskedImage} object
+Gets GeoJSON-style list containing footprint of a \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.mask.MaskedImage} (for geedim < 2.0.0) object. See \verb{\link{geedim-versions}} for more details.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_footprint(gd_image_from_id("USGS/3DEP/10m"))
