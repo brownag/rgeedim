@@ -70,12 +70,15 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          reticulate::virtualenv_create("r-rgeedim")
+          venv_path <- reticulate::virtualenv_create("r-rgeedim")
+          reticulate::use_virtualenv("r-rgeedim")
           if (Sys.info()["sysname"] == "Windows") {
+            python_path <- file.path(venv_path, "Scripts", "python.exe")
             remotes::install_github("brownag/rgeowheels")
+            rgeowheels::set_rgeowheels_python(python_path)
             py_version <- reticulate::py_config()$version
-            rgeowheels::install_wheel("GDAL", pyversion = substr(py_version, 1, 4))
-            rgeowheels::install_wheel("rasterio", pyversion = substr(py_version, 1, 4))
+            rgeowheels::install_wheel("GDAL", version = substr(py_version, 1, 4))
+            rgeowheels::install_wheel("rasterio", version = substr(py_version, 1, 4))
           }
           if ("${{ matrix.config.geedim-version }}" == "latest") {
             reticulate::virtualenv_install("r-rgeedim", "geedim")
