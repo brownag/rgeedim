@@ -45,6 +45,7 @@ jobs:
       - name: Authenticate with Earth Engine
         if: env.EE_PRIVATE_KEY != ''
         run: |
+          remotes::install_local()
           rgeedim::gd_initialize(private_key_file = Sys.getenv("EE_PRIVATE_KEY"))
         shell: Rscript {0}
 
