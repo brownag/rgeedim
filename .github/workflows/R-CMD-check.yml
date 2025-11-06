@@ -73,7 +73,7 @@ jobs:
           venv_path <- reticulate::virtualenv_create("r-rgeedim", version = "${{ matrix.config.python-version }}")
           reticulate::use_virtualenv("r-rgeedim")
           if (Sys.info()["sysname"] == "Windows") {
-            python_path <- file.path(venv_path, "Scripts", "python.exe")
+            python_path <- normalizePath(file.path(path.expand(venv_path), "Scripts", "python.exe"))
             remotes::install_github("brownag/rgeowheels")
             rgeowheels::set_rgeowheels_python(python_path)
             py_version <- reticulate::py_config()$version
