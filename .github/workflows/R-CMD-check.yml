@@ -20,18 +20,18 @@ jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) - geedim ${{ matrix.config.geedim-version }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) - py${{ matrix.config.python-version }} - geedim ${{ matrix.config.geedim-version }}
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release', geedim-version: 'latest', authenticate: false}
-          - {os: windows-latest, r: 'release', geedim-version: 'latest', authenticate: false}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', geedim-version: 'latest', authenticate: false}
-          - {os: ubuntu-latest,   r: 'release', geedim-version: 'latest', authenticate: true}
-          - {os: ubuntu-latest,   r: 'release', geedim-version: '1.9.0', authenticate: true}
-          - {os: ubuntu-22.04,   r: '3.6', geedim-version: 'latest', authenticate: false}
+          - {os: macos-latest,   r: 'release', geedim-version: 'latest', python-version: '3.12', authenticate: false}
+          - {os: windows-latest, r: 'release', geedim-version: 'latest', python-version: '3.12', authenticate: false}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', geedim-version: 'latest', python-version: '3.13', authenticate: false}
+          - {os: ubuntu-latest,   r: 'release', geedim-version: 'latest', python-version: '3.12', authenticate: true}
+          - {os: ubuntu-latest,   r: 'release', geedim-version: '1.9.0', python-version: '3.12', authenticate: true}
+          - {os: ubuntu-22.04,   r: '3.6', geedim-version: 'latest', python-version: '3.11', authenticate: false}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -47,7 +47,7 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          python-version: ${{ matrix.config.python-version }}
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
       - uses: r-lib/actions/setup-pandoc@v2
@@ -68,16 +68,15 @@ jobs:
           extra-packages: any::rcmdcheck, rstudio/reticulate, any::remotes
           needs: check
 
-      - name: Install GDAL for Windows
-        if: runner.os == 'Windows'
-        run: |
-          remotes::install_github("brownag/rgeowheels")
-          rgeowheels::install_wheel("GDAL")
-        shell: Rscript {0}
-
       - name: Install Python dependencies
         run: |
           reticulate::virtualenv_create("r-rgeedim")
+          if (Sys.info()["sysname"] == "Windows") {
+            remotes::install_github("brownag/rgeowheels")
+            py_version <- reticulate::py_config()$version
+            rgeowheels::install_wheel("GDAL", version = substr(py_version, 1, 4))
+            rgeowheels::install_wheel("rasterio", version = substr(py_version, 1, 4))
+          }
           if ("${{ matrix.config.geedim-version }}" == "latest") {
             reticulate::virtualenv_install("r-rgeedim", "geedim")
           } else {
