@@ -1,3 +1,10 @@
+# rgeedim 0.3.0
+
+ * Support for geedim v2.0.0 and earthengine-api v1.6.15+
+ 
+   - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors instead of deprecated `MaskedImage` and `MaskedCollection` classes
+   - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
+   
 # rgeedim 0.2.8
 
  * With reticulate >= 1.41.0 call `py_require(c("earthengine-api" , "geedim"))` on load
