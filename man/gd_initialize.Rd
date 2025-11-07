@@ -7,7 +7,7 @@
 \usage{
 gd_initialize(
   private_key_file = NULL,
-  credentials = "persistent",
+  credentials = NULL,
   cloud_api_key = NULL,
   url = "https://earthengine-highvolume.googleapis.com",
   opt_url = NULL,
@@ -21,7 +21,7 @@ gd_is_initialized(...)
 \arguments{
 \item{private_key_file}{character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify \code{EE_SERVICE_ACC_PRIVATE_KEY} environment variable with path to JSON file.}
 
-\item{credentials}{Default: \code{'persistent'} uses credentials already stored in the filesystem, or raise an explanatory exception guiding the user to create those credentials.}
+\item{credentials}{Default: \code{NULL} uses Application Default Credentials (ADC) from the environment. Set to \code{'persistent'} to use credentials stored in the filesystem.}
 
 \item{cloud_api_key}{An optional API key to use the Cloud API. Default: \code{NULL}.}
 
