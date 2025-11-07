@@ -105,8 +105,7 @@ jobs:
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: | 
-          rgeedim::gd_authenticate(auth_mode = "appdefault")
-          rgeedim::gd_initialize(project = Sys.getenv("GCP_PROJECT_ID"))
+          rgeedim::gd_initialize(credentials = NULL, project = Sys.getenv("GCP_PROJECT_ID"))
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
