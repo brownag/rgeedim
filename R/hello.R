@@ -2,7 +2,7 @@
 #'
 #' Calls `geedim` `Initialize()` method. This method should be called at the beginning of each session.
 #' @param private_key_file character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify `EE_SERVICE_ACC_PRIVATE_KEY` environment variable with path to JSON file.
-#' @param credentials Default: `'persistent'` uses credentials already stored in the filesystem, or raise an explanatory exception guiding the user to create those credentials.
+#' @param credentials Default: `NULL` uses Application Default Credentials (ADC) from the environment. Set to `'persistent'` to use credentials stored in the filesystem.
 #' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
 #' @param opt_url (deprecated) Use `url`.
@@ -20,7 +20,7 @@
 #' gd_initialize()
 #' }
 gd_initialize <- function(private_key_file = NULL,
-                          credentials = 'persistent',
+                          credentials = NULL,
                           cloud_api_key = NULL,
                           url = 'https://earthengine-highvolume.googleapis.com',
                           opt_url = NULL,
@@ -41,12 +41,16 @@ gd_initialize <- function(private_key_file = NULL,
   eev <- gd$utils$ee$`__version__`
 
   args <- list(
-    credentials = credentials,
     cloud_api_key = cloud_api_key,
     opt_url = url,
     http_transport = http_transport,
     project = project
   )
+  
+  # Only add credentials if not NULL (to allow ADC when credentials is NULL)
+  if (!is.null(credentials)) {
+    args <- c(list(credentials = credentials), args)
+  }
 
   # reticulate does not work w/ opt_ prefix decorators introduced in 0.1.381
   if (!is.null(eev) && eev >= "0.1.381") {
