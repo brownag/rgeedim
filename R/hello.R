@@ -58,6 +58,35 @@ gd_initialize <- function(private_key_file = NULL,
     args <- c(args, list(url = url)) # add url=
   }
 
+  .load_service_account_credentials <- function(key_source, quiet = FALSE, return_error = FALSE) {
+    result <- tryCatch({
+      if (file.exists(key_source) && grepl("\\.json$", key_source, ignore.case = TRUE)) {
+        kd <- jsonlite::read_json(key_source)
+      } else {
+        kd <- jsonlite::parse_json(key_source)
+      }
+      
+      if (!is.null(kd[['client_email']]) && !is.null(kd[['private_key']])) {
+        sac <- gd$utils$ee$ServiceAccountCredentials(kd[['client_email']],
+                                                     key_data = kd[['private_key']])
+        return(sac)
+      } else {
+        stop("Invalid service account JSON: missing required fields", call. = FALSE)
+      }
+    }, error = function(e) {
+      if (return_error) {
+        return(try(stop(e$message), silent = TRUE))
+      } else {
+        if (!quiet) {
+          message(sprintf("Warning: Failed to load service account credentials from %s: %s", 
+                         key_source, e$message))
+        }
+        return(NULL)
+      }
+    })
+    return(result)
+  }
+
   if (!is.null(private_key_file) && file.exists(private_key_file)) {
     ek <- private_key_file
   } else {
@@ -69,17 +98,7 @@ gd_initialize <- function(private_key_file = NULL,
     }
   }
   if (!is.null(ek) && length(ek) == 1) {
-
-    if (file.exists(ek) && grepl("\\.json$", ek[1], ignore.case = TRUE)) {
-      kd <- jsonlite::read_json(ek)
-    } else {
-      kd <- jsonlite::parse_json(ek)
-    }
-
-    sac <- try(gd$utils$ee$ServiceAccountCredentials(kd[['client_email']],
-                                                     key_data = kd[['private_key']]),
-               silent = quiet)
-
+    sac <- .load_service_account_credentials(ek, quiet, return_error = TRUE)
     if (inherits(sac, 'try-error')) {
       return(invisible(sac))
     }
@@ -87,17 +106,22 @@ gd_initialize <- function(private_key_file = NULL,
   } else if (is.null(credentials)) {
     creds_file <- Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS', unset = NA_character_)
     if (!is.na(creds_file) && file.exists(creds_file)) {
-      tryCatch({
-        adc_result <- google_auth_module$default()
-        args$credentials <- adc_result[[1]]
-        if (is.null(project)) {
-          args$project <- adc_result[[2]]
-        }
-      }, error = function(e) {
-        if (!quiet) {
-          message(sprintf("Warning: Failed to load ADC: %s", e$message))
-        }
-      })
+      sac <- .load_service_account_credentials(creds_file, quiet)
+      if (!is.null(sac)) {
+        args$credentials <- sac
+      } else {
+        tryCatch({
+          adc_result <- google_auth_module$default()
+          args$credentials <- adc_result[[1]]
+          if (is.null(project)) {
+            args$project <- adc_result[[2]]
+          }
+        }, error = function(e) {
+          if (!quiet) {
+            message(sprintf("Warning: Failed to load ADC: %s", e$message))
+          }
+        })
+      }
     }
   }
   return(invisible(try(do.call(gd$utils$ee$Initialize, args), silent = quiet)))
