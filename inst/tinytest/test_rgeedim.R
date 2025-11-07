@@ -1,7 +1,9 @@
+project_id <- Sys.getenv("GCP_PROJECT_ID", unset = "rgeedim-demo")
+
 if (!inherits(gd_version(), "try-error")) {
   # we are assuming gd_authenticate() has been called / set up
   # such that we can init modules and begin using them
-  gi <- gd_initialize(project = "rgeedim-demo")
+  gi <- gd_initialize(project = project_id)
   # NB: you may need to either create a project of this name or customize
 } else {
   gi <- try(stop("geedim/earthengine-api not available"), silent = TRUE)
