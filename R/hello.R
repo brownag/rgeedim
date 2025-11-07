@@ -88,11 +88,14 @@ gd_initialize <- function(private_key_file = NULL,
     creds_file <- Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS', unset = NA_character_)
     if (!is.na(creds_file) && file.exists(creds_file)) {
       tryCatch({
-        adc_creds <- google_auth_module$load_credentials_from_file(creds_file)[[1]]
-        args$credentials <- adc_creds
+        adc_result <- google_auth_module$default()
+        args$credentials <- adc_result[[1]]
+        if (is.null(project)) {
+          args$project <- adc_result[[2]]
+        }
       }, error = function(e) {
         if (!quiet) {
-          message(sprintf("Warning: Failed to load ADC from %s: %s", creds_file, e$message))
+          message(sprintf("Warning: Failed to load ADC: %s", e$message))
         }
       })
     }
