@@ -5,7 +5,6 @@
 #' @param credentials Default: `NULL` uses Application Default Credentials (ADC) from the environment. Can also be set to `'persistent'` to use credentials stored in the filesystem.
 #' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
-#' @param opt_url (deprecated) Use `url`.
 #' @param http_transport The HTTP transport method to use when making requests. Default: `NULL`
 #' @param project The client project ID or number to use when making API calls. Default: `NULL`
 #' @param quiet Suppress error messages on load? Default: `FALSE`
@@ -30,16 +29,10 @@ gd_initialize <- function(private_key_file = NULL,
                           credentials = NULL,
                           cloud_api_key = NULL,
                           url = 'https://earthengine-highvolume.googleapis.com',
-                          opt_url = NULL,
                           http_transport = NULL,
                           project = NULL,
                           quiet = FALSE) {
 
-  if (!missing(opt_url)) {
-    .Deprecated(msg = "`gd_initialize(opt_url=...)` is deprecated, use `url=` instead")
-    url <- opt_url
-  }
-  
   if (!is.null(private_key_file)) {
     message("Note: The `private_key_file` argument is deprecated as of rgeedim v0.3.0. ",
             "Use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.")

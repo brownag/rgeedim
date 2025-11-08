@@ -10,7 +10,6 @@ gd_initialize(
   credentials = NULL,
   cloud_api_key = NULL,
   url = "https://earthengine-highvolume.googleapis.com",
-  opt_url = NULL,
   http_transport = NULL,
   project = NULL,
   quiet = FALSE
@@ -19,15 +18,13 @@ gd_initialize(
 gd_is_initialized(...)
 }
 \arguments{
-\item{private_key_file}{character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify \code{EE_SERVICE_ACC_PRIVATE_KEY} environment variable with path to JSON file.}
+\item{private_key_file}{character. Optional: Path to JSON file containing service account credentials. This is the recommended way to provide explicit service account authentication. (Deprecated: use \code{GOOGLE_APPLICATION_CREDENTIALS} environment variable instead.)}
 
-\item{credentials}{Default: \code{NULL} uses Application Default Credentials (ADC) from the environment. Set to \code{'persistent'} to use credentials stored in the filesystem.}
+\item{credentials}{Default: \code{NULL} uses Application Default Credentials (ADC) from the environment. Can also be set to \code{'persistent'} to use credentials stored in the filesystem.}
 
 \item{cloud_api_key}{An optional API key to use the Cloud API. Default: \code{NULL}.}
 
 \item{url}{The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: \code{"https://earthengine-highvolume.googleapis.com"}}
-
-\item{opt_url}{(deprecated) Use \code{url}.}
 
 \item{http_transport}{The HTTP transport method to use when making requests. Default: \code{NULL}}
 
@@ -44,6 +41,14 @@ gd_is_initialized(...)
 }
 \description{
 Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.
+}
+\details{
+Authentication priority (in order):
+\enumerate{
+\item \code{private_key_file} parameter (explicit service account JSON file; deprecated in v0.3.0)
+\item \code{GOOGLE_APPLICATION_CREDENTIALS} environment variable (service account JSON or ADC)
+\item Application Default Credentials (ADC) via \code{google.auth.default()}
+}
 }
 \examples{
 \dontrun{
