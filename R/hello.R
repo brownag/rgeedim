@@ -1,14 +1,21 @@
 #' Initialize `geedim`
 #'
 #' Calls `geedim` `Initialize()` method. This method should be called at the beginning of each session.
-#' @param private_key_file character. Optional: Path to JSON file containing client information and private key. Alternately, the contents of a JSON file. Instead of setting this argument you may specify `EE_SERVICE_ACC_PRIVATE_KEY` environment variable with path to JSON file.
-#' @param credentials Default: `NULL` uses Application Default Credentials (ADC) from the environment. Set to `'persistent'` to use credentials stored in the filesystem.
+#' @param private_key_file character. Optional: Path to JSON file containing service account credentials. This is the recommended way to provide explicit service account authentication. (Deprecated: use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.)
+#' @param credentials Default: `NULL` uses Application Default Credentials (ADC) from the environment. Can also be set to `'persistent'` to use credentials stored in the filesystem.
 #' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
 #' @param opt_url (deprecated) Use `url`.
 #' @param http_transport The HTTP transport method to use when making requests. Default: `NULL`
 #' @param project The client project ID or number to use when making API calls. Default: `NULL`
 #' @param quiet Suppress error messages on load? Default: `FALSE`
+#'
+#' @details Authentication priority (in order):
+#' \enumerate{
+#'   \item `private_key_file` parameter (explicit service account JSON file; deprecated in v0.3.0)
+#'   \item `GOOGLE_APPLICATION_CREDENTIALS` environment variable (service account JSON or ADC)
+#'   \item Application Default Credentials (ADC) via `google.auth.default()`
+#' }
 #'
 #' @return `gd_initialize()`: try-error (invisibly) on error.
 #' @export
@@ -31,6 +38,17 @@ gd_initialize <- function(private_key_file = NULL,
   if (!missing(opt_url)) {
     .Deprecated(msg = "`gd_initialize(opt_url=...)` is deprecated, use `url=` instead")
     url <- opt_url
+  }
+  
+  if (!is.null(private_key_file)) {
+    message("Note: The `private_key_file` argument is deprecated as of rgeedim v0.3.0. ",
+            "Use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.")
+  }
+  
+  ev <- Sys.getenv('EE_SERVICE_ACC_PRIVATE_KEY', unset = NA_character_)
+  if (!is.na(ev)) {
+    message("Note: The `EE_SERVICE_ACC_PRIVATE_KEY` environment variable is deprecated as of rgeedim v0.3.0. ",
+            "Use the standard `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.")
   }
 
   # python 3.10.x compatibility:
@@ -90,19 +108,40 @@ gd_initialize <- function(private_key_file = NULL,
   if (!is.null(private_key_file) && file.exists(private_key_file)) {
     ek <- private_key_file
   } else {
-    # check places people would have a ref to service account key
     ek <- NULL
-    ev <- Sys.getenv('EE_SERVICE_ACC_PRIVATE_KEY', unset = NA_character_)
-    if (!is.na(ev)) {
-      ek <- ev
-    }
   }
   if (!is.null(ek) && length(ek) == 1) {
     sac <- .load_service_account_credentials(ek, quiet, return_error = TRUE)
     if (inherits(sac, 'try-error')) {
       return(invisible(sac))
     }
-    args$credentials <- sac
+    if (!is.null(sac)) {
+      args$credentials <- sac
+    }
+  }
+  
+  # Try to load from GOOGLE_APPLICATION_CREDENTIALS if credentials not yet set
+  if (is.null(credentials) && is.null(args$credentials)) {
+    creds_file <- Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS', unset = NA_character_)
+    if (!is.na(creds_file) && file.exists(creds_file)) {
+      sac <- .load_service_account_credentials(creds_file, quiet, return_error = FALSE)
+      if (!is.null(sac)) {
+        args$credentials <- sac
+      } else {
+        # Fall back to ADC
+        tryCatch({
+          adc_result <- google_auth_module$default()
+          args$credentials <- adc_result[[1]]
+          if (is.null(project)) {
+            args$project <- adc_result[[2]]
+          }
+        }, error = function(e) {
+          if (!quiet) {
+            message(sprintf("Warning: Failed to load ADC: %s", e$message))
+          }
+        })
+      }
+    }
   }
   return(invisible(try(do.call(gd$utils$ee$Initialize, args), silent = quiet)))
 }

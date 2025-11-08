@@ -5,6 +5,12 @@
    - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors instead of deprecated `MaskedImage` and `MaskedCollection` classes
    - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
    
+ * Authentication improvements
+ 
+   - `gd_initialize(private_key_file=...)` is deprecated. Use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.
+   - Support for `EE_SERVICE_ACC_PRIVATE_KEY` environment variable has been removed. Use standard `GOOGLE_APPLICATION_CREDENTIALS` for all environments (local, CI/CD, containerized).
+   - Authentication now follows standard Google Cloud practices: check explicit `private_key_file` (deprecated), then `GOOGLE_APPLICATION_CREDENTIALS`, then Application Default Credentials.
+   
 # rgeedim 0.2.8
 
  * With reticulate >= 1.41.0 call `py_require(c("earthengine-api" , "geedim"))` on load
