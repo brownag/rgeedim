@@ -117,23 +117,19 @@ gd_initialize <- function(private_key_file = NULL,
   if (is.null(credentials) && is.null(args$credentials)) {
     creds_file <- Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS', unset = NA_character_)
     if (!is.na(creds_file) && file.exists(creds_file)) {
-      sac <- .load_service_account_credentials(creds_file, quiet, return_error = FALSE)
-      if (!is.null(sac)) {
-        args$credentials <- sac
-      } else {
-        # Fall back to ADC
-        tryCatch({
-          adc_result <- google_auth_module$default()
-          args$credentials <- adc_result[[1]]
-          if (is.null(project)) {
-            args$project <- adc_result[[2]]
-          }
-        }, error = function(e) {
-          if (!quiet) {
-            message(sprintf("Warning: Failed to load ADC: %s", e$message))
-          }
-        })
-      }
+      # For GOOGLE_APPLICATION_CREDENTIALS, let ADC handle it (could be WIF, service account, or other)
+      # Don't try to parse as service account since WIF credentials have different structure
+      tryCatch({
+        adc_result <- google_auth_module$default()
+        args$credentials <- adc_result[[1]]
+        if (is.null(project)) {
+          args$project <- adc_result[[2]]
+        }
+      }, error = function(e) {
+        if (!quiet) {
+          message(sprintf("Warning: Failed to load ADC: %s", e$message))
+        }
+      })
     }
   }
   return(invisible(try(do.call(gd$utils$ee$Initialize, args), silent = quiet)))
