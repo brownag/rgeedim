@@ -99,6 +99,17 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
+          token-format: 'access_token'
+          access_token_lifetime: '3600s'
+
+      - name: Set up Google Application Credentials for rgeedim
+        if: matrix.config.authenticate == true
+        run: |
+          creds_file <- Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+          if (creds_file == "" || !file.exists(creds_file)) {
+            stop("GOOGLE_APPLICATION_CREDENTIALS not set or file does not exist")
+          }
+        shell: Rscript {0}
 
       - name: Authenticate with Earth Engine
         if: matrix.config.authenticate == true

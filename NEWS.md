@@ -7,9 +7,9 @@
    
  * Authentication improvements
  
-   - `gd_initialize(private_key_file=...)` is deprecated. Use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.
+   - `gd_initialize(private_key_file=...)` parameter has been removed. Use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.
    - Support for `EE_SERVICE_ACC_PRIVATE_KEY` environment variable has been removed. Use standard `GOOGLE_APPLICATION_CREDENTIALS` for all environments (local, CI/CD, containerized).
-   - Authentication now follows standard Google Cloud practices: check explicit `private_key_file` (deprecated), then `GOOGLE_APPLICATION_CREDENTIALS`, then Application Default Credentials.
+   - `gd_initialize()` now delegates authentication to Python's native Application Default Credentials (ADC) logic for maximum robustness and compatibility with all credential types (service accounts, user ADC, workload identity federation, attached service accounts on Google Cloud)
    
 # rgeedim 0.2.8
 

@@ -1,25 +1,26 @@
 #' Initialize `geedim`
 #'
 #' Calls `geedim` `Initialize()` method. This method should be called at the beginning of each session.
-#' @param private_key_file character. Optional: Path to JSON file containing service account credentials. This is the recommended way to provide explicit service account authentication. (Deprecated: use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.)
-#' @param credentials Default: `NULL` uses Application Default Credentials (ADC) from the environment. Can also be set to `'persistent'` to use credentials stored in the filesystem.
+#' @param private_key_file character. Optional: Path to JSON file containing service account credentials. (Deprecated in v0.3.0: use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead. If provided and `GOOGLE_APPLICATION_CREDENTIALS` is not set, the file path will be used to set that environment variable.)
+#' @param credentials Default: `NULL` uses Google Application Default Credentials (ADC) to find credentials automatically. Can be set to a pre-existing credential object if needed.
 #' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
 #' @param http_transport The HTTP transport method to use when making requests. Default: `NULL`
 #' @param project The client project ID or number to use when making API calls. Default: `NULL`
 #' @param quiet Suppress error messages on load? Default: `FALSE`
 #'
-#' @details Authentication priority (in order):
+#' @details Authentication is handled automatically by Google Application Default Credentials (ADC). When `credentials` is `NULL` (the default), the underlying Python libraries will automatically search for credentials in the following order:
 #' \enumerate{
-#'   \item `private_key_file` parameter (explicit service account JSON file; deprecated in v0.3.0)
-#'   \item `GOOGLE_APPLICATION_CREDENTIALS` environment variable (service account JSON or ADC)
-#'   \item Application Default Credentials (ADC) via `google.auth.default()`
+#'   \item `GOOGLE_APPLICATION_CREDENTIALS` environment variable (if set)
+#'   \item User credentials from `gcloud auth application-default login`
+#'   \item Attached service account (when running on Google Cloud infrastructure)
 #' }
+#'
+#' The deprecated `private_key_file` parameter is provided for backward compatibility. If specified and `GOOGLE_APPLICATION_CREDENTIALS` is not already set, the file path will be used to set that environment variable for the Python libraries to discover.
 #'
 #' @return `gd_initialize()`: try-error (invisibly) on error.
 #' @export
 #' @importFrom reticulate py_run_string
-#' @importFrom jsonlite read_json
 #' @seealso `gd_authenticate()`
 #' @examples
 #' \dontrun{
@@ -33,15 +34,23 @@ gd_initialize <- function(private_key_file = NULL,
                           project = NULL,
                           quiet = FALSE) {
 
+  # Handle deprecated private_key_file parameter
   if (!is.null(private_key_file)) {
-    message("Note: The `private_key_file` argument is deprecated as of rgeedim v0.3.0. ",
-            "Use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.")
-  }
-  
-  ev <- Sys.getenv('EE_SERVICE_ACC_PRIVATE_KEY', unset = NA_character_)
-  if (!is.na(ev)) {
-    message("Note: The `EE_SERVICE_ACC_PRIVATE_KEY` environment variable is deprecated as of rgeedim v0.3.0. ",
-            "Use the standard `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.")
+    warning("The `private_key_file` argument is deprecated as of rgeedim v0.3.0. ",
+            "Use the `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.",
+            call. = FALSE)
+    
+    # Only use private_key_file if GOOGLE_APPLICATION_CREDENTIALS is not already set
+    if (Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS") == "") {
+      if (file.exists(private_key_file)) {
+        Sys.setenv(GOOGLE_APPLICATION_CREDENTIALS = private_key_file)
+      } else {
+        if (!quiet) {
+          warning("private_key_file specified but file does not exist: ", private_key_file,
+                  call. = FALSE)
+        }
+      }
+    }
   }
 
   # python 3.10.x compatibility:
@@ -57,10 +66,12 @@ gd_initialize <- function(private_key_file = NULL,
     http_transport = http_transport,
     project = project
   )
-  
-  # Only add credentials if not NULL (to allow ADC when credentials is NULL)
+
+  # Only add credentials if not NULL.
+  # When credentials is NULL, Python's ee.Initialize() will automatically use
+  # Google Application Default Credentials (ADC) logic via google.auth.default().
   if (!is.null(credentials)) {
-    args <- c(list(credentials = credentials), args)
+    args$credentials <- credentials
   }
 
   # reticulate does not work w/ opt_ prefix decorators introduced in 0.1.381
@@ -69,69 +80,6 @@ gd_initialize <- function(private_key_file = NULL,
     args <- c(args, list(url = url)) # add url=
   }
 
-  .load_service_account_credentials <- function(key_source, quiet = FALSE, return_error = FALSE) {
-    result <- tryCatch({
-      if (file.exists(key_source) && grepl("\\.json$", key_source, ignore.case = TRUE)) {
-        kd <- jsonlite::read_json(key_source)
-      } else {
-        kd <- jsonlite::parse_json(key_source)
-      }
-      
-      if (!is.null(kd[['client_email']]) && !is.null(kd[['private_key']])) {
-        sac <- gd$utils$ee$ServiceAccountCredentials(kd[['client_email']],
-                                                     key_data = kd[['private_key']])
-        return(sac)
-      } else {
-        stop("Invalid service account JSON: missing required fields", call. = FALSE)
-      }
-    }, error = function(e) {
-      if (return_error) {
-        return(try(stop(e$message), silent = TRUE))
-      } else {
-        if (!quiet) {
-          message(sprintf("Warning: Failed to load service account credentials from %s: %s", 
-                         key_source, e$message))
-        }
-        return(NULL)
-      }
-    })
-    return(result)
-  }
-
-  if (!is.null(private_key_file) && file.exists(private_key_file)) {
-    ek <- private_key_file
-  } else {
-    ek <- NULL
-  }
-  if (!is.null(ek) && length(ek) == 1) {
-    sac <- .load_service_account_credentials(ek, quiet, return_error = TRUE)
-    if (inherits(sac, 'try-error')) {
-      return(invisible(sac))
-    }
-    if (!is.null(sac)) {
-      args$credentials <- sac
-    }
-  }
-  
-  # Try to load from GOOGLE_APPLICATION_CREDENTIALS if credentials not yet set
-  if (is.null(credentials) && is.null(args$credentials)) {
-    creds_file <- Sys.getenv('GOOGLE_APPLICATION_CREDENTIALS', unset = NA_character_)
-    if (!is.na(creds_file) && file.exists(creds_file)) {
-      # For GOOGLE_APPLICATION_CREDENTIALS, let ADC handle it (could be WIF, service account, or other)
-      # Don't try to parse as service account since WIF credentials have different structure
-      tryCatch({
-        adc_result <- google_auth_module$default()
-        args$credentials <- adc_result[[1]]
-        if (is.null(project)) {
-          args$project <- adc_result[[2]]
-        }
-      }, error = function(e) {
-        if (!quiet) {
-          message(sprintf("Warning: Failed to load ADC: %s", e$message))
-        }
-      })
-    }
-  }
   return(invisible(try(do.call(gd$utils$ee$Initialize, args), silent = quiet)))
 }
 

@@ -18,9 +18,9 @@ gd_initialize(
 gd_is_initialized(...)
 }
 \arguments{
-\item{private_key_file}{character. Optional: Path to JSON file containing service account credentials. This is the recommended way to provide explicit service account authentication. (Deprecated: use \code{GOOGLE_APPLICATION_CREDENTIALS} environment variable instead.)}
+\item{private_key_file}{character. Optional: Path to JSON file containing service account credentials. (Deprecated in v0.3.0: use \code{GOOGLE_APPLICATION_CREDENTIALS} environment variable instead. If provided and \code{GOOGLE_APPLICATION_CREDENTIALS} is not set, the file path will be used to set that environment variable.)}
 
-\item{credentials}{Default: \code{NULL} uses Application Default Credentials (ADC) from the environment. Can also be set to \code{'persistent'} to use credentials stored in the filesystem.}
+\item{credentials}{Default: \code{NULL} uses Google Application Default Credentials (ADC) to find credentials automatically. Can be set to a pre-existing credential object if needed.}
 
 \item{cloud_api_key}{An optional API key to use the Cloud API. Default: \code{NULL}.}
 
@@ -43,12 +43,14 @@ gd_is_initialized(...)
 Calls \code{geedim} \code{Initialize()} method. This method should be called at the beginning of each session.
 }
 \details{
-Authentication priority (in order):
+Authentication is handled automatically by Google Application Default Credentials (ADC). When \code{credentials} is \code{NULL} (the default), the underlying Python libraries will automatically search for credentials in the following order:
 \enumerate{
-\item \code{private_key_file} parameter (explicit service account JSON file; deprecated in v0.3.0)
-\item \code{GOOGLE_APPLICATION_CREDENTIALS} environment variable (service account JSON or ADC)
-\item Application Default Credentials (ADC) via \code{google.auth.default()}
+\item \code{GOOGLE_APPLICATION_CREDENTIALS} environment variable (if set)
+\item User credentials from \verb{gcloud auth application-default login}
+\item Attached service account (when running on Google Cloud infrastructure)
 }
+
+The deprecated \code{private_key_file} parameter is provided for backward compatibility. If specified and \code{GOOGLE_APPLICATION_CREDENTIALS} is not already set, the file path will be used to set that environment variable for the Python libraries to discover.
 }
 \examples{
 \dontrun{
