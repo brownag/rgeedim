@@ -48,6 +48,10 @@ If you are running {rgeedim} interactively for the first time you may be prompte
 library(rgeedim)
 ```
 
+``` {.plain .message}
+#> rgeedim v0.3.0 -- using geedim 2.0.0 w/ earthengine-api 1.6.15
+```
+
 ## Dependencies
 
 You will need Python 3 with the `geedim` module installed to use {rgeedim}.
@@ -142,19 +146,19 @@ library(terra)
 ```
 
 ``` {.plain .message}
-#> terra 1.8.80
+#> terra 1.8.89
 ```
 
 ``` {.r}
 f <- rast(x)
 f
 #> class       : SpatRaster 
-#> size        : 402, 618, 2  (nrow, ncol, nlyr)
+#> size        : 402, 618, 1  (nrow, ncol, nlyr)
 #> resolution  : 10, 10  (x, y)
 #> extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)
 #> coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
 #> source      : image.tif 
-#> names       : constant, FILL_MASK 
+#> name        : constant 
 plot(f[[1]])
 ```
 ![](<man/figures/README-inspect-1.jpeg>)
@@ -239,8 +243,8 @@ gd_properties(a)
 ```
 |id|date|
 |---|---|
-|USGS/3DEP/1m/USGS_1M_10_x64y416_CA_SanJoaquin_2021_A21|2006-01-01|
-|USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19|2006-01-01|
+|USGS_1M_10_x64y416_CA_SanJoaquin_2021_A21|2006-01-01|
+|USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19|2006-01-01|
 
 
 ``` {.r}
@@ -266,8 +270,6 @@ plot(project(b, x), add = TRUE)
 
 This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the NASA/USGS Landsat 7 Level 2, Collection 2, Tier 1. 
 
-This example is based on a [tutorial](https://geedim.readthedocs.io/en/latest/examples/l7_composite.html) in the `geedim` manual.
-
 ``` {.r}
 library(rgeedim)
 library(terra)
@@ -282,8 +284,10 @@ b <- gd_bbox(
 )
 
 ## landsat example
+basepath <- 'LANDSAT/LE07/C02/T1_L2'
+
 # search collection for date range and minimum data fill (85%)
-x <- 'LANDSAT/LE07/C02/T1_L2' |>
+x <- basepath |>
   gd_collection_from_name() |>
   gd_search(
     start_date = '2020-11-01',
@@ -297,15 +301,15 @@ gd_properties(x)
 ```
 |id|date|fill|cloudless|grmse|saa|sea|
 |---|---|--:|--:|--:|--:|--:|
-|LANDSAT/LE07/C02/T1_L2/LE07_043034_20201130|2020-11-30|86.41|99.98|4.92|151.45|25.21|
-|LANDSAT/LE07/C02/T1_L2/LE07_043034_20210101|2021-01-01|86.85|98.89|4.79|148.07|22.47|
-|LANDSAT/LE07/C02/T1_L2/LE07_043034_20210117|2021-01-17|86.05|99.93|5.44|145.16|23.71|
-|LANDSAT/LE07/C02/T1_L2/LE07_043034_20210218|2021-02-18|85.66|99.91|5.73|138.46|30.91|
+|LE07_043034_20201130|2020-11-30|86.41|99.96|4.92|151.45|25.21|
+|LE07_043034_20210101|2021-01-01|86.85|97.91|4.79|148.07|22.47|
+|LE07_043034_20210117|2021-01-17|86.05|99.70|5.44|145.16|23.71|
+|LE07_043034_20210218|2021-02-18|85.66|99.60|5.73|138.46|30.91|
 
 
 ``` {.r}
 # download a single image, no compositing
-y <- gd_properties(x)$id[1] |> 
+y <- paste0(basepath, "/", gd_properties(x)$id[1]) |> 
   gd_image_from_id() |>
   gd_download(
     filename = "image.tif",

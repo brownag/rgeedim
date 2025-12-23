@@ -1,13 +1,13 @@
 #' Export image to Earth Engine Asset, Google Cloud Storage Bucket, or Google Drive
 #' @description Exports an encapsulated image to the destination specified by `type`, `folder` and `filename`
-#' @details See the [geedim.image.ImageAccessor.export() documentation](https://geedim.readthedocs.io/en/latest/_generated/geedim.image.ImageAccessor.export.html) for details on additional arguments. Requires 'geedim' >1.6.0.
+#' @details See the [geedim.image.ImageAccessor.toGoogleCloud() documentation](https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.toGoogleCloud) for details on additional arguments. Requires 'geedim' >1.6.0.
 #' @param x An object that inherits from `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.download.BaseImage` (for geedim < 2.0.0). See `\link{geedim-versions}` for more details.
 #' @param filename Output filename. If `type` is `"asset"` and `folder` is not specified, `filename` should be a valid Earth Engine asset ID.
 #' @param type Export type. Defaults to `"drive"`; other options include `"asset"`, and "`cloud`". See `gd_export_types()`
 #' @param folder Destination folder. Defaults to `dirname(filename)`.
 #' @param region Region e.g. from `gd_bbox()` or `gd_region()`
 #' @param wait Wait for completion? Default: `TRUE`
-#' @param ... Additional arguments to `geedim.download.BaseImage.export()`
+#' @param ... Additional arguments to `geedim.image.ImageAccessor.toGoogleCloud()` (geedim >= 2.0.0) or `geedim.download.BaseImage.export()` (geedim 1.x.x)
 #'
 #' @return an `ee.batch.Task` object
 #' @export
@@ -24,7 +24,7 @@
 #'  i <- gd_image_from_id('CSP/ERGo/1_0/US/CHILI')
 #'
 #'  ## export to Google Drive (default `type="drive"`)
-#'  # res <- gd_export(i, filename = "RGEEDIM_TEST.tif", scale = 100, region = r)
+#'  # res <- gd_export(i, filename = "RGEEDIM_TEST", scale = 100, region = r)
 #'
 #'  ## export to `type="asset"`, then download by ID (stored in project assets)
 #'  # res <- gd_export(

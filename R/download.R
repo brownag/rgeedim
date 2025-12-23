@@ -8,7 +8,7 @@
 #' @param composite logical. Composite Image Collection into single image for download? Default: `TRUE`
 #' @param overwrite Overwrite existing file? Default: `TRUE`
 #' @param silent Silence errors? Default: `TRUE`
-#' @param ... Additional arguments (e.g. `scale`) passed to [`geedim.image.ImageAccessor$toGeoTIFF(...)`](https://geedim.readthedocs.io/en/latest/_generated/geedim.image.ImageAccessor.toGeoTIFF.html) and, when `composite=TRUE`, [`geedim.collection.ImageCollectionAccessor$composite()`](https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.ImageCollectionAccessor.composite.html)
+#' @param ... Additional arguments (e.g. `scale`) passed to [`geedim.image.ImageAccessor$toGeoTIFF(...)`](https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.toGeoTIFF) and, when `composite=TRUE`, [`geedim.collection.ImageCollectionAccessor$composite()`](https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.collection.ImageCollectionAccessor.composite)
 #' @details The `region` argument is _optional_ for downloading images. When downloading a composite Image Collection, you must specify `region`, `scale` and `crs` arguments. When downloading an image collection as a set of GeoTIFF files (`composite=FALSE`), then `filename` is the destination directory, and `scale` must be specified.
 #'     The default resampling method in `geedim` is `resampling="near"` (Nearest Neighbor). Other options for `resampling` include: `"average"`, `"bicubic"`, `"bilinear"`. See `gd_resampling_methods()`.
 #' @seealso `gd_region()` `gd_bbox()`

@@ -27,7 +27,7 @@ gd_download(
 
 \item{silent}{Silence errors? Default: \code{TRUE}}
 
-\item{...}{Additional arguments (e.g. \code{scale}) passed to \href{https://geedim.readthedocs.io/en/latest/_generated/geedim.image.ImageAccessor.toGeoTIFF.html}{\code{geedim.image.ImageAccessor$toGeoTIFF(...)}} and, when \code{composite=TRUE}, \href{https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.ImageCollectionAccessor.composite.html}{\code{geedim.collection.ImageCollectionAccessor$composite()}}}
+\item{...}{Additional arguments (e.g. \code{scale}) passed to \href{https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.toGeoTIFF}{\code{geedim.image.ImageAccessor$toGeoTIFF(...)}} and, when \code{composite=TRUE}, \href{https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.collection.ImageCollectionAccessor.composite}{\code{geedim.collection.ImageCollectionAccessor$composite()}}}
 }
 \value{
 Invisible path to downloaded image, or \code{try-error} on error

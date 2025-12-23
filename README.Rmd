@@ -251,8 +251,6 @@ plot(project(b, x), add = TRUE)
 
 This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the NASA/USGS Landsat 7 Level 2, Collection 2, Tier 1. 
 
-This example is based on a [tutorial](https://geedim.readthedocs.io/en/latest/examples/l7_composite.html) in the `geedim` manual.
-
 ```{r landsat7-composite}
 library(rgeedim)
 library(terra)
@@ -267,8 +265,10 @@ b <- gd_bbox(
 )
 
 ## landsat example
+basepath <- 'LANDSAT/LE07/C02/T1_L2'
+
 # search collection for date range and minimum data fill (85%)
-x <- 'LANDSAT/LE07/C02/T1_L2' |>
+x <- basepath |>
   gd_collection_from_name() |>
   gd_search(
     start_date = '2020-11-01',
@@ -281,7 +281,7 @@ x <- 'LANDSAT/LE07/C02/T1_L2' |>
 gd_properties(x)
 
 # download a single image, no compositing
-y <- gd_properties(x)$id[1] |> 
+y <- paste0(basepath, "/", gd_properties(x)$id[1]) |> 
   gd_image_from_id() |>
   gd_download(
     filename = "image.tif",

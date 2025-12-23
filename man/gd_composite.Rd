@@ -9,7 +9,7 @@ gd_composite(x, ...)
 \arguments{
 \item{x}{an object inheriting from \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.collection.MaskedCollection} (for geedim < 2.0.0), such as from \code{gd_search()} or \code{gd_collection_from_list()}. See \verb{\link{geedim-versions}} for more details.}
 
-\item{...}{\href{https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.ImageCollectionAccessor.composite.html}{additional arguments} to \code{geedim.collection.ImageCollectionAccessor$composite()}}
+\item{...}{\href{https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.collection.ImageCollectionAccessor.composite}{additional arguments} to \code{geedim.collection.ImageCollectionAccessor$composite()}}
 }
 \value{
 a composite \code{ee.image.Image} object
