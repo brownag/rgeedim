@@ -45,5 +45,9 @@
 #' }
 gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, ...) {
   .inform_missing_module(x, "geedim")
-  x$export(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait, ...)
+  if (gd_version() >= "2.0.0") {
+    x$toGoogleCloud(filename = filename, type = type, folder = folder, region = earthengine()$Geometry(gd_region(region)), wait = wait, ...)
+  } else {
+    x$export(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait, ...)
+  }
 }
