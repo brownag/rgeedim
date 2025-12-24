@@ -7,7 +7,9 @@ on:
 
 name: test-coverage
 
-permissions: read-all
+permissions:
+  contents: 'read'
+  id-token: 'write'
 
 jobs:
   test-coverage:
@@ -15,7 +17,9 @@ jobs:
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      EE_PRIVATE_KEY: ${{ secrets.EE_PRIVATE_KEY }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
+      GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -24,9 +28,9 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
           architecture: 'x64'
 
       - uses: r-lib/actions/setup-pandoc@v2
@@ -38,25 +42,12 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          venv_path <- reticulate::virtualenv_create("r-rgeedim", version = "${{ matrix.config.python-version }}")
+          reticulate::virtualenv_create("r-rgeedim")
           reticulate::use_virtualenv("r-rgeedim")
-          if (Sys.info()["sysname"] == "Windows") {
-            python_path <- normalizePath(file.path(path.expand(venv_path), "Scripts", "python.exe"))
-            remotes::install_github("brownag/rgeowheels")
-            rgeowheels::set_rgeowheels_python(python_path)
-            py_version <- reticulate::py_config()$version
-            rgeowheels::install_wheel("gdal", pyversion = substr(py_version, 1, 4))
-            rgeowheels::install_wheel("rasterio", pyversion = substr(py_version, 1, 4))
-          }
-          if ("${{ matrix.config.geedim-version }}" == "latest") {
-            reticulate::virtualenv_install("r-rgeedim", "geedim")
-          } else {
-            reticulate::virtualenv_install("r-rgeedim", paste0("geedim==", "${{ matrix.config.geedim-version }}"))
-          }
+          reticulate::virtualenv_install("r-rgeedim", "geedim")
         shell: Rscript {0}
 
       - name: Authenticate to Google Cloud (WIF)
-        if: matrix.config.authenticate == true
         uses: 'google-github-actions/auth@v3'
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
@@ -65,7 +56,6 @@ jobs:
           access_token_lifetime: '3600s'
 
       - name: Set up Google Application Credentials for rgeedim
-        if: matrix.config.authenticate == true
         run: |
           creds_file <- Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS")
           if (creds_file == "" || !file.exists(creds_file)) {
@@ -74,7 +64,6 @@ jobs:
         shell: Rscript {0}
 
       - name: Authenticate with Earth Engine
-        if: matrix.config.authenticate == true
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: | 
@@ -93,7 +82,7 @@ jobs:
           covr::to_cobertura(cov)
         shell: Rscript {0}
 
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v4
         with:
           # Fail if error if not on PR, or if on PR and token is given
           fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
