@@ -3,6 +3,7 @@
 ^\.codecov\.yml$
 ^LICENSE\.md$
 ^README\.Rmd$
+^README__files/$
 $\.github/*
 ^\.github$
 ^misc$
