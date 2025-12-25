@@ -1,5 +1,7 @@
 ---
-output: markdown
+output: 
+  markdown:
+    keep_yaml: false
 knit: litedown:::knit
 ---
 

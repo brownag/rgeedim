@@ -1,7 +1,3 @@
----
-output: markdown
-knit: litedown:::knit
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -49,7 +45,7 @@ library(rgeedim)
 ```
 
 ``` {.plain .message}
-#> rgeedim v0.3.0 -- using geedim 2.0.0 w/ earthengine-api 1.6.15
+#> rgeedim v0.3.0 -- using geedim 2.0.0 w/ earthengine-api 1.7.4
 ```
 
 ## Dependencies
@@ -146,7 +142,7 @@ library(terra)
 ```
 
 ``` {.plain .message}
-#> terra 1.8.89
+#> terra 1.8.86
 ```
 
 ``` {.r}
