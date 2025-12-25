@@ -17,7 +17,7 @@ b <- gd_bbox(primary) |>
   gd_region() |> 
   gd_region_to_vect()
 
-gd_image_from_id("USGS/3DEP/10m") |> 
+gd_image_from_id("USGS/SRTMGL1_003") |> 
   gd_download(
     "dem.tif",
     region = b,

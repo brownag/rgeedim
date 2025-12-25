@@ -2,13 +2,13 @@
 
 #' Download a Google Earth Engine Image
 #'
-#' @param x, ID or Name, or a reference to an object inheriting from `geedim.download.BaseImage` or `geedim.collection.MaskedCollection`
+#' @param x, ID or Name, or a reference to an object inheriting from `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.download.BaseImage` (for geedim < 2.0.0) or `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.collection.MaskedCollection` (for geedim < 2.0.0). See `\link{geedim-versions}` for more details.
 #' @param filename path to output file, defaults to temporary GeoTIFF file path; if `composite=FALSE` then this path should be to a parent directory. File names will be calculated from the internal name of the image and the requested scale.
 #' @param region a GeoJSON-like list, or other R spatial object describing region of interest, see `gd_region()` and `gd_bbox()` for details. `NULL` region (default) will download the whole image.
 #' @param composite logical. Composite Image Collection into single image for download? Default: `TRUE`
 #' @param overwrite Overwrite existing file? Default: `TRUE`
 #' @param silent Silence errors? Default: `TRUE`
-#' @param ... Additional arguments (e.g. `scale`) passed to [`geedim.mask.MaskedImage$download(...)`](https://geedim.readthedocs.io/en/latest/_generated/geedim.mask.MaskedImage.download.html) and, when `composite=TRUE`, [`geedim.collection.MaskedCollection$composite()`](https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html)
+#' @param ... Additional arguments (e.g. `scale`) passed to [`geedim.image.ImageAccessor$toGeoTIFF(...)`](https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.toGeoTIFF) and, when `composite=TRUE`, [`geedim.collection.ImageCollectionAccessor$composite()`](https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.collection.ImageCollectionAccessor.composite)
 #' @details The `region` argument is _optional_ for downloading images. When downloading a composite Image Collection, you must specify `region`, `scale` and `crs` arguments. When downloading an image collection as a set of GeoTIFF files (`composite=FALSE`), then `filename` is the destination directory, and `scale` must be specified.
 #'     The default resampling method in `geedim` is `resampling="near"` (Nearest Neighbor). Other options for `resampling` include: `"average"`, `"bicubic"`, `"bilinear"`. See `gd_resampling_methods()`.
 #' @seealso `gd_region()` `gd_bbox()`
@@ -77,7 +77,22 @@ gd_download <- function(x,
     } else stop("Could not create Image or Image Collection from '", x, "'", call. = FALSE)
   }
 
-  if (inherits(x, "geedim.download.BaseImage")) {
+  if (inherits(x, "geedim.image.ImageAccessor")) {
+    if (is.null(region)) {
+      x <- x$prepareForExport(...)$gd
+    } else {
+      x <- x$prepareForExport(region = gd_region(region), ...)$gd
+    }
+    res <- try(x$toGeoTIFF(file = filename, overwrite = overwrite), silent = silent)
+    if (file.exists(filename) && !inherits(res, 'try-error')) {
+      return(filename)
+    } else if (inherits(res, 'try-error')) {
+      message(res[1]) # silent only handles the actual try() blocks, messages can be suppressed if needed
+      return(invisible(res))
+    } else {
+      return(invisible(NULL))
+    }
+  } else if (inherits(x, "geedim.download.BaseImage")) {
     if (is.null(region)) {
       res <- try(x$download(filename = filename, overwrite = overwrite, ...), silent = silent)
     } else {
@@ -91,11 +106,13 @@ gd_download <- function(x,
     } else {
       return(invisible(NULL))
     }
-  } else if (inherits(x, "geedim.collection.MaskedCollection")) {
+  } else if (inherits(x, c("geedim.collection.ImageCollectionAccessor", 
+                           "geedim.collection.MaskedCollection"))) {
     .args <- list(...)
     scale <- .args[["scale"]]
-    if (is.null(scale))
+    if (is.null(scale)) {
       stop("Downloading an Image Collection requires that the `scale` argument be set.", call. = FALSE)
+    }
     .gd_download_collection(x,
                             dest = filename,
                             region = region,

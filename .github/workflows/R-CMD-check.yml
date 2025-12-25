@@ -16,37 +16,45 @@ on:
 
 name: R-CMD-check
 
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) - py${{ matrix.config.python-version }} - geedim ${{ matrix.config.geedim-version }}
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-20.04,   r: '3.6'}
+          - {os: macos-latest,   r: 'release', geedim-version: 'latest', python-version: '3.13', authenticate: false}
+          - {os: windows-latest, r: 'release', geedim-version: 'latest', python-version: '3.13', authenticate: false}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', geedim-version: 'latest', python-version: '3.14', authenticate: true}
+          - {os: ubuntu-latest,   r: 'release', geedim-version: 'latest', python-version: '3.13', authenticate: true}
+          - {os: ubuntu-latest,   r: 'release', geedim-version: '1.9.0', python-version: '3.12', authenticate: true}
+          - {os: ubuntu-22.04,   r: '3.6', geedim-version: 'latest', python-version: '3.11', authenticate: false}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
+      GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          python-version: ${{ matrix.config.python-version }}
+          architecture: 'x64' 
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -63,13 +71,53 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, rstudio/reticulate
+          extra-packages: any::rcmdcheck, rstudio/reticulate, any::remotes, local::.
           needs: check
 
       - name: Install Python dependencies
         run: |
-          reticulate::virtualenv_create("r-rgeedim")
-          reticulate::virtualenv_install("r-rgeedim", "geedim")
+          venv_path <- reticulate::virtualenv_create("r-rgeedim", version = "${{ matrix.config.python-version }}")
+          reticulate::use_virtualenv("r-rgeedim")
+          if (Sys.info()["sysname"] == "Windows") {
+            python_path <- normalizePath(file.path(path.expand(venv_path), "Scripts", "python.exe"))
+            remotes::install_github("brownag/rgeowheels")
+            rgeowheels::set_rgeowheels_python(python_path)
+            py_version <- reticulate::py_config()$version
+            rgeowheels::install_wheel("gdal", pyversion = substr(py_version, 1, 4))
+            rgeowheels::install_wheel("rasterio", pyversion = substr(py_version, 1, 4))
+          }
+          if ("${{ matrix.config.geedim-version }}" == "latest") {
+            reticulate::virtualenv_install("r-rgeedim", "geedim")
+          } else {
+            reticulate::virtualenv_install("r-rgeedim", paste0("geedim==", "${{ matrix.config.geedim-version }}"))
+          }
+        shell: Rscript {0}
+
+      - name: Authenticate to Google Cloud (WIF)
+        if: matrix.config.authenticate == true
+        uses: 'google-github-actions/auth@v3'
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+          token-format: 'access_token'
+          access_token_lifetime: '3600s'
+
+      - name: Set up Google Application Credentials for rgeedim
+        if: matrix.config.authenticate == true
+        run: |
+          creds_file <- Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+          if (creds_file == "" || !file.exists(creds_file)) {
+            stop("GOOGLE_APPLICATION_CREDENTIALS not set or file does not exist")
+          }
+        shell: Rscript {0}
+
+      - name: Authenticate with Earth Engine
+        if: matrix.config.authenticate == true
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: | 
+          rgeedim::gd_authenticate()
+          rgeedim::gd_initialize(project = Sys.getenv("GCP_PROJECT_ID"))
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2

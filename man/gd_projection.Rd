@@ -7,7 +7,7 @@
 gd_projection(x)
 }
 \arguments{
-\item{x}{character ID referencing asset, or an image object (subclass of \code{ee.image.Image} or \code{geedim.download.BaseImage})}
+\item{x}{character ID referencing asset, or an image object (subclass of \code{ee.image.Image}, \code{geedim.image.ImageAccessor} for geedim >= 2.0.0, or \code{geedim.download.BaseImage} for geedim < 2.0.0). See \verb{\link{geedim-versions}} for more details.}
 }
 \value{
 \code{ee.Projection} object
@@ -16,7 +16,7 @@ gd_projection(x)
 Get Projection Information from Google Earth Engine Asset
 }
 \examples{
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))

@@ -22,6 +22,7 @@ litedown::reactor(
 [![HTML Docs](https://img.shields.io/badge/docs-HTML-informational)](https://humus.rocks/rgeedim/)
 [![codecov](https://codecov.io/gh/brownag/rgeedim/branch/main/graph/badge.svg?token=BYBKW7PKC3)](https://app.codecov.io/gh/brownag/rgeedim)
 [![CRAN status](https://www.r-pkg.org/badges/version-last-release/rgeedim)](https://CRAN.R-project.org/package=rgeedim)
+[![Codecov test coverage](https://codecov.io/gh/brownag/rgeedim/graph/badge.svg)](https://app.codecov.io/gh/brownag/rgeedim)
 <!-- badges: end -->
 
 {rgeedim} supports search and download of Google Earth Engine imagery with Python module [`geedim`](https://github.com/leftfield-geospatial/geedim)  by Dugal Harris. This package provides wrapper functions that make it more convenient to use `geedim` from R. 
@@ -171,7 +172,7 @@ b <- gd_bbox(
 
 ## hillshade example
 # download 10m NED DEM in AEA
-x <- "USGS/3DEP/10m" |>
+x <- "USGS/SRTMGL1_003" |>
   gd_image_from_id() |>
   gd_download(
     region = b,
@@ -194,7 +195,7 @@ hsd <- shade(slp, asp)
 plot(c(dem, hillshade = hsd))
 ```
 
-Subsets of the `"USGS/3DEP/10m"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
+Subsets of the `"USGS/SRTMGL1_003"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
 
 ## Example: LiDAR Slope Map
 
@@ -250,8 +251,6 @@ plot(project(b, x), add = TRUE)
 
 This example demonstrates download of a Landsat-7 cloud/shadow-free composite image. A collection is created from the NASA/USGS Landsat 7 Level 2, Collection 2, Tier 1. 
 
-This example is based on a [tutorial](https://geedim.readthedocs.io/en/latest/examples/l7_composite.html) in the `geedim` manual.
-
 ```{r landsat7-composite}
 library(rgeedim)
 library(terra)
@@ -266,8 +265,10 @@ b <- gd_bbox(
 )
 
 ## landsat example
+basepath <- 'LANDSAT/LE07/C02/T1_L2'
+
 # search collection for date range and minimum data fill (85%)
-x <- 'LANDSAT/LE07/C02/T1_L2' |>
+x <- basepath |>
   gd_collection_from_name() |>
   gd_search(
     start_date = '2020-11-01',
@@ -280,7 +281,7 @@ x <- 'LANDSAT/LE07/C02/T1_L2' |>
 gd_properties(x)
 
 # download a single image, no compositing
-y <- gd_properties(x)$id[1] |> 
+y <- paste0(basepath, "/", gd_properties(x)$id[1]) |> 
   gd_image_from_id() |>
   gd_download(
     filename = "image.tif",

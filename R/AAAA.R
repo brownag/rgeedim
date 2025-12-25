@@ -1,5 +1,6 @@
 gd <- NULL
 collections_module <- NULL
+google_auth_module <- NULL
 
 gd_python_envname <- function(envname = "") {
   if (!missing(envname)) {
@@ -75,6 +76,10 @@ gd_ee_version <- function() {
   
     if (is.null(gd)) {
       try(gd <<- reticulate::import("geedim", delay_load = TRUE), silent = TRUE)
+    }
+
+    if (is.null(google_auth_module)) {
+      try(google_auth_module <<- reticulate::import("google.auth", delay_load = TRUE), silent = TRUE)
     }
   
     # note: requires Python >= 3.8; but is not essential for functioning of package

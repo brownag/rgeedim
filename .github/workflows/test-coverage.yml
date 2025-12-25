@@ -1,46 +1,106 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
-  workflow_dispatch:
   push:
-    paths:
-      - '**.R'
-      - '**test-coverage.yml'
-    branches:
-      - main
+    branches: [main, master]
   pull_request:
-    branches:
-      - main
 
 name: test-coverage
 
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
 jobs:
   test-coverage:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
+      GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "release"
+          use-public-rspm: true
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          python-version: '3.13'
+          architecture: 'x64'
 
       - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::covr
+          extra-packages: any::remotes, any::covr, any::xml2, rstudio/reticulate
+          needs: coverage
 
       - name: Install Python dependencies
         run: |
           reticulate::virtualenv_create("r-rgeedim")
+          reticulate::use_virtualenv("r-rgeedim")
           reticulate::virtualenv_install("r-rgeedim", "geedim")
         shell: Rscript {0}
 
-      - name: Test coverage
-        run: covr::codecov()
+      - name: Authenticate to Google Cloud (WIF)
+        uses: 'google-github-actions/auth@v3'
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+          token-format: 'access_token'
+          access_token_lifetime: '3600s'
+
+      - name: Set up Google Application Credentials for rgeedim
+        run: |
+          creds_file <- Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+          if (creds_file == "" || !file.exists(creds_file)) {
+            stop("GOOGLE_APPLICATION_CREDENTIALS not set or file does not exist")
+          }
         shell: Rscript {0}
+
+      - name: Authenticate with Earth Engine
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: | 
+          rgeedim::gd_authenticate()
+          rgeedim::gd_initialize(project = Sys.getenv("GCP_PROJECT_ID"))
+        shell: Rscript {0}
+        
+      - name: Test coverage
+        run: |
+          cov <- covr::package_coverage(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
+          )
+          print(cov)
+          covr::to_cobertura(cov)
+        shell: Rscript {0}
+
+      - uses: codecov/codecov-action@v4
+        with:
+          # Fail if error if not on PR, or if on PR and token is given
+          fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
+          files: ./cobertura.xml
+          plugins: noop
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package

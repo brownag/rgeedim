@@ -1,9 +1,6 @@
-# projection information from server side
-
-
 #' Get Projection Information from Google Earth Engine Asset
 #'
-#' @param x character ID referencing asset, or an image object (subclass of `ee.image.Image` or `geedim.download.BaseImage`)
+#' @param x character ID referencing asset, or an image object (subclass of `ee.image.Image`, `geedim.image.ImageAccessor` for geedim >= 2.0.0, or `geedim.download.BaseImage` for geedim < 2.0.0). See `\link{geedim-versions}` for more details.
 #'
 #' @return `ee.Projection` object
 #' @export
@@ -14,13 +11,22 @@
 #' }
 gd_projection <- function(x) {
   .inform_missing_module(gd, "geedim")
+  
+  if (is.character(x)) {
+    x <- gd_image_from_id(x)
+  }
+  
   if (!inherits(x, "ee.image.Image")) {
     if (inherits(x, 'geedim.download.BaseImage')) {
-      gd$utils$get_projection(x$ee_image)
+      return(gd$utils$get_projection(x$ee_image))
     } else {
-      gd$utils$get_projection(gd$utils$ee$Image(x))
+      if (gd_version() >= "2.0.0") {
+        return(x$projection())
+      } else {
+        return(gd$utils$get_projection(gd$utils$ee$Image(x)))
+      }
     }
   } else {
-    gd$utils$get_projection(x)
+    return(gd$utils$get_projection(x))
   }
 }

@@ -7,7 +7,7 @@
 gd_band_properties(x)
 }
 \arguments{
-\item{x}{a Google Earth Engine Image object, such as from \code{gd_image_from_id()}}
+\item{x}{a \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.download.BaseImage} (for geedim < 2.0.0) object, such as from \code{gd_image_from_id()}. See \verb{\link{geedim-versions}} for more details.}
 }
 \value{
 list. Each element is a list that corresponds to a layer in \code{x}, each with one or more elements for properties of that layer.
@@ -16,10 +16,10 @@ list. Each element is a list that corresponds to a layer in \code{x}, each with 
 Gets combined Earth Engine and STAC properties.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
-  gd_band_properties(gd_image_from_id("USGS/3DEP/10m"))
+  gd_band_properties(gd_image_from_id("USGS/SRTMGL1_003"))
 }
 \dontshow{\}) # examplesIf}
 }

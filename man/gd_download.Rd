@@ -15,7 +15,7 @@ gd_download(
 )
 }
 \arguments{
-\item{x, }{ID or Name, or a reference to an object inheriting from \code{geedim.download.BaseImage} or \code{geedim.collection.MaskedCollection}}
+\item{x, }{ID or Name, or a reference to an object inheriting from \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.download.BaseImage} (for geedim < 2.0.0) or \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.collection.MaskedCollection} (for geedim < 2.0.0). See \verb{\link{geedim-versions}} for more details.}
 
 \item{filename}{path to output file, defaults to temporary GeoTIFF file path; if \code{composite=FALSE} then this path should be to a parent directory. File names will be calculated from the internal name of the image and the requested scale.}
 
@@ -27,7 +27,7 @@ gd_download(
 
 \item{silent}{Silence errors? Default: \code{TRUE}}
 
-\item{...}{Additional arguments (e.g. \code{scale}) passed to \href{https://geedim.readthedocs.io/en/latest/_generated/geedim.mask.MaskedImage.download.html}{\code{geedim.mask.MaskedImage$download(...)}} and, when \code{composite=TRUE}, \href{https://geedim.readthedocs.io/en/latest/_generated/geedim.collection.MaskedCollection.composite.html}{\code{geedim.collection.MaskedCollection$composite()}}}
+\item{...}{Additional arguments (e.g. \code{scale}) passed to \href{https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.toGeoTIFF}{\code{geedim.image.ImageAccessor$toGeoTIFF(...)}} and, when \code{composite=TRUE}, \href{https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.collection.ImageCollectionAccessor.composite}{\code{geedim.collection.ImageCollectionAccessor$composite()}}}
 }
 \value{
 Invisible path to downloaded image, or \code{try-error} on error
@@ -40,7 +40,7 @@ The \code{region} argument is \emph{optional} for downloading images. When downl
 The default resampling method in \code{geedim} is \code{resampling="near"} (Nearest Neighbor). Other options for \code{resampling} include: \code{"average"}, \code{"bicubic"}, \code{"bilinear"}. See \code{gd_resampling_methods()}.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
  r <- gd_bbox(
    xmin = -121,

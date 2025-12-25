@@ -12,7 +12,7 @@ b <- gd_bbox(
 )
 
 # download 10m DEM in AEA
-x <- "USGS/3DEP/10m" |>
+x <- "USGS/SRTMGL1_003" |>
   gd_image_from_id() |>
   gd_download(
     region = b,

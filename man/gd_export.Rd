@@ -15,7 +15,7 @@ gd_export(
 )
 }
 \arguments{
-\item{x}{An object that inherits from \code{geedim.download.BaseImage}}
+\item{x}{An object that inherits from \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.download.BaseImage} (for geedim < 2.0.0). See \verb{\link{geedim-versions}} for more details.}
 
 \item{filename}{Output filename. If \code{type} is \code{"asset"} and \code{folder} is not specified, \code{filename} should be a valid Earth Engine asset ID.}
 
@@ -27,7 +27,7 @@ gd_export(
 
 \item{wait}{Wait for completion? Default: \code{TRUE}}
 
-\item{...}{Additional arguments to \code{geedim.download.BaseImage.export()}}
+\item{...}{Additional arguments to \code{geedim.image.ImageAccessor.toGoogleCloud()} (geedim >= 2.0.0) or \code{geedim.download.BaseImage.export()} (geedim 1.x.x)}
 }
 \value{
 an \code{ee.batch.Task} object
@@ -36,7 +36,7 @@ an \code{ee.batch.Task} object
 Exports an encapsulated image to the destination specified by \code{type}, \code{folder} and \code{filename}
 }
 \details{
-See the \href{https://geedim.readthedocs.io/en/latest/_generated/geedim.mask.MaskedImage.export.html}{geedim.mask.MaskedImage.export() documentation} for details on additional arguments. Requires 'geedim' >1.6.0.
+See the \href{https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.toGoogleCloud}{geedim.image.ImageAccessor.toGoogleCloud() documentation} for details on additional arguments. Requires 'geedim' >1.6.0.
 }
 \examples{
 \dontrun{
@@ -51,7 +51,7 @@ if (gd_is_initialized()) {
  i <- gd_image_from_id('CSP/ERGo/1_0/US/CHILI')
 
  ## export to Google Drive (default `type="drive"`)
- # res <- gd_export(i, filename = "RGEEDIM_TEST.tif", scale = 100, region = r)
+ # res <- gd_export(i, filename = "RGEEDIM_TEST", scale = 100, region = r)
 
  ## export to `type="asset"`, then download by ID (stored in project assets)
  # res <- gd_export(

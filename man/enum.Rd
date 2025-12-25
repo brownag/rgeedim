@@ -46,44 +46,44 @@ gd_spectral_distance_metrics()
 \code{geedim} Enums
 }
 \examples{
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \dontshow{\}) # examplesIf}
 \donttest{
  if (gd_is_initialized())
   gd_enum_names()
 }
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 
 \donttest{
  if (gd_is_initialized())
   gd_enum_elements()
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
  if (gd_is_initialized())
   gd_resampling_methods()
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
  if (gd_is_initialized())
   gd_cloud_mask_methods()
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
  if (gd_is_initialized())
   gd_composite_methods()
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
  if (gd_is_initialized())
   gd_export_types()
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
  if (gd_is_initialized())
   gd_spectral_distance_metrics()

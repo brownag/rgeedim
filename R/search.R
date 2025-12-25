@@ -2,12 +2,12 @@
 
 #' Search an Image Collection
 #'
-#' @param x `geedim.collection.MaskedCollection` object
+#' @param x A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @param region list / Python GeoJSON object describing region, e.g. as created by `gd_bbox()`
 #' @param start_date Default: `'2020-01-01'`
 #' @param end_date Default: `Sys.Date()`
 #' @param ... additional arguments to `geedim.MaskedCollection.search()` e.g. `cloudless_portion`, `fill_portion`
-#' @return `geedim.MaskedCollection` object suitable for querying properties
+#' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object suitable for querying properties. See `\link{geedim-versions}` for more details.
 #' @export
 #' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
@@ -20,10 +20,19 @@
 #'             region = gd_region(b))
 #' }
 gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.character(Sys.Date()), ...) {
-  y <- try(x$search(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
+  FUN <- NULL
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    FUN <- x$filter
+  } else {
+    FUN <- x$search
+  }
+  y <- try(FUN(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
   if (inherits(y, "try-error")) {
     message(y[1])
     return(invisible(y))
+  }
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    return(y$gd)
   }
   y
 }
@@ -31,7 +40,7 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 
 #' Get Properties of an Image Collection
 #'
-#' @param x `geedim.collection.MaskedCollection` object
+#' @param x A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.collection.MaskedCollection` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @return `data.frame` containing properties table from `x`; `NULL` if no properties table.
 #' @importFrom utils read.table
 #' @export
@@ -53,7 +62,15 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 #' }
 #' }
 gd_properties <- function(x) {
-  pt <- try(x$properties_table)
+  
+  pt <- NULL
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    pt <- try(x$propertiesTable, silent = TRUE)
+  } else if (inherits(x, c("geedim.collection.MaskedCollection",
+                           "geedim.download.BaseImage"))) {
+    pt <- try(x$properties_table, silent = TRUE)
+  } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
+  
   if (inherits(pt, 'try-error')) {
     message(pt[1])
     return(invisible(pt))
@@ -85,18 +102,20 @@ gd_properties <- function(x) {
 #'
 #' Calls `bandNames()` method from `ee.Image` class.
 #'
-#' @param x a Google Earth Engine Image object, such as from `gd_image_from_id()`
+#' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.download.BaseImage` (for geedim < 2.0.0) object, such as from `gd_image_from_id()`. See `\link{geedim-versions}` for more details.
 #'
 #' @return character. Vector of names of each layer in an image.
 #' @export
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_band_names(gd_image_from_id("USGS/3DEP/10m"))
+#'   gd_band_names(gd_image_from_id("USGS/SRTMGL1_003"))
 #' }
 gd_band_names <- function(x) {
   y <- NULL
-  if (inherits(x, 'geedim.download.BaseImage')) {
+  if (inherits(x, 'geedim.image.ImageAccessor')) {
+    y <- try(x$bandNames, silent = TRUE)
+  } else if (inherits(x, 'geedim.download.BaseImage')) {
     y <- try(x$ee_image$bandNames()$getInfo(), silent = TRUE)
   } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
   if (inherits(y, 'try-error')) {
@@ -110,18 +129,20 @@ gd_band_names <- function(x) {
 #'
 #' Gets combined Earth Engine and STAC properties.
 #'
-#' @param x a Google Earth Engine Image object, such as from `gd_image_from_id()`
+#' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.download.BaseImage` (for geedim < 2.0.0) object, such as from `gd_image_from_id()`. See `\link{geedim-versions}` for more details.
 #'
 #' @return list. Each element is a list that corresponds to a layer in `x`, each with one or more elements for properties of that layer.
 #' @export
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_band_properties(gd_image_from_id("USGS/3DEP/10m"))
+#'   gd_band_properties(gd_image_from_id("USGS/SRTMGL1_003"))
 #' }
 gd_band_properties <- function(x) {
   y <- NULL
-  if (inherits(x, 'geedim.download.BaseImage')) {
+  if (inherits(x, 'geedim.image.ImageAccessor')) {
+    y <- try(x$bandProps, silent = TRUE)
+  } else if (inherits(x, 'geedim.download.BaseImage')) {
     y <- try(x$band_properties, silent = TRUE)
   } else stop("`x` should inherit from geedim.download.BaseImage", call. = FALSE)
   if (inherits(y, 'try-error')) {
@@ -135,21 +156,23 @@ gd_band_properties <- function(x) {
 
 #' Get Footprint of Masked Image
 #'
-#' Gets GeoJSON-style list containing footprint of a `geedim.mask.MaskedImage` object
+#' Gets GeoJSON-style list containing footprint of a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #'
-#' @param x a `geedim.mask.MaskedImage` object
+#' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @return list.
 #' @export
 #' @examplesIf gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
-#'   gd_footprint(gd_image_from_id("USGS/3DEP/10m"))
+#'   gd_footprint(gd_image_from_id("USGS/SRTMGL1_003"))
 #' }
 gd_footprint <- function(x) {
   y <- NULL
-  if (inherits(x, 'geedim.mask.MaskedImage')) {
+  if (inherits(x, 'geedim.image.ImageAccessor')) {
+    y <- try(x$geometry, silent = TRUE)
+  } else if (inherits(x, 'geedim.mask.MaskedImage')) {
     y <- try(x$footprint, silent = TRUE)
-  } else stop("`x` should inherit from geedim.mask.MaskedImage", call. = FALSE)
+  } else stop("`x` should inherit from geedim.image.ImageAccessor (or geedim.mask.MaskedImage with geedim < 2.0.0)", call. = FALSE)
   if (inherits(y, 'try-error')) {
     message(y[1])
     return(invisible(y))

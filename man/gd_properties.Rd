@@ -7,7 +7,7 @@
 gd_properties(x)
 }
 \arguments{
-\item{x}{\code{geedim.collection.MaskedCollection} object}
+\item{x}{A \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \code{geedim.collection.MaskedCollection} (for geedim < 2.0.0) object. See \verb{\link{geedim-versions}} for more details.}
 }
 \value{
 \code{data.frame} containing properties table from \code{x}; \code{NULL} if no properties table.
@@ -16,7 +16,7 @@ gd_properties(x)
 Get Properties of an Image Collection
 }
 \examples{
-\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
 \donttest{
 library(terra)
 

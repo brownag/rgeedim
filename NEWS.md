@@ -1,3 +1,16 @@
+# rgeedim 0.3.0
+
+ * Support for geedim v2.0.0 and earthengine-api v1.6.15+
+ 
+   - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors instead of deprecated `MaskedImage` and `MaskedCollection` classes
+   - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
+   
+ * Authentication improvements
+ 
+   - `gd_initialize(private_key_file=...)` parameter has been deprecated. Use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.
+   - Support for `EE_SERVICE_ACC_PRIVATE_KEY` environment variable has been deprecated. Use standard `GOOGLE_APPLICATION_CREDENTIALS` for all environments (local, CI/CD, containerized).
+   - `gd_initialize()` now delegates authentication to Python's native Application Default Credentials (ADC) logic for maximum robustness and compatibility with all credential types (service accounts, user ADC, workload identity federation, attached service accounts on Google Cloud)
+   
 # rgeedim 0.2.8
 
  * With reticulate >= 1.41.0 call `py_require(c("earthengine-api" , "geedim"))` on load
@@ -41,8 +54,9 @@
  
  * Fix different value storage in `gd_enum_elements()` (required for reticulate >= 1.29)
  
- * Update examples in /misc folder: <https://github.com/brownag/rgeedim/tree/main/misc>
-  - Add new example using `gd_export()` and the Earth Engine API directly via `earthengine()`
+ * Update examples in /misc folder
+ 
+   - Add new example using `gd_export()` and the Earth Engine API directly via `earthengine()`
  
  * Add `gd_region_to_vect()` an inverse method for `gd_bbox()`/`gd_region()` that creates a 'terra' _SpatVector_ from a GeoJSON-like list
 

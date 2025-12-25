@@ -4,7 +4,7 @@
 \alias{gd_install}
 \title{Install Required Python Modules}
 \usage{
-gd_install(pip = TRUE, system = FALSE, force = FALSE, ...)
+gd_install(pip = TRUE, system = FALSE, force = FALSE, version = NULL, ...)
 }
 \arguments{
 \item{pip}{Use \code{pip} package manager? Default: \code{TRUE}. To use a virtual or conda environment specify \code{method="virtualenv"} or \code{method="conda"}, respectively. See details.}
@@ -12,6 +12,8 @@ gd_install(pip = TRUE, system = FALSE, force = FALSE, ...)
 \item{system}{Use a \code{system()} call to \verb{python -m pip install --user ...} instead of \code{reticulate::py_install()}. Default: \code{FALSE}.}
 
 \item{force}{Force update (uninstall/reinstall) and ignore existing installed packages? Default: \code{FALSE}. Applies to \code{pip=TRUE}.}
+
+\item{version}{The version of \code{geedim} to install. If \code{NULL} (the default), the latest version will be installed.}
 
 \item{...}{Additional arguments passed to \code{reticulate::py_install()}}
 }
