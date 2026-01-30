@@ -89,12 +89,15 @@ gd_properties <- function(x) {
 
   # skip header and delimiter, read date/time separately
   z <- read.table(text = y[!grepl("^---", y)][-1], header = FALSE)
-  colnames(z) <- c("id", "date", "time", tolower(h))
-
-  # recombine date as object
-  z$date <- as.POSIXct(as.Date(paste(trimws(z$date), trimws(z$time))), tz = "UTC")
-  z$time <- NULL
-
+  if (ncol(z) >= 3) {
+    colnames(z) <- c("id", "date", "time", tolower(h))
+    z$date <- as.POSIXct(as.Date(paste(trimws(z$date), trimws(z$time))), tz = "UTC")
+    z$time <- NULL
+  } else if (ncol(z) == 2) {
+    colnames(z) <- c("id", "date")
+  } else if (ncol(z) == 1) {
+    colnames(z) <- "id"
+  }
   return(z)
 }
 

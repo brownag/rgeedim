@@ -22,7 +22,9 @@ library(rgeedim)
 library(terra)
 
 # search and download from USGS 1m lidar data collection
-gd_initialize()
+project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+gd_initialize(project = project_id)
+
 
 # wkt->SpatVector->GeoJSON
 b <- 'POLYGON((-121.355 37.56,-121.355 37.555,

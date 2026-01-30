@@ -21,14 +21,19 @@ litedown::reactor(
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+gd_initialize(project = project_id)
+
 ee <- earthengine()
 
 # use the earth engine API and reticulate to access
 # World Database of Protected Areas <https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons>
 # filter to a specific area (yellowstone)
 b <- ee$FeatureCollection("WCMC/WDPA/current/polygons")$filter(
-  ee$Filter$eq("NAME", "Yellowstone National Park")
+  ee$Filter$And(
+    ee$Filter$eq("NAME", "Yellowstone"),
+    ee$Filter$eq("DESIG_ENG", "National Park")
+  )
 )
 g <- gd_bbox(b)
 
@@ -42,27 +47,31 @@ plot(yellowstone)
 
 # create an Earth Engine asset you can use again in the future
 # 250m resolution for Yellowstone extent
-gd_export(
-  gd_image_from_id("USGS/SRTMGL1_003"),
-  region = g,
-  scale = 250,
-  bands = list("elevation"),
-  resampling = "bilinear",
-  type = "asset",
-  filename = "Yellowstone",
-  folder = "your-project-name",
-  crs = "EPSG:5070"
-)
+"USGS/SRTMGL1_003" |>
+  gd_image_from_id() |>
+  gd_export(
+    region = g,
+    scale = 250,
+    bands = list("elevation"),
+    resampling = "bilinear",
+    type = "asset",
+    filename = "Yellowstone",
+    folder = "rgeedim-demo",
+    overwrite = TRUE,
+    crs = "EPSG:5070"
+  )
 
 # create a local GeoTIFF from the above created asset
-gd_download(
-  gd_image_from_id("projects/your-project-name/assets/Yellowstone"),
-  bands = list("elevation"),
-  resampling = "bilinear",
-  region = g,
-  scale = 250,
-  crs = "EPSG:5070"
-) |> rast() -> x
+x <- "projects/rgeedim-demo/assets/Yellowstone" |>
+  gd_image_from_id() |>
+  gd_download(
+    bands = list("elevation"),
+    resampling = "bilinear",
+    region = g,
+    scale = 250,
+    crs = "EPSG:5070"
+  ) |> 
+  rast()
 
 plot(x)
 

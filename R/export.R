@@ -45,8 +45,31 @@
 #' }
 gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, ...) {
   .inform_missing_module(x, "geedim")
+  
+  args <- list(...)
+  
   if (gd_version() >= "2.0.0") {
-    x$toGoogleCloud(filename = filename, type = type, folder = folder, region = earthengine()$Geometry(gd_region(region)), wait = wait, ...)
+    
+    # Identify arguments for prepareForExport
+    # https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.prepareForExport
+    prepare_params <- c("crs", "crs_transform", "shape", "scale", "resampling", "dtype", "scale_offset", "bands")
+    prepare_args <- args[names(args) %in% prepare_params]
+    cloud_args <- args[!names(args) %in% prepare_params]
+    
+    # If region is provided, add it to prepare_args
+    if (!missing(region) && !is.null(region)) {
+       prepare_args$region <- earthengine()$Geometry(gd_region(region))
+    }
+    
+    # Call prepareForExport if we have relevant arguments
+    # resulting object is an ee.Image, but geedim monkey-patches .gd property to get ImageAccessor back
+    if (length(prepare_args) > 0) {
+       x <- do.call(x$prepareForExport, prepare_args)$gd
+    }
+    
+    # Call toGoogleCloud
+    do.call(x$toGoogleCloud, c(list(filename = filename, type = type, folder = folder, wait = wait), cloud_args))
+
   } else {
     x$export(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait, ...)
   }

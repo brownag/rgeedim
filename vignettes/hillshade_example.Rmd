@@ -21,7 +21,8 @@ litedown::reactor(
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 ## hillshade example
 b <- gd_bbox(
@@ -32,14 +33,18 @@ b <- gd_bbox(
 )
 
 # download 10m DEM in AEA
-x <- "USGS/SRTMGL1_003" |>
-  gd_image_from_id() |>
+# need to set resampling method in composite step
+x <- "USGS/3DEP/10m_collection" |>
+  gd_collection_from_name() |>
+  gd_search(region = b) |>
+  gd_composite(
+    resampling = "bilinear"
+  ) |> 
   gd_download(
     region = b,
-    scale = 10,
-    crs = "EPSG:5070",
     bands = list("elevation"),
-    resampling = "bilinear",
+    crs = "EPSG:5070",
+    scale = 10,
     filename = "dem.tif"
   ) |>
   rast()

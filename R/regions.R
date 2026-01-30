@@ -23,16 +23,38 @@ gd_bbox <- function(...) {
   .gdal_projwin <- c("xmin", "ymax", "xmax", "ymin")
   .args <- list(...)
   
-  if (length(.args) == 0) {
+  if (length(.args) == 0 || is.null(.args[[1]])) {
     stop("Must specify a spatial object, an Earth Engine Feature Collection or Geometry, or the X and Y minimum/maxiumum values", call. = FALSE)
   }
   
   if (inherits(.args[[1]], "ee.featurecollection.FeatureCollection")) {
-    return(.args[[1]]$geometry()$bounds()$getInfo())
+    res <- .args[[1]]$geometry()$bounds()$getInfo()
+    if (is.null(res)) stop("Failed to get bounds from FeatureCollection (is it empty?)", call. = FALSE)
+    return(res)
   }
   
   if (inherits(.args[[1]], "ee.geometry.Geometry")) {
-    return(.args[[1]]$bounds()$getInfo())
+    res <- .args[[1]]$bounds()$getInfo()
+    if (is.null(res)) stop("Failed to get bounds from Geometry (is it empty?)", call. = FALSE)
+    return(res)
+  }
+
+  if (inherits(.args[[1]], "ee.computedobject.ComputedObject") || inherits(.args[[1]], "python.builtin.object")) {
+    # fallback for other EE objects (e.g. Image, Collection) or generic proxies
+    # try geometry()
+    g <- try(.args[[1]]$geometry(), silent = TRUE)
+    if (!inherits(g, "try-error")) {
+      res <- g$bounds()$getInfo()
+      if (is.null(res)) stop("Failed to get bounds from Earth Engine object (is it empty?)", call. = FALSE)
+      return(res)
+    }
+    # try bounds()
+    b <- try(.args[[1]]$bounds(), silent = TRUE)
+    if (!inherits(b, "try-error")) {
+      res <- b$getInfo()
+      if (is.null(res)) stop("Failed to get bounds from Earth Engine object (is it empty?)", call. = FALSE)
+      return(res)
+    }
   }
 
   .mbbox <- function(x) {
@@ -117,12 +139,18 @@ gd_bbox <- function(...) {
 #' gd_region(b)
 #' }
 gd_region <- function(x) {
-  if (inherits(x, "ee.featurecollection.FeatureCollection")) {
-     x <- x$geometry()
+  if (inherits(x, "ee.featurecollection.FeatureCollection") || inherits(x, "python.builtin.object")) {
+     try_geom <- try(x$geometry(), silent = TRUE)
+     if (!inherits(try_geom, "try-error")) {
+       x <- try_geom
+     }
   }
   
-  if (inherits(x, "ee.geometry.Geometry")) {
-    return(x$getInfo())
+  if (inherits(x, "ee.geometry.Geometry") || inherits(x, "python.builtin.object")) {
+    info <- try(x$getInfo(), silent = TRUE)
+    if (!inherits(info, "try-error") && is.list(info) && !is.null(info$type) && !is.null(info$coordinates)) {
+      return(info)
+    }
   }
 
   if (is.list(x) &&
@@ -158,12 +186,62 @@ gd_region <- function(x) {
   } else if (!inherits(x, 'SpatVector')) {
     stop("`x` must be a SpatVector", call. = FALSE)
   }
-  p <- terra::crds(terra::as.points(x))
-  p <- p[rev(seq_len(nrow(p))), ]
-  p <- rbind(p[nrow(p), ], p)
-  list(type = "Polygon", coordinates = list(lapply(apply(p, 1, function(x) {
-    list(as.numeric(x))
-  }), .subset2, 1)))
+  
+  if (!requireNamespace("yyjsonr", quietly = TRUE)) {
+    stop("package 'yyjsonr' is required for GeoJSON conversion.", call. = FALSE)
+  }
+  
+  # aggregate to single geometry (union)
+  x <- terra::aggregate(x)
+  
+  # export to GeoJSON via temporary file
+  f <- tempfile(fileext = ".json")
+  on.exit(unlink(f), add = TRUE)
+  terra::writeVector(x, f, filetype = "GeoJSON", overwrite = TRUE)
+  
+  # read the GeoJSON string
+  json_str <- readLines(f, warn = FALSE)
+  json_str <- paste(json_str, collapse = "\n")
+  
+  # parse
+  res <- yyjsonr::read_json_str(json_str)
+  
+  # return the geometry of the first feature
+  # terra::writeVector creates a FeatureCollection
+  geom <- NULL
+  if (!is.null(res$features)) {
+    if (is.data.frame(res$features)) {
+      if (nrow(res$features) > 0) geom <- res$features$geometry[[1]]
+    } else if (is.list(res$features)) {
+      if (length(res$features) > 0) geom <- res$features[[1]]$geometry
+    }
+  }
+  
+  if (!is.null(geom)) {
+    
+    # helper to convert matrix coordinates (from yyjsonr) to list of lists
+    # this ensures better compatibility with reticulate conversion to Python types
+    mat_to_list <- function(x) {
+      if (is.matrix(x) || is.array(x)) {
+        lapply(seq_len(nrow(x)), function(i) as.numeric(x[i, ]))
+      } else if (is.list(x)) {
+        lapply(x, mat_to_list)
+      } else {
+        x
+      }
+    }
+    geom$coordinates <- mat_to_list(geom$coordinates)
+    
+    # downgrade MultiPolygon to Polygon if it contains only one polygon
+    if (geom$type == "MultiPolygon" && length(geom$coordinates) == 1) {
+      geom$type <- "Polygon"
+      geom$coordinates <- geom$coordinates[[1]]
+    }
+    
+    return(geom)
+  }
+  
+  stop("Failed to convert SpatVector to GeoJSON geometry.", call. = FALSE)
 }
 
 #' Cast Spatial Object to SpatVector or SpatRaster
@@ -225,8 +303,9 @@ gd_region <- function(x) {
 }
 
 #' @description `gd_region_to_vect()` is the inverse function of gd_region/gd_bbox; convert GeoJSON-like list to Well-Known Text(WKT)/_SpatVector_. This may be useful, for example. when `gd_region()`-output was derived from an Earth Engine asset rather than local R object.
+#' @details `gd_region_to_vect()` uses `yyjsonr` to parse the GeoJSON list and `terra` to create the spatial vector object. It supports all geometry types handled by `terra::vect` (e.g., Polygon, MultiPolygon).
 #' @param crs character. Default for GeoJSON sources is `"OGC:CRS84"`.
-#' @param as_wkt logical. Return Well-Known Text (WKT) string as character? Default: `FALSE` returns a 'terra' _SpatRaster_.
+#' @param as_wkt logical. Return Well-Known Text (WKT) string as character? Default: `FALSE` returns a 'terra' _SpatVector_.
 #' @param ... Additional arguments to `gd_region_to_vect()` are passed to `terra::vect()` when `as_wkt=FALSE` (default).
 #' @return `gd_region_to_vect()`: a 'terra' _SpatVector_ object, or _character_ containing Well-Known Text.
 #' @export
@@ -234,27 +313,54 @@ gd_region <- function(x) {
 gd_region_to_vect <- function(x, crs = "OGC:CRS84", as_wkt = FALSE, ...) {
   
   if (!inherits(x, "list") ||
-      is.null(x$coordinates) ||
+      (is.null(x$coordinates) && is.null(x$geometries)) ||
       is.null(x$type)) {
-    stop("Expected a GeoJSON-like list containing 'coordinates' and 'type' elements.", call. = FALSE)
+    stop("Expected a GeoJSON-like list containing 'coordinates' (or 'geometries') and 'type' elements.", call. = FALSE)
   }
   
-  return(switch(x$type, "Polygon" = { # type=Polygon
-    # convert list to matrix
-    # TODO: only handles first polygon present; combine multiple polygons in geometrycollection
-    y <- do.call('rbind', lapply(x$coordinates[[1]], matrix, ncol = 2))
+  # recursive handling for GeometryCollection
+  if (x$type == "GeometryCollection") {
     
-    # insert coordinates into WKT string
-    wkt <- sprintf("POLYGON((%s))", paste0(paste0(y[, 1], " ", y[, 2]), collapse = ","))
+    if (is.null(x$geometries)) stop("GeometryCollection missing 'geometries' member.", call. = FALSE)
     
-    # terra is required to return a SpatVector object
-    if (as_wkt) { 
-      return(wkt)
+    if (as_wkt) {
+      res <- vapply(x$geometries, gd_region_to_vect, character(1), crs = crs, as_wkt = TRUE, ...)
+      return(sprintf("GEOMETRYCOLLECTION(%s)", paste(res, collapse = ",")))
     } else {
-      if (!requireNamespace("terra")) {
-        stop("package 'terra' is required, or use `as_wkt=TRUE` to return Well-Known Text instead of SpatVector object", call. = FALSE)
+      res <- lapply(x$geometries, gd_region_to_vect, crs = crs, as_wkt = FALSE, ...)
+      
+      if (length(res) == 0) {
+        if (!requireNamespace("terra", quietly = TRUE)) {
+          stop("package 'terra' is required for GeoJSON conversion.", call. = FALSE)
+        }
+        return(terra::vect(crs = crs))
       }
-      return(terra::vect(wkt, crs = crs, ...))
+      
+      # combine SpatVectors
+      # This will fail if geometries are mixed types (e.g. Polygon and Point)
+      # This behavior is consistent with terra::vect() not supporting mixed collections
+      return(do.call(rbind, res))
     }
-  }, stop("'", x$type, "' geometry type is not supported", call. = FALSE)))
+  }
+  
+  if (!requireNamespace("terra", quietly = TRUE)) {
+    stop("package 'terra' is required for GeoJSON conversion.", call. = FALSE)
+  }
+  
+  # use yyjsonr to serialize list to GeoJSON string
+  json_str <- yyjsonr::write_json_str(x, opts = list(auto_unbox = TRUE))
+  
+  # use terra to parse GeoJSON string
+  v <- terra::vect(json_str, crs = crs, ...)
+  
+  if (as_wkt) {
+    # export to WKT via temporary CSV
+    f <- tempfile(fileext = ".csv")
+    on.exit(unlink(f), add = TRUE)
+    terra::writeVector(v, f, filetype = "CSV", options = "GEOMETRY=AS_WKT")
+    d <- utils::read.csv(f)
+    return(d$WKT)
+  }
+  
+  v
 }

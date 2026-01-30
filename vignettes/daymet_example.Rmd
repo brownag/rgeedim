@@ -21,7 +21,8 @@ litedown::reactor(
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 ## Sacramento county area
 # b <- soilDB::fetchSDA_spatial("CA067", "areasymbol", geom="sapolygon")
@@ -34,20 +35,22 @@ b <- gd_bbox(
   ymin = 38.0
 )
 
+collection_name <- "NASA/ORNL/DAYMET_V4"
+
 # search collection for spatial and date range
-'NASA/ORNL/DAYMET_V4' |> 
+res <- collection_name |> 
   gd_collection_from_name() |> 
   gd_search(region = b,
             start_date = "2020-01-01", 
-            end_date = "2020-02-01") -> res
+            end_date = "2020-02-01")
 
-# get table of IDs and dates
-p <- gd_properties(res)
+# inspect table of IDs and dates
+gd_properties(res)
 td <- tempdir()
 
 # download each daily image in collection as separate GeoTIFF (no compositing)
 # Note: `filename` is a directory
-gd_collection_from_list(p$id) |>
+res |>
   gd_download(filename = td, 
               composite = FALSE, 
               region = b, 

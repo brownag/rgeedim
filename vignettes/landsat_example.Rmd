@@ -21,7 +21,8 @@ litedown::reactor(
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 b <- gd_bbox(
   xmin = -120.296,

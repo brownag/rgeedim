@@ -24,6 +24,15 @@ if (!inherits(gd_version(), "try-error")) {
   c(.testbounds[[1]], .testbounds[[3]])
 )))
 
+# terra::as.polygons(ext) creates Clockwise polygons
+.regionlist_cw <- list(type = "Polygon", coordinates = list(list(
+  c(.testbounds[[1]], .testbounds[[3]]),
+  c(.testbounds[[1]], .testbounds[[4]]),
+  c(.testbounds[[2]], .testbounds[[4]]),
+  c(.testbounds[[2]], .testbounds[[3]]),
+  c(.testbounds[[1]], .testbounds[[3]])
+)))
+
 # bbox test
 expect_equal(
   gd_bbox(
@@ -52,6 +61,29 @@ if (!inherits(gi, "try-error")) {
   .auth_available <- function() {
     !inherits(gd_image_from_id("USGS/SRTMGL1_003"), "try-error")
   }
+  
+  if (all(.modules_available())) {
+    # regions: short circuit
+    expect_equal(gd_region(.regionlist), .regionlist)
+
+    # regions: SpatExtent input
+    # gd_region(SpatExtent) calls gd_bbox() internally, so it returns CCW (.regionlist)
+    ex <- terra::ext(.testbounds)
+    expect_equal(gd_region(ex), .regionlist)
+
+    # regions: SpatVector input
+    # gd_region(SpatVector) uses terra::writeVector which preserves CW order from as.polygons
+    spv <- terra::as.polygons(terra::ext(.testbounds), crs = "OGC:CRS84")
+    expect_equal(gd_region(spv), .regionlist_cw)
+
+    # regions: complex SpatVector input
+    p1 <- matrix(c(0,0, 1,0, 1,1, 0,1, 0,0), ncol=2, byrow=TRUE)
+    p2 <- matrix(c(2,2, 3,2, 3,3, 2,3, 2,2), ncol=2, byrow=TRUE)
+    v <- terra::vect(list(p1, p2), type="polygons", crs="OGC:CRS84")
+    r <- gd_region(v)
+    expect_equal(r$type, "MultiPolygon")
+    expect_equal(length(r$coordinates), 2)
+  }
 
   if (all(.modules_available()) && .auth_available()) {
     # module versions
@@ -64,17 +96,6 @@ if (!inherits(gi, "try-error")) {
     expect_true(is.character(gd_resampling_methods()))
     expect_true(is.character(gd_enum_names()))
     expect_true(is.list(gd_enum_elements()))
-
-    # regions: short circuit
-    expect_equal(gd_region(.regionlist), .regionlist)
-
-    # regions: SpatExtent input
-    ex <- terra::ext(.testbounds)
-    expect_equal(gd_region(ex), .regionlist)
-
-    # regions: SpatVector input
-    spv <- terra::as.polygons(terra::ext(.testbounds), crs = "OGC:CRS84")
-    expect_equal(gd_region(spv), .regionlist)
 
     # asset IDs
     id <- gd_asset_id("RGEEDIM_TEST", "your-project-name")
@@ -111,8 +132,6 @@ if (!inherits(gi, "try-error")) {
     expect_true(inherits(gd_properties(scol), "data.frame"))
 
     expect_inherits(gd_mask_clouds(gd_image_from_id("USGS/SRTMGL1_003")),
-
-     
                     c("geedim.image.ImageAccessor", "NULL"))
 
     # collection download

@@ -146,6 +146,9 @@ gd_download <- function(x,
     if (inherits(prp, 'try-error')) {
       return(invisible(prp))
     }
+    if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+      prp$id <- paste0(x$id, "/", prp$id)
+    }
     if (is.null(prp)) stop("Empty properties table; your collection may have no features; expand your search parameters with `gd_search() or use `gd_collection_from_list()` to create a collection from desired images.", call. = FALSE)
     sapply(prp$id, function(y) {
       if (file.exists(dest) && !dir.exists(dest)) {

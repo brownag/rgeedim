@@ -4,6 +4,10 @@
  
    - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors instead of deprecated `MaskedImage` and `MaskedCollection` classes
    - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
+
+ * `gd_region()` fixes:
+ 
+   - Now correctly handles `SpatVector` objects with `MultiPolygon` geometries (disjoint polygons) or holes by using `terra::writeVector(..., filetype="GeoJSON")` for robust GeoJSON serialization. Previously, complex geometries could be mangled into invalid Polygons.
    
  * Authentication improvements
  
