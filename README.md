@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
@@ -142,7 +141,7 @@ library(terra)
 ```
 
 ``` {.plain .message}
-#> terra 1.8.86
+#> terra 1.8.95
 ```
 
 ``` {.r}

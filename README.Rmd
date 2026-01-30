@@ -2,7 +2,7 @@
 output: 
   markdown:
     keep_yaml: false
-knit: litedown:::knit
+knit: (function(input, ...) { source("misc/knit_readme.R"); knit_readme(input, ...) })
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
