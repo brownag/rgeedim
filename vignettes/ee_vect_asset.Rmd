@@ -1,3 +1,23 @@
+---
+title: "Earth Engine Vector Asset Example"
+knit: litedown:::knit
+vignette: >
+  %\VignetteIndexEntry{Earth Engine Vector Asset Example}
+  %\VignetteEngine{litedown::vignette}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+EVAL <- as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES", "FALSE"))
+litedown::reactor(
+  eval = EVAL,
+  collapse = TRUE,
+  fig.width = 8,
+  fig.align = 'center'
+)
+```
+
+```{r}
 library(rgeedim)
 library(terra)
 
@@ -31,4 +51,4 @@ gd_image_from_id("USGS/SRTMGL1_003") |>
 
 plot(r)
 plot(as.lines(y), add = TRUE, col = "red")
-
+```

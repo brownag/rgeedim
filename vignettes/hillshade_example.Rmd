@@ -1,3 +1,23 @@
+---
+title: "Hillshade Example"
+knit: litedown:::knit
+vignette: >
+  %\VignetteIndexEntry{Hillshade Example}
+  %\VignetteEngine{litedown::vignette}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+EVAL <- as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES", "FALSE"))
+litedown::reactor(
+  eval = EVAL,
+  collapse = TRUE,
+  fig.width = 8,
+  fig.align = 'center'
+)
+```
+
+```{r}
 library(rgeedim)
 library(terra)
 
@@ -31,3 +51,4 @@ hs <- shade(slp, asp)
 
 # compare elevation v.s. hillshade
 plot(c(x, hillshade = hs))
+```

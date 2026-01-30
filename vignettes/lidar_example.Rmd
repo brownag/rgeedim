@@ -1,3 +1,23 @@
+---
+title: "LiDAR Example"
+knit: litedown:::knit
+vignette: >
+  %\VignetteIndexEntry{LiDAR Example}
+  %\VignetteEngine{litedown::vignette}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+EVAL <- as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES", "FALSE"))
+litedown::reactor(
+  eval = EVAL,
+  collapse = TRUE,
+  fig.width = 8,
+  fig.align = 'center'
+)
+```
+
+```{r}
 library(rgeedim)
 library(terra)
 
@@ -25,3 +45,4 @@ x <- "USGS/3DEP/1m" |>
 # inspect
 plot(terra::terrain(x$elevation))
 plot(project(b, x), add = TRUE)
+```
