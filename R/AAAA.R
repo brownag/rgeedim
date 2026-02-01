@@ -148,7 +148,19 @@ gd_ee_version <- function() {
 }
 
 .inform_missing_module <- function(object, module_name = "geedim", quiet = FALSE) {
+  
+  check_failed <- FALSE
   if (is.null(object) || inherits(object, 'try-error')) {
+    check_failed <- TRUE
+  } else {
+    # Verify we can access the module (triggers delay load)
+    # Using try() to catch reticulate errors
+    if (inherits(try(object$`__name__`, silent = TRUE), "try-error")) {
+      check_failed <- TRUE
+    }
+  }
+
+  if (check_failed) {
     if (quiet) {
       return(invisible(structure(list(message = sprintf("Failed to load '%s' Python module", module_name)), class = "try-error")))
     }
