@@ -57,3 +57,7 @@ r <- gd_image_from_id("USGS/SRTMGL1_003") |>
 plot(r)
 plot(as.lines(y), add = TRUE, col = "red", lwd = 3)
 ```
+
+```{r, include=FALSE, eval=EVAL}
+unlink("dem.tif")
+```

@@ -86,9 +86,10 @@ shd <- shade(slp, asp)
 plot(shd)
 plot(yellowstone, add = TRUE)
 
-# # cleanup downloaded temp files
-# unlink(sources(x))
-#
 # # write in-memory hillshade to local GeoTIFF
 # writeRaster(shd, "yellowstone_hillshade.tif",overwrite = TRUE)
+```
+
+```{r, include=FALSE, eval=EVAL}
+unlink(sources(x))
 ```

@@ -85,3 +85,7 @@ plot(sum(r2))
 #    
 # browseURL("animation.gif")
 ```
+
+```{r, include=FALSE, eval=EVAL}
+unlink(list.files(td, pattern = "\\d{8}_1km.tif$", full.names = TRUE))
+```

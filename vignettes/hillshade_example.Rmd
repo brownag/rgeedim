@@ -59,3 +59,7 @@ hs <- shade(slp, asp)
 # compare elevation v.s. hillshade
 plot(c(x, hillshade = hs))
 ```
+
+```{r, include=FALSE, eval=EVAL}
+unlink("dem.tif")
+```

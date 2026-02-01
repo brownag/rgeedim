@@ -50,3 +50,7 @@ x <- "USGS/3DEP/1m" |>
 plot(terra::terrain(x$elevation))
 plot(project(b, x), add = TRUE)
 ```
+
+```{r, include=FALSE, eval=EVAL}
+unlink(sources(x))
+```
