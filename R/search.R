@@ -88,7 +88,9 @@ gd_properties <- function(x) {
   h <- as.character(read.table(text = y[1], header = FALSE)[1,])[-(1:2)]
 
   # skip header and delimiter, read date/time separately
-  z <- read.table(text = y[!grepl("^---", y)][-1], header = FALSE)
+  z <- read.table(text = y[!grepl("^---", y)][-1], header = FALSE, stringsAsFactors = FALSE)
+  z[, 1] <- as.character(z[, 1])
+  
   if (ncol(z) >= 3) {
     colnames(z) <- c("id", "date", "time", tolower(h))
     z$date <- as.POSIXct(as.Date(paste(trimws(z$date), trimws(z$time))), tz = "UTC")
