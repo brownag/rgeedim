@@ -28,7 +28,7 @@ gd_is_initialized(..., quiet = TRUE)
 
 \item{http_transport}{The HTTP transport method to use when making requests. Default: \code{NULL}}
 
-\item{project}{The client project ID or number to use when making API calls. Default: \code{NULL} will check \code{GOOGLE_CLOUD_QUOTA_PROJECT} environment variable.}
+\item{project}{The client project ID or number to use when making API calls. Default: \code{NULL} will check \code{GOOGLE_CLOUD_QUOTA_PROJECT}, \code{GOOGLE_CLOUD_PROJECT} then \code{GCLOUD_PROJECT} environment variables.}
 
 \item{quiet}{Suppress error messages? Default: \code{TRUE}}
 

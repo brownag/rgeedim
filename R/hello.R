@@ -6,7 +6,7 @@
 #' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
 #' @param http_transport The HTTP transport method to use when making requests. Default: `NULL`
-#' @param project The client project ID or number to use when making API calls. Default: `NULL` will check `GOOGLE_CLOUD_QUOTA_PROJECT` environment variable.
+#' @param project The client project ID or number to use when making API calls. Default: `NULL` will check `GOOGLE_CLOUD_QUOTA_PROJECT`, `GOOGLE_CLOUD_PROJECT` then `GCLOUD_PROJECT` environment variables.
 #' @param quiet Suppress error messages on load? Default: `FALSE`
 #'
 #' @details Authentication is handled automatically by Google Application Default Credentials (ADC). When `credentials` is `NULL` (the default), the underlying Python libraries will automatically search for credentials in the following order:
@@ -60,6 +60,12 @@ gd_initialize <- function(private_key_file = NULL,
 
   if (is.null(project)) {
     project <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", unset = "")
+    if (project == "") {
+      project <- Sys.getenv("GOOGLE_CLOUD_PROJECT", unset = "")
+    }
+    if (project == "") {
+      project <- Sys.getenv("GCLOUD_PROJECT", unset = "")
+    }
     if (project == "") {
       project <- NULL
     }

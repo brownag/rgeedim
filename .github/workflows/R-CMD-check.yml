@@ -100,6 +100,7 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
+          access_token_scopes: 'https://www.googleapis.com/auth/earthengine,https://www.googleapis.com/auth/cloud-platform'
 
       - name: Set up Google Application Credentials for rgeedim
         if: matrix.config.authenticate == true
@@ -113,7 +114,6 @@ jobs:
       - name: Authenticate with Earth Engine
         if: matrix.config.authenticate == true
         run: | 
-          rgeedim::gd_authenticate(auth_mode = "appdefault")
           rgeedim::gd_initialize()
         shell: Rscript {0}
 
