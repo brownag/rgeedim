@@ -44,6 +44,7 @@ jobs:
       WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
       GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
       R_RGEEDIM_RUN_EXAMPLES: ${{ matrix.config.authenticate && 'TRUE' || 'FALSE' }}
+      R_RGEEDIM_PYTHON_ENVNAME: "r-rgeedim"
 
     steps:
       - uses: actions/checkout@v4
@@ -100,7 +101,12 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
-          access_token_scopes: 'https://www.googleapis.com/auth/earthengine,https://www.googleapis.com/auth/cloud-platform'
+
+      - name: Debug Environment
+        if: matrix.config.authenticate == true
+        run: |
+          printenv | grep -E "GOOGLE|GCLOUD|GCP|CLOUDSDK"
+        shell: bash
 
       - name: Set up Google Application Credentials for rgeedim
         if: matrix.config.authenticate == true
@@ -114,6 +120,7 @@ jobs:
       - name: Authenticate with Earth Engine
         if: matrix.config.authenticate == true
         run: | 
+          rgeedim::gd_authenticate()
           rgeedim::gd_initialize()
         shell: Rscript {0}
 

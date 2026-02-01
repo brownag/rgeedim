@@ -67,6 +67,12 @@ gd_initialize <- function(private_key_file = NULL,
       project <- Sys.getenv("GCLOUD_PROJECT", unset = "")
     }
     if (project == "") {
+      project <- Sys.getenv("GCP_PROJECT", unset = "")
+    }
+    if (project == "") {
+      project <- Sys.getenv("CLOUDSDK_CORE_PROJECT", unset = "")
+    }
+    if (project == "") {
       project <- NULL
     }
   }
@@ -91,6 +97,9 @@ gd_initialize <- function(private_key_file = NULL,
   if (!is.null(credentials)) {
     args$credentials <- credentials
   }
+
+  # Update project if it was found via ADC
+  args$project <- project
 
   # reticulate does not work w/ opt_ prefix decorators introduced in 0.1.381
   if (!is.null(eev) && eev >= "0.1.381") {
