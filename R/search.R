@@ -98,6 +98,17 @@ gd_properties <- function(x) {
   } else if (ncol(z) == 1) {
     colnames(z) <- "id"
   }
+
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    cid <- try(x$id, silent = TRUE)
+    if (!inherits(cid, "try-error") && !is.null(cid) && cid != "") {
+      prefix <- paste0(cid, "/")
+      if (nrow(z) > 0 && !startsWith(z$id[1], prefix)) {
+        z$id <- paste0(prefix, z$id)
+      }
+    }
+  }
+
   return(z)
 }
 

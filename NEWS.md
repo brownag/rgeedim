@@ -5,6 +5,7 @@
    - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors
    - Fixed `gd_collection_from_list()` to correctly extract underlying `ee.Image` from `geedim` 2.0 accessor objects
    - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
+   - `gd_properties()` now correctly returns the full image ID (including collection path) for `geedim` 2.0.0+, fixing an issue where only the asset name was returned.
 
  * Authentication and Headless Support
  
