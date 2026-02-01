@@ -1,4 +1,4 @@
-# rgeedim 0.3.0
+# rgeedim 0.4.0
 
  * Support for geedim v2.0.0 and earthengine-api v1.6.15+
  

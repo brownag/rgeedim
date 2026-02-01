@@ -44,7 +44,7 @@ library(rgeedim)
 ```
 
 ``` {.plain .message}
-#> rgeedim v0.3.0 -- using geedim 2.0.0 w/ earthengine-api 1.7.4
+#> rgeedim v0.4.0 -- using geedim 2.0.0 w/ earthengine-api 1.7.4
 ```
 
 ## Dependencies
@@ -102,7 +102,8 @@ gd_authenticate(auth_mode = "gcloud")
 In each R session you will need to initialize the Earth Engine library.
 
 ``` {.r}
-gd_initialize(project = "rgeedim-demo")
+project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+gd_initialize(project = project_id)
 ```
 
 Note that with `auth_mode="gcloud"` you need to specify the project via `project=` argument, in your default configuration file or via system environment variable `GOOGLE_CLOUD_QUOTA_PROJECT`. The authorization tokens generated for `auth_mode="notebook"` are always associated with a specific project.
