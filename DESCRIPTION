@@ -16,14 +16,15 @@ Config/reticulate:
   list(
     packages = list(
       list(package = "earthengine-api"),
-      list(package = "geedim")
+      list(package = "geedim"),
+      list(package = "google-auth")
     )
   )
 License: Apache License (>= 2)
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-Imports: utils, methods, reticulate, yyjsonr
+Imports: utils, methods, reticulate
 Suggests: terra, raster, tinytest, litedown
 Depends: R (>= 3.5)
 Encoding: UTF-8

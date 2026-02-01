@@ -66,7 +66,7 @@ gd_ee_version <- function() {
   }
   
   if (packageVersion("reticulate") >= "1.41.0") {
-    reticulate::py_require(c("earthengine-api", "geedim"))
+    reticulate::py_require(c("earthengine-api", "geedim", "google-auth"))
   }
   
   suppressWarnings({

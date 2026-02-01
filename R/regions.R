@@ -187,10 +187,6 @@ gd_region <- function(x) {
     stop("`x` must be a SpatVector", call. = FALSE)
   }
   
-  if (!requireNamespace("yyjsonr", quietly = TRUE)) {
-    stop("package 'yyjsonr' is required for GeoJSON conversion.", call. = FALSE)
-  }
-  
   # aggregate to single geometry (union)
   x <- terra::aggregate(x)
   
@@ -199,12 +195,11 @@ gd_region <- function(x) {
   on.exit(unlink(f), add = TRUE)
   terra::writeVector(x, f, filetype = "GeoJSON", overwrite = TRUE)
   
-  # read the GeoJSON string
-  json_str <- readLines(f, warn = FALSE)
-  json_str <- paste(json_str, collapse = "\n")
-  
-  # parse
-  res <- yyjsonr::read_json_str(json_str)
+  # read the GeoJSON string and parse via Python
+  # (using Python avoids an extra R dependency like yyjsonr or jsonlite)
+  json_py <- reticulate::import("json", delay_load = FALSE)
+  json_str <- paste(readLines(f, warn = FALSE), collapse = "\n")
+  res <- json_py$loads(json_str)
   
   # return the geometry of the first feature
   # terra::writeVector creates a FeatureCollection
@@ -303,7 +298,8 @@ gd_region <- function(x) {
 }
 
 #' @description `gd_region_to_vect()` is the inverse function of gd_region/gd_bbox; convert GeoJSON-like list to Well-Known Text(WKT)/_SpatVector_. This may be useful, for example. when `gd_region()`-output was derived from an Earth Engine asset rather than local R object.
-#' @details `gd_region_to_vect()` uses `yyjsonr` to parse the GeoJSON list and `terra` to create the spatial vector object. It supports all geometry types handled by `terra::vect` (e.g., Polygon, MultiPolygon).
+#' @details `gd_region_to_vect()` uses Python's `json` module (via `reticulate`) to parse the GeoJSON list and `terra` to create the spatial vector object. It supports all geometry types handled by `terra::vect` (e.g., Polygon, MultiPolygon).
+#' @param x list. A GeoJSON-like list object (e.g. from `gd_region()`).
 #' @param crs character. Default for GeoJSON sources is `"OGC:CRS84"`.
 #' @param as_wkt logical. Return Well-Known Text (WKT) string as character? Default: `FALSE` returns a 'terra' _SpatVector_.
 #' @param ... Additional arguments to `gd_region_to_vect()` are passed to `terra::vect()` when `as_wkt=FALSE` (default).
@@ -347,8 +343,9 @@ gd_region_to_vect <- function(x, crs = "OGC:CRS84", as_wkt = FALSE, ...) {
     stop("package 'terra' is required for GeoJSON conversion.", call. = FALSE)
   }
   
-  # use yyjsonr to serialize list to GeoJSON string
-  json_str <- yyjsonr::write_json_str(x, opts = list(auto_unbox = TRUE))
+  # use Python's json module to serialize list to GeoJSON string
+  json_py <- reticulate::import("json", delay_load = FALSE)
+  json_str <- json_py$dumps(x)
   
   # use terra to parse GeoJSON string
   v <- terra::vect(json_str, crs = crs, ...)

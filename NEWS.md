@@ -1,21 +1,23 @@
 # rgeedim 0.4.0
 
- * Support for geedim v2.0.0 and earthengine-api v1.6.15+
+ * Support for geedim v2.0.0 and earthengine-api v1.7+
  
-   - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors instead of deprecated `MaskedImage` and `MaskedCollection` classes
+   - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors
+   - Fixed `gd_collection_from_list()` to correctly extract underlying `ee.Image` from `geedim` 2.0 accessor objects
    - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
 
- * `gd_region()` now correctly handles `SpatVector` objects with `MultiPolygon` geometries (disjoint polygons) or holes by using `terra::writeVector(..., filetype="GeoJSON")` for robust GeoJSON serialization. Previously, complex geometries could be mangled into invalid Polygons.
-   
- * Authentication improvements
+ * Authentication and Headless Support
  
-   - `gd_initialize(private_key_file=...)` parameter has been deprecated. Use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.
-   - Support for `EE_SERVICE_ACC_PRIVATE_KEY` environment variable has been deprecated. Use standard `GOOGLE_APPLICATION_CREDENTIALS` for all environments (local, CI/CD, containerized).
-   - `gd_initialize()` now delegates authentication to Python's native Application Default Credentials (ADC) logic for maximum robustness and compatibility with all credential types (service accounts, user ADC, workload identity federation, attached service accounts on Google Cloud)
-   - `gd_initialize()` now automatically detects the project ID from `GOOGLE_CLOUD_QUOTA_PROJECT` if the `project` argument is not provided. This follows standard Google Cloud and Earth Engine best practices for identifying the project responsible for quota and billing.
-   - Improved `gd_is_initialized()` to be more robust and quieter by default.
-   - Fixed authentication flow in non-interactive (headless) environments like GitHub Actions by explicitly supporting `gd_authenticate(auth_mode = "appdefault")`.
-   - Updated all vignettes to use `gd_is_initialized()` for conditional evaluation, preventing failures when authentication is unavailable.
+   - Standardized on `GOOGLE_CLOUD_QUOTA_PROJECT` environment variable for automatic project ID detection in `gd_initialize()`
+   - `gd_initialize(private_key_file=...)` parameter and `EE_SERVICE_ACC_PRIVATE_KEY` environment variable are deprecated in favor of standard `GOOGLE_APPLICATION_CREDENTIALS`
+   - `gd_authenticate()` and `gd_initialize()` now support authentication in headless environments (e.g. CI/CD, Workload Identity Federation)
+   - Updated all vignettes and examples to use `gd_is_initialized()` and environment variable `R_RGEEDIM_RUN_EXAMPLES` for conditional evaluation
+
+ * `gd_region()` and `gd_region_to_vect()` improvements
+ 
+   - `gd_region()` now correctly handles `SpatVector` objects with `MultiPolygon` geometries or holes by leveraging `terra::writeVector(..., filetype="GeoJSON")`
+   - Using Python's native `json` module (via `reticulate`) for dependency-light GeoJSON serialization and parsing
+   - `gd_region_to_vect()` now supports complex GeoJSON-like lists, including `GeometryCollection`
 
 # rgeedim 0.2.8
 

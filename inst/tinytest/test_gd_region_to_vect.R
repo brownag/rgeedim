@@ -1,5 +1,5 @@
 
-if (requireNamespace("terra", quietly = TRUE) && requireNamespace("yyjsonr", quietly = TRUE)) {
+if (requireNamespace("terra", quietly = TRUE) && gd_is_initialized()) {
   
   # Polygon
   coords_poly <- list(
