@@ -9,7 +9,7 @@ knit: (function(input, ...) { source("misc/knit_readme.R"); knit_readme(input, .
 
 ```{r, include = FALSE}
 litedown::reactor(
-  eval = !inherits(rgeedim::gd_version(), 'try-error'),
+  eval = rgeedim::gd_is_initialized(),
   collapse = TRUE,
   dev = 'jpeg',
   fig.path = "man/figures/README-",

@@ -56,7 +56,10 @@ gd_initialize <- function(private_key_file = NULL,
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
 
-  .inform_missing_module(gd, "geedim")
+  res <- .inform_missing_module(gd, "geedim", quiet = quiet)
+  if (inherits(res, "try-error")) {
+    return(invisible(res))
+  }
 
   eev <- gd$utils$ee$`__version__`
 
@@ -86,12 +89,13 @@ gd_initialize <- function(private_key_file = NULL,
 
 #' @export
 #' @param ... Additional arguments passed to `gd_initialize()`
+#' @param quiet Suppress error messages? Default: `TRUE`
 #' @return `gd_is_initialized()`: logical. `TRUE` if initialized successfully.
 #' @rdname gd_initialize
 #' @examples
 #' gd_is_initialized()
-gd_is_initialized <- function(...) {
-  return(length(geedim()) > 0 && !inherits(gd_initialize(...), "try-error"))
+gd_is_initialized <- function(..., quiet = TRUE) {
+  return(length(geedim()) > 0 && !inherits(gd_initialize(..., quiet = quiet), "try-error"))
 }
 
 #' Authenticate with Google Earth Engine using `gcloud`, "Notebook Authenticator" or other method

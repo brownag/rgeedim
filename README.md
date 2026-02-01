@@ -43,10 +43,6 @@ If you are running {rgeedim} interactively for the first time you may be prompte
 library(rgeedim)
 ```
 
-``` {.plain .message}
-#> rgeedim v0.4.0 -- using geedim 2.0.0 w/ earthengine-api 1.7.4
-```
-
 ## Dependencies
 
 You will need Python 3 with the `geedim` module installed to use {rgeedim}.
@@ -139,25 +135,11 @@ We can inspect our results with {terra}. The resulting GeoTIFF has two layers,  
 
 ``` {.r}
 library(terra)
-```
-
-``` {.plain .message}
-#> terra 1.8.95
-```
-
-``` {.r}
 f <- rast(x)
 f
-#> class       : SpatRaster 
-#> size        : 402, 618, 1  (nrow, ncol, nlyr)
-#> resolution  : 10, 10  (x, y)
-#> extent      : -2113880, -2107700, 1945580, 1949600  (xmin, xmax, ymin, ymax)
-#> coord. ref. : NAD83 / Conus Albers (EPSG:5070) 
-#> source      : image.tif 
-#> name        : constant 
+
 plot(f[[1]])
 ```
-![](<man/figures/README-inspect-1.jpeg>)
 
 ## Example: Hillshade from DEM
 
@@ -200,7 +182,6 @@ hsd <- shade(slp, asp)
 # compare elevation vs. hillshade
 plot(c(dem, hillshade = hsd))
 ```
-![](<man/figures/README-dem10-hillshade-1.jpeg>)
 
 Subsets of the `"USGS/SRTMGL1_003"` image result in multi-band GeoTIFF with `"elevation"` and `"FILL_MASK"` bands. In the contiguous US we know the DEM is continuous so the `FILL_MASK` is not that useful. With geedim >1.7 we retrieve only the `"elevation"` band by specifying argument `bands = list("elevation")`. This cuts the raw image size that we need to download in half.
 
@@ -236,14 +217,7 @@ a <- "USGS/3DEP/1m" |>
 
 # inspect individual image metadata in the collection
 gd_properties(a)
-```
-|id|date|
-|---|---|
-|USGS_1M_10_x64y416_CA_SanJoaquin_2021_A21|2006-01-01|
-|USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19|2006-01-01|
 
-
-``` {.r}
 # resampling images as part of composite; before download
 x <- a |>
   gd_composite(resampling = "bilinear") |> 
@@ -260,7 +234,6 @@ x <- a |>
 plot(terra::terrain(x$elevation))
 plot(project(b, x), add = TRUE)
 ```
-![](<man/figures/README-lidar-composite-1.jpeg>)
 
 ## Example: Landsat-7 cloud/shadow-free composite
 
@@ -294,16 +267,7 @@ x <- basepath |>
 
 # inspect individual image metadata in the collection
 gd_properties(x)
-```
-|id|date|fill|cloudless|grmse|saa|sea|
-|---|---|--:|--:|--:|--:|--:|
-|LE07_043034_20201130|2020-11-30|86.41|99.96|4.92|151.45|25.21|
-|LE07_043034_20210101|2021-01-01|86.85|97.91|4.79|148.07|22.47|
-|LE07_043034_20210117|2021-01-17|86.05|99.70|5.44|145.16|23.71|
-|LE07_043034_20210218|2021-02-18|85.66|99.60|5.73|138.46|30.91|
 
-
-``` {.r}
 # download a single image, no compositing
 y <- paste0(basepath, "/", gd_properties(x)$id[1]) |> 
   gd_image_from_id() |>
@@ -319,7 +283,6 @@ y <- paste0(basepath, "/", gd_properties(x)$id[1]) |>
 
 plot(rast(y)[[1:4]])
 ```
-![](<man/figures/README-landsat7-composite-1.jpeg>)
 
 Now we have several images of interest, and also major issues with some of the inputs. In this case there were failures of sensors on the Landsat satellite, but other data gaps may occur due to masked cloudy areas or due to patchy coverage of the source product.
 
@@ -343,7 +306,6 @@ z <- x |>
 
 plot(rast(z)[[1:4]])
 ```
-![](<man/figures/README-landsat7-qmosaic-1.jpeg>)
 
 The `"q-mosaic"` method produces a composite largely free of artifacts; this is because it prioritizes pixels with higher distance from clouds to fill in the gaps. Other methods are available such as `"medoid"`; this may give better results when compositing more contrasting inputs such as several dates over a time period where vegetation or other cover changes appreciably.
 

@@ -147,8 +147,11 @@ gd_ee_version <- function() {
   py_path
 }
 
-.inform_missing_module <- function(object, module_name = "geedim") {
+.inform_missing_module <- function(object, module_name = "geedim", quiet = FALSE) {
   if (is.null(object) || inherits(object, 'try-error')) {
+    if (quiet) {
+      return(invisible(structure(list(message = sprintf("Failed to load '%s' Python module", module_name)), class = "try-error")))
+    }
     stop(sprintf("Failed to load '%s' Python module. Check reticulate environment settings and ensure '%s' module is installed. If prompted to set up a default reticulate environment, choose 'Yes'. See `gd_install()` for more details.", module_name, module_name), call. = FALSE)
   }
 }
