@@ -101,7 +101,7 @@ gd_initialize <- function(private_key_file = NULL,
         # headless/CI environments to successfully initialize.
         ee_scopes <- c("https://www.googleapis.com/auth/earthengine", 
                        "https://www.googleapis.com/auth/cloud-platform")
-        adc <- google_auth_module$default(scopes = ee_scopes)
+        adc <- google_auth_module$default(scopes = ee_scopes, quota_project_id = project)
         if (!is.null(adc) && length(adc) >= 1) {
           credentials <- adc[[1]]
           if (!quiet) {
