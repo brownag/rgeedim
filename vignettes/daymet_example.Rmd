@@ -9,7 +9,9 @@ vignette: >
 
 ```{r setup, include=FALSE}
 EVAL <- isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) &&
-  rgeedim::gd_is_initialized()
+  requireNamespace("terra", quietly = TRUE) &&
+  rgeedim::gd_is_initialized(project = Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo"))
+
 litedown::reactor(
   eval = EVAL,
   collapse = TRUE,
