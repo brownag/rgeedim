@@ -34,9 +34,9 @@ b <- gd_bbox(
   ymax = 38.0071
 )
 
-# download 10m DEM in AEA
+# download 1m DEM in AEA
 # need to set resampling method in composite step
-x <- "USGS/3DEP/10m_collection" |>
+x <- "USGS/3DEP/1m" |>
   gd_collection_from_name() |>
   gd_search(region = b) |>
   gd_composite(
