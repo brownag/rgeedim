@@ -18,7 +18,7 @@ a composite \code{ee.image.Image} object
 Create a composite image from elements of an image collection.
 }
 \examples{
-\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
 \donttest{
 library(terra)
 

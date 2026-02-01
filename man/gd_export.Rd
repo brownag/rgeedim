@@ -11,6 +11,7 @@ gd_export(
   folder = dirname(filename),
   region,
   wait = TRUE,
+  overwrite = TRUE,
   ...
 )
 }
@@ -26,6 +27,8 @@ gd_export(
 \item{region}{Region e.g. from \code{gd_bbox()} or \code{gd_region()}}
 
 \item{wait}{Wait for completion? Default: \code{TRUE}}
+
+\item{overwrite}{Overwrite existing? Default: \code{TRUE}. Only supported for \code{geedim} >= 2.0.0.}
 
 \item{...}{Additional arguments to \code{geedim.image.ImageAccessor.toGoogleCloud()} (geedim >= 2.0.0) or \code{geedim.download.BaseImage.export()} (geedim 1.x.x)}
 }

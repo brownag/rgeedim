@@ -40,7 +40,7 @@ The \code{region} argument is \emph{optional} for downloading images. When downl
 The default resampling method in \code{geedim} is \code{resampling="near"} (Nearest Neighbor). Other options for \code{resampling} include: \code{"average"}, \code{"bicubic"}, \code{"bilinear"}. See \code{gd_resampling_methods()}.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
  r <- gd_bbox(
    xmin = -121,

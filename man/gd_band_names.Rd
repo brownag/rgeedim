@@ -16,7 +16,7 @@ character. Vector of names of each layer in an image.
 Calls \code{bandNames()} method from \code{ee.Image} class.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_band_names(gd_image_from_id("USGS/SRTMGL1_003"))

@@ -50,6 +50,8 @@ Authentication is handled automatically by Google Application Default Credential
 \item Attached service account (when running on Google Cloud infrastructure)
 }
 
+In a headless environment (e.g. CI/CD), use \code{GOOGLE_APPLICATION_CREDENTIALS} to specify the service account key file path and \code{GOOGLE_CLOUD_QUOTA_PROJECT} to specify the project ID responsible for quota and billing.
+
 The deprecated \code{private_key_file} parameter is provided for backward compatibility. If specified and \code{GOOGLE_APPLICATION_CREDENTIALS} is not already set, the file path will be used to set that environment variable for the Python libraries to discover.
 }
 \examples{

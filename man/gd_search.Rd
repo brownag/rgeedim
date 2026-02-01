@@ -30,7 +30,7 @@ A \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \cod
 Search an Image Collection
 }
 \examples{
-\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
 \donttest{
 b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
                     -121.35 37.555,-121.35 37.56,

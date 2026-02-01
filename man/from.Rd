@@ -38,13 +38,13 @@ A \code{geedim.collection.ImageCollectionAccessor} (for geedim >= 2.0.0) or \cod
 Create references to a Google Earth Engine Image or Image Collection based on IDs or names, or combine Images into Image Collections.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
 
@@ -61,7 +61,7 @@ if (gd_is_initialized())
 
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   # Find 1m DEM in arbitrary extent
@@ -95,13 +95,13 @@ if (gd_is_initialized())
 
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \dontrun{
 if (gd_is_initialized())
   gd_asset_id("RGEEDIM_TEST", "rgeedim-demo")
 }
 \dontshow{\}) # examplesIf}
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \dontrun{
 if (gd_is_initialized())
   gd_list_assets("projects/rgeedim-demo")
