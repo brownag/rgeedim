@@ -1,4 +1,4 @@
-project_id <- Sys.getenv("GCP_PROJECT_ID", unset = "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", unset = "rgeedim-demo")
 
 if (!inherits(gd_version(), "try-error")) {
   # we are assuming gd_authenticate() has been called / set up

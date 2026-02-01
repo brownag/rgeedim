@@ -14,3 +14,4 @@ $\.github/*
 ^Meta$
 ^codecov\.yml$
 ^.Renviron$
+^gha-creds-.*\.json$

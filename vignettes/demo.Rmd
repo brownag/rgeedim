@@ -43,7 +43,7 @@ You only need to authenticate periodically, depending on the method you used.
 In each session we need to call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
 
 ```{r setup, eval = EVAL}
-project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
 gd_initialize(project = project_id)
 ```
 
@@ -114,7 +114,7 @@ This example demonstrates the download of a section of the USGS NED seamless 10m
 library(rgeedim)
 library(terra)
 
-project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
 gd_initialize(project = project_id)
 
 b <- gd_bbox(
@@ -168,7 +168,7 @@ This example demonstrates how to access 1-meter LiDAR data from the USGS 3D Elev
 library(rgeedim)
 library(terra)
 
-project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
 gd_initialize(project = project_id)
 
 # wkt->SpatVector->GeoJSON
@@ -216,7 +216,7 @@ This example downloads each component image of the DAYMET climate collection "da
 library(rgeedim)
 library(terra)
 
-project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
 gd_initialize(project = project_id)
 
 r <- gd_bbox(

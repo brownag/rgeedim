@@ -24,7 +24,7 @@ library(rgeedim)
 library(terra)
 
 # search and download from USGS 1m lidar data collection
-project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
 gd_initialize(project = project_id)
 
 

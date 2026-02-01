@@ -6,7 +6,7 @@
 #' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
 #' @param http_transport The HTTP transport method to use when making requests. Default: `NULL`
-#' @param project The client project ID or number to use when making API calls. Default: `NULL`
+#' @param project The client project ID or number to use when making API calls. Default: `NULL` will check `GOOGLE_CLOUD_QUOTA_PROJECT` environment variable.
 #' @param quiet Suppress error messages on load? Default: `FALSE`
 #'
 #' @details Authentication is handled automatically by Google Application Default Credentials (ADC). When `credentials` is `NULL` (the default), the underlying Python libraries will automatically search for credentials in the following order:
@@ -15,6 +15,8 @@
 #'   \item User credentials from `gcloud auth application-default login`
 #'   \item Attached service account (when running on Google Cloud infrastructure)
 #' }
+#'
+#' In a headless environment (e.g. CI/CD), use `GOOGLE_APPLICATION_CREDENTIALS` to specify the service account key file path and `GOOGLE_CLOUD_QUOTA_PROJECT` to specify the project ID responsible for quota and billing.
 #'
 #' The deprecated `private_key_file` parameter is provided for backward compatibility. If specified and `GOOGLE_APPLICATION_CREDENTIALS` is not already set, the file path will be used to set that environment variable for the Python libraries to discover.
 #'
@@ -56,6 +58,13 @@ gd_initialize <- function(private_key_file = NULL,
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
 
+  if (is.null(project)) {
+    project <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", unset = "")
+    if (project == "") {
+      project <- NULL
+    }
+  }
+
   res <- .inform_missing_module(gd, "geedim", quiet = quiet)
   if (inherits(res, "try-error")) {
     return(invisible(res))
@@ -95,7 +104,7 @@ gd_initialize <- function(private_key_file = NULL,
 #' @examples
 #' gd_is_initialized()
 gd_is_initialized <- function(..., quiet = TRUE) {
-  return(length(geedim()) > 0 && !inherits(gd_initialize(..., quiet = quiet), "try-error"))
+  return(!is.null(geedim()) && !inherits(gd_initialize(..., quiet = quiet), "try-error"))
 }
 
 #' Authenticate with Google Earth Engine using `gcloud`, "Notebook Authenticator" or other method

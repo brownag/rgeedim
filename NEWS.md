@@ -5,16 +5,18 @@
    - Updated API calls to use `ee.Image.gd` and `ee.ImageCollection.gd` accessors instead of deprecated `MaskedImage` and `MaskedCollection` classes
    - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
 
- * `gd_region()` fixes:
- 
-   - Now correctly handles `SpatVector` objects with `MultiPolygon` geometries (disjoint polygons) or holes by using `terra::writeVector(..., filetype="GeoJSON")` for robust GeoJSON serialization. Previously, complex geometries could be mangled into invalid Polygons.
+ * `gd_region()` now correctly handles `SpatVector` objects with `MultiPolygon` geometries (disjoint polygons) or holes by using `terra::writeVector(..., filetype="GeoJSON")` for robust GeoJSON serialization. Previously, complex geometries could be mangled into invalid Polygons.
    
  * Authentication improvements
  
    - `gd_initialize(private_key_file=...)` parameter has been deprecated. Use `GOOGLE_APPLICATION_CREDENTIALS` environment variable instead.
    - Support for `EE_SERVICE_ACC_PRIVATE_KEY` environment variable has been deprecated. Use standard `GOOGLE_APPLICATION_CREDENTIALS` for all environments (local, CI/CD, containerized).
    - `gd_initialize()` now delegates authentication to Python's native Application Default Credentials (ADC) logic for maximum robustness and compatibility with all credential types (service accounts, user ADC, workload identity federation, attached service accounts on Google Cloud)
-   
+   - `gd_initialize()` now automatically detects the project ID from `GOOGLE_CLOUD_QUOTA_PROJECT` if the `project` argument is not provided. This follows standard Google Cloud and Earth Engine best practices for identifying the project responsible for quota and billing.
+   - Improved `gd_is_initialized()` to be more robust and quieter by default.
+   - Fixed authentication flow in non-interactive (headless) environments like GitHub Actions by explicitly supporting `gd_authenticate(auth_mode = "appdefault")`.
+   - Updated all vignettes to use `gd_is_initialized()` for conditional evaluation, preventing failures when authentication is unavailable.
+
 # rgeedim 0.2.8
 
  * With reticulate >= 1.41.0 call `py_require(c("earthengine-api" , "geedim"))` on load

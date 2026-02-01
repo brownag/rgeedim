@@ -113,7 +113,7 @@ gd_authenticate(auth_mode = "gcloud")
 In each R session you will need to initialize the Earth Engine library.
 
 ```{r}
-project_id <- Sys.getenv("GCP_PROJECT_ID", "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
 gd_initialize(project = project_id)
 ```
 

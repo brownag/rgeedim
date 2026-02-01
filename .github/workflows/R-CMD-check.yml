@@ -40,9 +40,10 @@ jobs:
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GOOGLE_CLOUD_QUOTA_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
       WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
       GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
+      R_RGEEDIM_RUN_EXAMPLES: ${{ matrix.config.authenticate && 'TRUE' || 'FALSE' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -99,8 +100,6 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
-          token-format: 'access_token'
-          access_token_lifetime: '3600s'
 
       - name: Set up Google Application Credentials for rgeedim
         if: matrix.config.authenticate == true
@@ -113,11 +112,9 @@ jobs:
 
       - name: Authenticate with Earth Engine
         if: matrix.config.authenticate == true
-        env:
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: | 
-          rgeedim::gd_authenticate()
-          rgeedim::gd_initialize(project = Sys.getenv("GCP_PROJECT_ID"))
+          rgeedim::gd_authenticate(auth_mode = "appdefault")
+          rgeedim::gd_initialize()
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
