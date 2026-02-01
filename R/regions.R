@@ -191,7 +191,7 @@ gd_region <- function(x) {
   x <- terra::aggregate(x)
   
   # export to GeoJSON via temporary file
-  f <- tempfile(fileext = ".json")
+  f <- tempfile(fileext = ".geojson")
   on.exit(unlink(f), add = TRUE)
   terra::writeVector(x, f, filetype = "GeoJSON", overwrite = TRUE)
   

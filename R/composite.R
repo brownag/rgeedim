@@ -29,7 +29,11 @@ gd_composite <- function(x, ...) {
   }
   args <- list(...)
   if (!is.null(args$region)) {
-    args$region <- gd_region(args$region)
+    if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+      args$region <- earthengine()$Geometry(gd_region(args$region))
+    } else {
+      args$region <- gd_region(args$region)
+    }
   }
   y <- try(do.call(x$composite, args), silent = TRUE)
   if (inherits(y, 'try-error')) {

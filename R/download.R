@@ -81,7 +81,7 @@ gd_download <- function(x,
     if (is.null(region)) {
       x <- x$prepareForExport(...)$gd
     } else {
-      x <- x$prepareForExport(region = gd_region(region), ...)$gd
+      x <- x$prepareForExport(region = earthengine()$Geometry(gd_region(region)), ...)$gd
     }
     res <- try(x$toGeoTIFF(file = filename, overwrite = overwrite), silent = silent)
     if (file.exists(filename) && !inherits(res, 'try-error')) {

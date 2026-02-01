@@ -56,6 +56,9 @@ gd_export <- function(x, filename, type = "drive", folder = dirname(filename), r
     prepare_args <- args[names(args) %in% prepare_params]
     cloud_args <- args[!names(args) %in% prepare_params]
     
+    # Identify and remove 'overwrite' from cloud_args as it's not supported by toGoogleCloud
+    cloud_args <- cloud_args[names(cloud_args) != "overwrite"]
+    
     # If region is provided, add it to prepare_args
     if (!missing(region) && !is.null(region)) {
        prepare_args$region <- earthengine()$Geometry(gd_region(region))

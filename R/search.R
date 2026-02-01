@@ -23,10 +23,11 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
   FUN <- NULL
   if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
     FUN <- x$filter
+    y <- try(FUN(start_date = start_date, end_date = end_date, region = earthengine()$Geometry(gd_region(region)),  ...), silent = TRUE)
   } else {
     FUN <- x$search
+    y <- try(FUN(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
   }
-  y <- try(FUN(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
   if (inherits(y, "try-error")) {
     message(y[1])
     return(invisible(y))

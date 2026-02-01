@@ -6,6 +6,8 @@
    - Fixed `gd_collection_from_list()` to correctly extract underlying `ee.Image` from `geedim` 2.0 accessor objects
    - `gd_initialize()` now defaults to `credentials = NULL`, using Application Default Credentials (ADC) by default
    - `gd_properties()` now correctly returns the full image ID (including collection path) for `geedim` 2.0.0+, fixing an issue where only the asset name was returned.
+   - Fix for `gd_export()` when `geedim >= 2.0.0` where passing `overwrite` argument caused a `TypeError`.
+   - Consistent use of `ee.Geometry` for `region` argument in `gd_search()`, `gd_composite()`, and `gd_download()` when `geedim >= 2.0.0`.
 
  * Authentication and Headless Support
  
