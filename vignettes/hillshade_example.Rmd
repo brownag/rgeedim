@@ -17,7 +17,7 @@ litedown::reactor(
 )
 ```
 
-```{r}
+```{r, eval=EVAL}
 library(rgeedim)
 library(terra)
 
