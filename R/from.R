@@ -15,10 +15,18 @@
 #' }
 gd_image_from_id <- function(x) {
   .inform_missing_module(gd, "geedim")
-  if (gd_version() >= "2.0.0") {
+  if (.gd_version_ge("2.0.0")) {
     y <- try(gd$utils$ee$Image(x)$gd, silent = FALSE)
   } else {
-    y <- try(gd$MaskedImage$from_id(x), silent = FALSE)
+    if (grepl("^projects/", x)) {
+      # manual creation for custom assets in geedim 1.x.x
+      # using BaseImage avoids STAC catalog lookups that fail for custom assets
+      ee <- earthengine()
+      geedim_download_mod <- reticulate::import("geedim.download", delay_load = TRUE)
+      y <- try(geedim_download_mod$BaseImage(ee$Image(x)), silent = FALSE)
+    } else {
+      y <- try(gd$MaskedImage$from_id(x), silent = FALSE)
+    }
   }
   if (inherits(y, 'try-error'))
     return(invisible(y))
@@ -46,7 +54,7 @@ gd_image_from_id <- function(x) {
 #' }
 gd_collection_from_name <- function(x) {
   .inform_missing_module(gd, "geedim")
-  if (gd_version() >= "2.0.0") {
+  if (.gd_version_ge("2.0.0")) {
     y <- try(gd$utils$ee$ImageCollection(x)$gd, silent = FALSE)
   } else {
     y <- try(gd$MaskedCollection$from_name(x), silent = FALSE)
@@ -94,7 +102,7 @@ gd_collection_from_name <- function(x) {
 #' }
 gd_collection_from_list <- function(x) {
   .inform_missing_module(gd, "geedim")
-  if (gd_version() >= "2.0.0"){
+  if (.gd_version_ge("2.0.0")){
     # extract underlying ee.Image if element is a geedim object
     x <- lapply(x, function(i) {
       if (inherits(i, "geedim.image.ImageAccessor")) {

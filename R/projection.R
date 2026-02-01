@@ -20,7 +20,7 @@ gd_projection <- function(x) {
     if (inherits(x, 'geedim.download.BaseImage')) {
       return(gd$utils$get_projection(x$ee_image))
     } else {
-      if (gd_version() >= "2.0.0") {
+      if (.gd_version_ge("2.0.0")) {
         return(x$projection())
       } else {
         return(gd$utils$get_projection(gd$utils$ee$Image(x)))

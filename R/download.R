@@ -51,6 +51,10 @@ gd_download <- function(x,
                         ...) {
 
   filename <- path.expand(filename)
+  if (!dir.exists(dirname(filename))) {
+    dir.create(dirname(filename), recursive = TRUE)
+  }
+
 
   # check additional arguments to download()/composite()
   extra.args <- list(...)
@@ -78,10 +82,13 @@ gd_download <- function(x,
   }
 
   if (inherits(x, "geedim.image.ImageAccessor")) {
+    # remove overwrite if present as it causes TypeError in geedim >= 2.0.0 prepareForExport()
+    args <- list(...)
+    args$overwrite <- NULL
     if (is.null(region)) {
-      x <- x$prepareForExport(...)$gd
+      x <- do.call(x$prepareForExport, args)$gd
     } else {
-      x <- x$prepareForExport(region = earthengine()$Geometry(gd_region(region)), ...)$gd
+      x <- do.call(x$prepareForExport, c(list(region = earthengine()$Geometry(gd_region(region))), args))$gd
     }
     res <- try(x$toGeoTIFF(file = filename, overwrite = overwrite), silent = silent)
     if (file.exists(filename) && !inherits(res, 'try-error')) {
@@ -93,10 +100,13 @@ gd_download <- function(x,
       return(invisible(NULL))
     }
   } else if (inherits(x, "geedim.download.BaseImage")) {
+    # remove overwrite from ... if present to avoid passing it twice to download()
+    args <- list(...)
+    args$overwrite <- NULL
     if (is.null(region)) {
-      res <- try(x$download(filename = filename, overwrite = overwrite, ...), silent = silent)
+      res <- try(do.call(x$download, c(list(filename = filename, overwrite = overwrite), args)), silent = silent)
     } else {
-      res <- try(x$download(filename = filename, region = gd_region(region), overwrite = overwrite, ...), silent = silent)
+      res <- try(do.call(x$download, c(list(filename = filename, region = gd_region(region), overwrite = overwrite), args)), silent = silent)
     }
     if (file.exists(filename) && !inherits(res, 'try-error')) {
       return(filename)

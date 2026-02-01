@@ -53,6 +53,15 @@ gd_ee_version <- function() {
   try(reticulate::py_eval("version('earthengine-api')"), silent = TRUE)
 }
 
+.gd_version_ge <- function(ver) {
+  res <- gd_version()
+  if (inherits(res, "try-error")) {
+    # second attempt with geedim.__version__ if module already loaded
+    res <- try(reticulate::py_eval("geedim.__version__"), silent = TRUE)
+  }
+  if (inherits(res, "try-error")) return(FALSE)
+  return(numeric_version(res) >= numeric_version(ver))
+}
 
 #' @importFrom reticulate import
 #' @importFrom reticulate py_run_string

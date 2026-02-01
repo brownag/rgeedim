@@ -7,6 +7,7 @@
 #' @param folder Destination folder. Defaults to `dirname(filename)`.
 #' @param region Region e.g. from `gd_bbox()` or `gd_region()`
 #' @param wait Wait for completion? Default: `TRUE`
+#' @param overwrite Overwrite existing? Default: `TRUE`. Only supported for `geedim` >= 2.0.0.
 #' @param ... Additional arguments to `geedim.image.ImageAccessor.toGoogleCloud()` (geedim >= 2.0.0) or `geedim.download.BaseImage.export()` (geedim 1.x.x)
 #'
 #' @return an `ee.batch.Task` object
@@ -43,12 +44,12 @@
 #'  #                  folder = "your-bucket-name", scale = 100, region = r)
 #' }
 #' }
-gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, ...) {
+gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, overwrite = TRUE, ...) {
   .inform_missing_module(x, "geedim")
   
   args <- list(...)
   
-  if (gd_version() >= "2.0.0") {
+  if (.gd_version_ge("2.0.0")) {
     
     # Identify arguments for prepareForExport
     # https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.prepareForExport
@@ -67,9 +68,22 @@ gd_export <- function(x, filename, type = "drive", folder = dirname(filename), r
     }
     
     # Call toGoogleCloud
-    do.call(x$toGoogleCloud, c(list(filename = filename, type = type, folder = folder, wait = wait), cloud_args))
+    do.call(x$toGoogleCloud, c(list(filename = filename, type = type, folder = folder, wait = wait, overwrite = overwrite), cloud_args))
 
   } else {
-    x$export(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait, ...)
+    # remove overwrite if present as it causes TypeError in geedim 1.x.x export()
+    args$overwrite <- NULL
+    
+    # if overwrite is TRUE and type is asset, we need to manually handle it for geedim 1.x.x
+    if (isTRUE(overwrite) && type == "asset") {
+      asset_id <- gd_asset_id(filename, folder)
+      # check if asset exists
+      # we can try to get its properties, if it fails it probably doesn't exist
+      try({
+        earthengine()$data$deleteAsset(asset_id)
+      }, silent = TRUE)
+    }
+    
+    do.call(x$export, c(list(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait), args))
   }
 }

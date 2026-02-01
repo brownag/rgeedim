@@ -71,9 +71,9 @@ if (!inherits(gi, "try-error")) {
     expect_equal(gd_region(.regionlist), .regionlist)
 
     # regions: SpatExtent input
-    # gd_region(SpatExtent) calls gd_bbox() internally, so it returns CCW (.regionlist)
+    # gd_region(SpatExtent) calls gd_bbox() internally
     ex <- terra::ext(.testbounds)
-    expect_equal(gd_region(ex), .regionlist)
+    expect_equal(gd_region(ex), .regionlist_cw)
 
     # regions: SpatVector input
     # gd_region(SpatVector) uses terra::writeVector which preserves CW order from as.polygons

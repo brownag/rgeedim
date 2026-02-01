@@ -162,8 +162,7 @@ gd_region <- function(x) {
   }
 
   if (!requireNamespace("terra", quietly = TRUE)) {
-    stop("package `terra` is required to convert R spatial objects to GeoJSON regions.\n
-         See `gd_bbox()` for a simpler region interface that takes numeric values (xmin/xmax/ymin/ymax) directly.", .call = FALSE)
+    stop("package `terra` is required to convert R spatial objects to GeoJSON regions.\n         See `gd_bbox()` for a simpler region interface that takes numeric values (xmin/xmax/ymin/ymax) directly.", .call = FALSE)
   }
 
   # convert non-terra to terra
@@ -183,20 +182,36 @@ gd_region <- function(x) {
   # x is a terra vector object
   if (inherits(x, 'SpatVectorProxy')) {
     x <- terra::vect(terra::sources(x))
+  } else if (inherits(x, c("SpatVectorCollection", "SpatRasterCollection", "SpatRaster"))) {
+    cr <- terra::crs(x)
+    x <- terra::as.polygons(terra::ext(x))
+    if (nchar(cr) > 0) terra::crs(x) <- cr
   } else if (!inherits(x, 'SpatVector')) {
-    stop("`x` must be a SpatVector", call. = FALSE)
+    stop("`x` must be a SpatVector, SpatRaster or Collection", call. = FALSE)
   }
   
   # aggregate to single geometry (union)
   x <- terra::aggregate(x)
   
+  if (ncol(x) == 0) {
+    x$id <- seq_len(nrow(x))
+  }
+
   # export to GeoJSON via temporary file
   f <- tempfile(fileext = ".geojson")
   on.exit(unlink(f), add = TRUE)
-  terra::writeVector(x, f, filetype = "GeoJSON", overwrite = TRUE)
+  res <- try(terra::writeVector(x, f, overwrite = TRUE), silent = TRUE)
+  if (inherits(res, "try-error") || !file.exists(f)) {
+    # second attempt with different file type specification
+    res <- try(terra::writeVector(x, f, filetype = "GeoJSON", overwrite = TRUE), silent = TRUE)
+    if (inherits(res, "try-error") || !file.exists(f)) {
+       stop("Failed to convert SpatVector to GeoJSON: ", 
+         ifelse(inherits(res, "try-error"), res[1], "could not create temporary file"), 
+         call. = FALSE)
+    }
+  }
   
   # read the GeoJSON string and parse via Python
-  # (using Python avoids an extra R dependency like yyjsonr or jsonlite)
   json_py <- reticulate::import("json", delay_load = FALSE)
   json_str <- paste(readLines(f, warn = FALSE), collapse = "\n")
   res <- json_py$loads(json_str)
@@ -206,9 +221,13 @@ gd_region <- function(x) {
   geom <- NULL
   if (!is.null(res$features)) {
     if (is.data.frame(res$features)) {
-      if (nrow(res$features) > 0) geom <- res$features$geometry[[1]]
+      if (nrow(res$features) > 0) {
+        geom <- res$features$geometry[[1]]
+      }
     } else if (is.list(res$features)) {
-      if (length(res$features) > 0) geom <- res$features[[1]]$geometry
+      if (length(res$features) > 0) {
+        geom <- res$features[[1]]$geometry
+      }
     }
   }
   
@@ -243,15 +262,15 @@ gd_region <- function(x) {
 #' 
 #' This internal function allows for consistent interfaces for non-terra Spatial objects by coercion to the terra native objects `SpatVector` or `SpatRaster`.
 #' 
-#' @param x A WKT string, Spatial*, Raster*, or sf* object
+#' @param x A WKT or GeoJSON string, Spatial*, Raster*, or sf* object
 #' @param extent Return only SpatExtent of result? Default: `FALSE`
-#' @details WKT string coordinates should use the longitude latitude WGS84 decimal degrees (`"OGC:CRS84"` spatial reference system).
+#' @details WKT or GeoJSON string coordinates should be in longitude latitude order WGS84 decimal degrees (`"OGC:CRS84"` spatial reference system).
 #' @noRd
 .cast_spatial_object <- function(x, extent = FALSE) {
   
-  # wkt string
+  # wkt or geojson string
   if (is.character(x)) {
-    x <- terra::vect(x, crs = "OGC:CRS84")
+    x <- suppressWarnings(terra::vect(x, crs = "OGC:CRS84"))
   }
   
   # raster/sp support
@@ -273,12 +292,14 @@ gd_region <- function(x) {
   }
   
   # convert to simple geometries if we only want extent
-  if (extent && !inherits(x, 'SpatVector')) {
-    x <- terra::as.polygons(x, extent = TRUE)
+  if (!inherits(x, 'SpatVector') && !extent) {
+    cr <- terra::crs(x)
+    x <- terra::as.polygons(terra::ext(x))
+    if (nchar(cr) > 0) terra::crs(x) <- cr
   }
   
   # project what we can to OGC:CRS84
-  if (inherits(x, 'SpatVector')) {
+  if (inherits(x, 'SpatVector') && nchar(terra::crs(x)) > 0) {
     # will fail if CRS in x not defined
     x <- try(terra::project(x, "OGC:CRS84"), silent = TRUE)
     if (inherits(x, 'try-error')) {
@@ -289,7 +310,7 @@ gd_region <- function(x) {
   # raster Extent, sf bbox, extent=TRUE
   # assume these are already in correct CRS
   if (inherits(x, c('Extent', 'bbox')) || 
-      (extent && !inherits(x, 'SpatExtent'))) {
+      (extent && !inherits(x, 'SpatExtent') && !inherits(x, 'SpatVector'))) {
     x <- terra::ext(x)
   }
   
@@ -320,10 +341,10 @@ gd_region_to_vect <- function(x, crs = "OGC:CRS84", as_wkt = FALSE, ...) {
     if (is.null(x$geometries)) stop("GeometryCollection missing 'geometries' member.", call. = FALSE)
     
     if (as_wkt) {
-      res <- vapply(x$geometries, gd_region_to_vect, character(1), crs = crs, as_wkt = TRUE, ...)
+      res <- vapply(x$geometries, gd_region_to_vect, character(1), crs = crs, as_wkt = TRUE, ...) 
       return(sprintf("GEOMETRYCOLLECTION(%s)", paste(res, collapse = ",")))
     } else {
-      res <- lapply(x$geometries, gd_region_to_vect, crs = crs, as_wkt = FALSE, ...)
+      res <- lapply(x$geometries, gd_region_to_vect, crs = crs, as_wkt = FALSE, ...) 
       
       if (length(res) == 0) {
         if (!requireNamespace("terra", quietly = TRUE)) {
@@ -348,15 +369,10 @@ gd_region_to_vect <- function(x, crs = "OGC:CRS84", as_wkt = FALSE, ...) {
   json_str <- json_py$dumps(x)
   
   # use terra to parse GeoJSON string
-  v <- terra::vect(json_str, crs = crs, ...)
+  v <- suppressWarnings(terra::vect(json_str, crs = crs, ...))
   
   if (as_wkt) {
-    # export to WKT via temporary CSV
-    f <- tempfile(fileext = ".csv")
-    on.exit(unlink(f), add = TRUE)
-    terra::writeVector(v, f, filetype = "CSV", options = "GEOMETRY=AS_WKT")
-    d <- utils::read.csv(f)
-    return(d$WKT)
+    v <- terra::geom(v, wkt = TRUE)
   }
   
   v
