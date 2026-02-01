@@ -4,7 +4,7 @@
 #'
 #' @return `ee.Projection` object
 #' @export
-#' @examplesIf gd_is_initialized()
+#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))

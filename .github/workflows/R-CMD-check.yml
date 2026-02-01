@@ -43,7 +43,7 @@ jobs:
       GOOGLE_CLOUD_QUOTA_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
       WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
       GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
-      R_RGEEDIM_RUN_EXAMPLES: ${{ matrix.config.authenticate && 'TRUE' || 'FALSE' }}
+      R_RGEEDIM_RUN_EXAMPLES: ${{ matrix.config.authenticate && matrix.config.r == 'devel' && 'TRUE' || 'FALSE' }}
       R_RGEEDIM_PYTHON_ENVNAME: "r-rgeedim"
 
     steps:

@@ -39,17 +39,17 @@ Get, Update, or Delete an Earth Engine Asset by ID
 \examples{
 \dontrun{
 # get asset from project by ID
-a <- gd_get_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
+a <- gd_get_asset("projects/rgeedim-demo/assets/YOUR_ASSET_ID")
 }
 \dontrun{
 # change description in `"properties"`
 a$properties$description <- "foo"
 
 # update asset
-gd_update_asset("projects/your-project-name/assets/YOUR_ASSET_ID", a, "properties")
+gd_update_asset("projects/rgeedim-demo/assets/YOUR_ASSET_ID", a, "properties")
 }
 \dontrun{
 # remove an asset from project
-gd_delete_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
+gd_delete_asset("projects/rgeedim-demo/assets/YOUR_ASSET_ID")
 }
 }

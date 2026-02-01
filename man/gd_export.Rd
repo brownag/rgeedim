@@ -58,11 +58,11 @@ if (gd_is_initialized()) {
  #   i,
  #   "RGEEDIM_TEST",
  #   type = "asset",
- #   folder = "your-project-name",
+ #   folder = "rgeedim-demo",
  #   scale = 100,
  #   region = r
  # )
- # gd_download("projects/your-project-name/assets/RGEEDIM_TEST", filename = "test.tif")
+ # gd_download("projects/rgeedim-demo/assets/RGEEDIM_TEST", filename = "test.tif")
 
  ## export to Google Cloud Bucket with `type="cloud"`,
  ##   where `folder` is the bucket path without `"gs://"`

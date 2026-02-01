@@ -8,7 +8,7 @@
 #'
 #' @export
 #' @rdname from
-#' @examplesIf gd_is_initialized()
+#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
@@ -28,7 +28,7 @@ gd_image_from_id <- function(x) {
 #' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object, or `try-error` on error. See `\link{geedim-versions}` for more details.
 #' @export
 #' @rdname from
-#' @examplesIf gd_is_initialized()
+#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'
@@ -58,7 +58,7 @@ gd_collection_from_name <- function(x) {
 #' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object, or `try-error` on error. See `\link{geedim-versions}` for more details.
 #' @export
 #' @rdname from
-#' @examplesIf gd_is_initialized()
+#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   # Find 1m DEM in arbitrary extent
@@ -79,8 +79,10 @@ gd_collection_from_name <- function(x) {
 #'   l <- lapply(z$id, gd_image_from_id)
 #'
 #'   # create a new collection from the list of images
+#'   \dontrun{
 #'   l2 <- gd_collection_from_list(l)
 #'   l2
+#'   }
 #'
 #' ### download composite of custom collection
 #' #  gd_download(gd_composite(l2),
@@ -93,6 +95,13 @@ gd_collection_from_name <- function(x) {
 gd_collection_from_list <- function(x) {
   .inform_missing_module(gd, "geedim")
   if (gd_version() >= "2.0.0"){
+    # extract underlying ee.Image if element is a geedim object
+    x <- lapply(x, function(i) {
+      if (inherits(i, "geedim.image.ImageAccessor")) {
+        return(i$ee_image)
+      }
+      i
+    })
     y <- try(gd$utils$ee$ImageCollection(x)$gd, silent = FALSE)
   } else {
     y <- try(gd$MaskedCollection$from_list(x), silent = FALSE)
@@ -105,10 +114,10 @@ gd_collection_from_list <- function(x) {
 #' @param filename File or Asset Name
 #' @param folder Optional: Project Name
 #' @rdname from
-#' @examplesIf gd_is_initialized()
-#' \donttest{
+#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' \dontrun{
 #' if (gd_is_initialized())
-#'   gd_asset_id("RGEEDIM_TEST", "your-project-name")
+#'   gd_asset_id("RGEEDIM_TEST", "rgeedim-demo")
 #' }
 gd_asset_id <- function(filename, folder = NULL) {
   .inform_missing_module(gd, "geedim")
@@ -118,10 +127,10 @@ gd_asset_id <- function(filename, folder = NULL) {
 #' @export
 #' @param parent Full path to project folder (with or without `"/assets"` suffix)
 #' @rdname from
-#' @examplesIf gd_is_initialized()
-#' \donttest{
+#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' \dontrun{
 #' if (gd_is_initialized())
-#'   gd_list_assets("projects/your-project-name")
+#'   gd_list_assets("projects/rgeedim-demo")
 #' }
 gd_list_assets <- function(parent) {
   if (!endsWith(parent, "/assets"))

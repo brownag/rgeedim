@@ -81,8 +81,10 @@ if (gd_is_initialized())
   l <- lapply(z$id, gd_image_from_id)
 
   # create a new collection from the list of images
+  \dontrun{
   l2 <- gd_collection_from_list(l)
   l2
+  }
 
 ### download composite of custom collection
 #  gd_download(gd_composite(l2),
@@ -94,15 +96,15 @@ if (gd_is_initialized())
 }
 \dontshow{\}) # examplesIf}
 \dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
-\donttest{
+\dontrun{
 if (gd_is_initialized())
-  gd_asset_id("RGEEDIM_TEST", "your-project-name")
+  gd_asset_id("RGEEDIM_TEST", "rgeedim-demo")
 }
 \dontshow{\}) # examplesIf}
 \dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
-\donttest{
+\dontrun{
 if (gd_is_initialized())
-  gd_list_assets("projects/your-project-name")
+  gd_list_assets("projects/rgeedim-demo")
 }
 \dontshow{\}) # examplesIf}
 }

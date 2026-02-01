@@ -98,8 +98,8 @@ if (!inherits(gi, "try-error")) {
     expect_true(is.list(gd_enum_elements()))
 
     # asset IDs
-    id <- gd_asset_id("RGEEDIM_TEST", "your-project-name")
-    expect_equal(id, "projects/your-project-name/assets/RGEEDIM_TEST")
+    id <- gd_asset_id("RGEEDIM_TEST", project_id)
+    expect_equal(id, paste0("projects/", project_id, "/assets/RGEEDIM_TEST"))
 
     # images
     img <- gd_image_from_id("USGS/SRTMGL1_003")

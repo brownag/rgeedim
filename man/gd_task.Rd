@@ -38,7 +38,7 @@ if (gd_is_initialized()) {
     region = r,
     type = "asset",
     filename = "RGEEDIM_TEST",
-    folder = "your-project-name",
+    folder = "rgeedim-demo",
     scale = 30
   )
   

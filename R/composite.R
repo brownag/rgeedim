@@ -6,7 +6,7 @@
 #' @param ... [additional arguments](https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.collection.ImageCollectionAccessor.composite) to `geedim.collection.ImageCollectionAccessor$composite()`
 #' @return a composite `ee.image.Image` object
 #' @export
-#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
+#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
 #' library(terra)
 #' 

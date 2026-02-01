@@ -11,7 +11,7 @@
 #' @examples
 #' \dontrun{
 #' # get asset from project by ID
-#' a <- gd_get_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
+#' a <- gd_get_asset("projects/rgeedim-demo/assets/YOUR_ASSET_ID")
 #' }
 gd_get_asset <- function(x, silent = FALSE) {
   .inform_missing_module(gd, "geedim")
@@ -26,7 +26,7 @@ gd_get_asset <- function(x, silent = FALSE) {
 #' a$properties$description <- "foo"
 #'
 #' # update asset
-#' gd_update_asset("projects/your-project-name/assets/YOUR_ASSET_ID", a, "properties")
+#' gd_update_asset("projects/rgeedim-demo/assets/YOUR_ASSET_ID", a, "properties")
 #' }
 gd_update_asset <- function(x, asset, update = c("start_time", "end_time", "properties"), silent = FALSE) {
   .inform_missing_module(gd, "geedim")
@@ -39,7 +39,7 @@ gd_update_asset <- function(x, asset, update = c("start_time", "end_time", "prop
 #' @examples
 #' \dontrun{
 #' # remove an asset from project
-#' gd_delete_asset("projects/your-project-name/assets/YOUR_ASSET_ID")
+#' gd_delete_asset("projects/rgeedim-demo/assets/YOUR_ASSET_ID")
 #' }
 gd_delete_asset <- function(x, silent = FALSE) {
   .inform_missing_module(gd, "geedim")
