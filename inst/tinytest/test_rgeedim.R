@@ -1,6 +1,10 @@
 project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", unset = "rgeedim-demo")
 
-if (!inherits(gd_version(), "try-error")) {
+# Only run heavy initialization if NOT on CRAN or in interactive session.
+# This avoids long timeouts on CRAN searching for geedim/python.
+do_init <- interactive() || isTRUE(as.logical(Sys.getenv("NOT_CRAN")))
+
+if (do_init && !inherits(gd_version(), "try-error")) {
   # we are assuming gd_authenticate() has been called / set up
   # such that we can init modules and begin using them
   gi <- gd_initialize(project = project_id)

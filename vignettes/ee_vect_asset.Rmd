@@ -8,7 +8,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-EVAL <- identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") &&
+EVAL <- isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) &&
           requireNamespace("terra", quietly = TRUE) &&
           rgeedim::gd_is_initialized()
 litedown::reactor(

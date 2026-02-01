@@ -8,7 +8,7 @@
 #'
 #' @export
 #' @rdname from
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity')
@@ -28,7 +28,7 @@ gd_image_from_id <- function(x) {
 #' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object, or `try-error` on error. See `\link{geedim-versions}` for more details.
 #' @export
 #' @rdname from
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'
@@ -58,7 +58,7 @@ gd_collection_from_name <- function(x) {
 #' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object, or `try-error` on error. See `\link{geedim-versions}` for more details.
 #' @export
 #' @rdname from
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   # Find 1m DEM in arbitrary extent
@@ -114,7 +114,7 @@ gd_collection_from_list <- function(x) {
 #' @param filename File or Asset Name
 #' @param folder Optional: Project Name
 #' @rdname from
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \dontrun{
 #' if (gd_is_initialized())
 #'   gd_asset_id("RGEEDIM_TEST", "rgeedim-demo")
@@ -127,7 +127,7 @@ gd_asset_id <- function(filename, folder = NULL) {
 #' @export
 #' @param parent Full path to project folder (with or without `"/assets"` suffix)
 #' @rdname from
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \dontrun{
 #' if (gd_is_initialized())
 #'   gd_list_assets("projects/rgeedim-demo")

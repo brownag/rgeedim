@@ -7,10 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-EVAL <- identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") &&
-          requireNamespace("terra", quietly = TRUE) &&
-          rgeedim::gd_is_initialized()
+```{r setup, include=FALSE}
+EVAL <- isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) &&
+  rgeedim::gd_is_initialized()
 litedown::reactor(
   eval = EVAL,
   collapse = TRUE,

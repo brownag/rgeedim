@@ -65,10 +65,6 @@ gd_ee_version <- function() {
     reticulate::use_condaenv(envname, required = FALSE)
   }
   
-  if (packageVersion("reticulate") >= "1.41.0") {
-    reticulate::py_require(c("earthengine-api", "geedim", "google-auth"))
-  }
-  
   suppressWarnings({
     if (is.null(collections_module)) {
       try(collections_module <<- reticulate::import('collections', delay_load = TRUE), silent = TRUE)
@@ -110,24 +106,31 @@ gd_ee_version <- function() {
 
 #' @importFrom reticulate configure_environment
 .onLoad <- function(libname, pkgname) {
-  if (.has_python3()) {
-    if (!.loadModules()) {
-      # x <- try(reticulate::configure_environment(pkgname), silent = TRUE)
-      # if (!inherits(x, 'try-error')) {
-      #  .loadModules()
-      # }
-    }
+  if (packageVersion("reticulate") >= "1.41.0") {
+    reticulate::py_require(c("earthengine-api", "geedim", "google-auth"))
   }
+  .loadModules()
 }
 
 #' @importFrom utils packageVersion
 .onAttach <- function(libname, pkgname) {
-  gdv <- suppressWarnings(gd_version())
-  gev <- suppressWarnings(gd_ee_version())
-  if (inherits(gdv, 'try-error'))
-    gdv <- "<Not Found>"
-  if (inherits(gev, 'try-error'))
-    gev <- "<Not Found>"
+  # Only attempt to fetch versions if Python is already initialized or we are in a session
+  # where a long timeout for discovery/auto-install is acceptable (interactive/CI).
+  # This prevents 70s+ delays on CRAN checks when geedim is missing.
+  do_check <- reticulate::py_available() || 
+              interactive() || 
+              isTRUE(as.logical(Sys.getenv("NOT_CRAN")))
+  
+  gdv <- gev <- "<Not Initialized>"
+  if (do_check) {
+    gdv <- suppressWarnings(gd_version())
+    gev <- suppressWarnings(gd_ee_version())
+    if (inherits(gdv, 'try-error'))
+      gdv <- "<Not Found>"
+    if (inherits(gev, 'try-error'))
+      gev <- "<Not Found>"
+  }
+  
   packageStartupMessage(
     "rgeedim v",
     utils::packageVersion("rgeedim"),

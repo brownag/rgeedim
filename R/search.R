@@ -9,7 +9,7 @@
 #' @param ... additional arguments to `geedim.MaskedCollection.search()` e.g. `cloudless_portion`, `fill_portion`
 #' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object suitable for querying properties. See `\link{geedim-versions}` for more details.
 #' @export
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
 #' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
 #'                     -121.35 37.555,-121.35 37.56,
@@ -44,7 +44,7 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 #' @return `data.frame` containing properties table from `x`; `NULL` if no properties table.
 #' @importFrom utils read.table
 #' @export
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
 #' library(terra)
 #' 
@@ -109,7 +109,7 @@ gd_properties <- function(x) {
 #'
 #' @return character. Vector of names of each layer in an image.
 #' @export
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_band_names(gd_image_from_id("USGS/SRTMGL1_003"))
@@ -136,7 +136,7 @@ gd_band_names <- function(x) {
 #'
 #' @return list. Each element is a list that corresponds to a layer in `x`, each with one or more elements for properties of that layer.
 #' @export
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_band_properties(gd_image_from_id("USGS/SRTMGL1_003"))
@@ -164,7 +164,7 @@ gd_band_properties <- function(x) {
 #' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @return list.
 #' @export
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_footprint(gd_image_from_id("USGS/SRTMGL1_003"))

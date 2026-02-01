@@ -14,7 +14,7 @@
 #' @seealso `gd_region()` `gd_bbox()`
 #' @return Invisible path to downloaded image, or `try-error` on error
 #' @export
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #'  r <- gd_bbox(
 #'    xmin = -121,

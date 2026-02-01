@@ -5,7 +5,7 @@
 #' @return `gd_enum_names()`: character vector containing names of Enums
 #' @export
 #' @rdname enum
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' @examples
 #' \donttest{
 #'  if (gd_is_initialized())
@@ -22,7 +22,7 @@ gd_enum_names <- function() {
 #' @return `gd_enum_elements()`: element values of an Enum
 #' @export
 #' @rdname enum
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #'
 #' \donttest{
 #'  if (gd_is_initialized())
@@ -49,7 +49,7 @@ gd_enum_elements <- function(enum = gd_enum_names()) {
 #' @return `gd_resampling_methods()`: character vector of resampling methods (Enum `"ResamplingMethod"`)
 #' @export
 #' @rdname enum
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_resampling_methods()
@@ -61,7 +61,7 @@ gd_resampling_methods <- function() {
 #' @return `gd_cloud_mask_methods()`: character vector of cloud mask methods (Enum `"CloudMaskMethod"`)
 #' @export
 #' @rdname enum
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_cloud_mask_methods()
@@ -73,7 +73,7 @@ gd_cloud_mask_methods <- function() {
 #' @return `gd_composite_methods()`: character vector of composite methods (Enum `"CompositeMethod"`)
 #' @export
 #' @rdname enum
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_composite_methods()
@@ -86,7 +86,7 @@ gd_composite_methods <- function() {
 #' @return `gd_export_types()`: character vector of export types (Enum `"ExportType"`)
 #' @export
 #' @rdname enum
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_export_types()
@@ -98,7 +98,7 @@ gd_export_types <- function() {
 #' @return `gd_spectral_distance_metrics()`: character vector of spectral distance metrics (Enum `"SpectralDistanceMetric"`)
 #' @export
 #' @rdname enum
-#' @examplesIf identical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"), "TRUE") && gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #'  if (gd_is_initialized())
 #'   gd_spectral_distance_metrics()

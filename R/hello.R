@@ -184,7 +184,7 @@ gd_authenticate <- function(authorization_code = NULL,
   # because it tries to open a browser or run interactive gcloud commands.
   if (is.null(auth_mode) && 
       Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS") != "" && 
-      (quiet || !interactive() || Sys.getenv("GITHUB_ACTIONS") == "true")) {
+      (quiet || !interactive() || isTRUE(as.logical(Sys.getenv("GITHUB_ACTIONS"))))) {
     return(invisible(NULL))
   }
 
