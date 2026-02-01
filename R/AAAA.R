@@ -157,8 +157,8 @@ gd_ee_version <- function() {
     check_failed <- TRUE
   } else {
     # Verify we can access the module (triggers delay load)
-    # Using try() to catch reticulate errors
-    if (inherits(try(object$`__name__`, silent = TRUE), "try-error")) {
+    # Using py_module_available is safer than accessing attributes on the proxy
+    if (!reticulate::py_module_available(module_name)) {
       check_failed <- TRUE
     }
   }
