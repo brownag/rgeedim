@@ -51,6 +51,7 @@ jobs:
         run: |
           reticulate::virtualenv_create("r-rgeedim")
           reticulate::virtualenv_install("r-rgeedim", "geedim")
+          print(reticulate::py_config())
         shell: Rscript {0}
 
       - name: Install terra from r-universe
@@ -74,8 +75,13 @@ jobs:
 
       - name: Authenticate with Earth Engine
         run: | 
-          rgeedim::gd_authenticate()
-          rgeedim::gd_initialize()
+          rgeedim::gd_authenticate(quiet = TRUE)
+          rgeedim::gd_initialize(quiet = FALSE)
+          if (rgeedim::gd_is_initialized()) {
+            cat("Earth Engine successfully initialized!\n")
+          } else {
+            cat("Earth Engine failed to initialize.\n")
+          }
         shell: Rscript {0}
 
       - name: Install package

@@ -93,6 +93,7 @@ jobs:
           } else {
             reticulate::virtualenv_install("r-rgeedim", paste0("geedim==", "${{ matrix.config.geedim-version }}"))
           }
+          print(reticulate::py_config())
         shell: Rscript {0}
 
       - name: Authenticate to Google Cloud (WIF)
@@ -101,12 +102,6 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SA_EMAIL }}
-
-      - name: Debug Environment
-        if: matrix.config.authenticate == true
-        run: |
-          printenv | grep -E "GOOGLE|GCLOUD|GCP|CLOUDSDK"
-        shell: bash
 
       - name: Set up Google Application Credentials for rgeedim
         if: matrix.config.authenticate == true
@@ -120,8 +115,13 @@ jobs:
       - name: Authenticate with Earth Engine
         if: matrix.config.authenticate == true
         run: | 
-          rgeedim::gd_authenticate()
-          rgeedim::gd_initialize()
+          rgeedim::gd_authenticate(quiet = TRUE)
+          rgeedim::gd_initialize(quiet = FALSE)
+          if (rgeedim::gd_is_initialized()) {
+            cat("Earth Engine successfully initialized!\n")
+          } else {
+            cat("Earth Engine failed to initialize.\n")
+          }
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2

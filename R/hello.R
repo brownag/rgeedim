@@ -94,6 +94,30 @@ gd_initialize <- function(private_key_file = NULL,
   # Only add credentials if not NULL.
   # When credentials is NULL, Python's ee.Initialize() will automatically use
   # Google Application Default Credentials (ADC) logic via google.auth.default().
+  if (is.null(credentials)) {
+    try({
+      if (!is.null(google_auth_module)) {
+        # Request Earth Engine scope explicitly; this is required for many 
+        # headless/CI environments to successfully initialize.
+        ee_scopes <- c("https://www.googleapis.com/auth/earthengine", 
+                       "https://www.googleapis.com/auth/cloud-platform")
+        adc <- google_auth_module$default(scopes = ee_scopes)
+        if (!is.null(adc) && length(adc) >= 1) {
+          credentials <- adc[[1]]
+          if (!quiet) {
+            message("Using Application Default Credentials (ADC)")
+          }
+          if (is.null(project) && length(adc) >= 2 && !is.null(adc[[2]])) {
+            project <- adc[[2]]
+            if (!quiet) {
+              message("Project ID '", project, "' found in ADC")
+            }
+          }
+        }
+      }
+    }, silent = TRUE)
+  }
+
   if (!is.null(credentials)) {
     args$credentials <- credentials
   }
@@ -154,6 +178,15 @@ gd_authenticate <- function(authorization_code = NULL,
                             scopes = NULL,
                             force = TRUE) {
   .inform_missing_module(gd, "geedim")
+
+  # In headless/CI environments with ADC already configured via environment variable,
+  # ee.Authenticate() is generally not required and can cause hangs/failures
+  # because it tries to open a browser or run interactive gcloud commands.
+  if (is.null(auth_mode) && 
+      Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS") != "" && 
+      (quiet || !interactive() || Sys.getenv("GITHUB_ACTIONS") == "true")) {
+    return(invisible(NULL))
+  }
 
   eev <- gd$utils$ee$`__version__`
 
