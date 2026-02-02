@@ -34,7 +34,7 @@ jobs:
           - {os: windows-latest, r: 'release', geedim-version: 'latest', python-version: '3.13', authenticate: false}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release', geedim-version: 'latest', python-version: '3.14', authenticate: true}
           - {os: ubuntu-latest,   r: 'release', geedim-version: 'latest', python-version: '3.13', authenticate: true}
-          - {os: ubuntu-latest,   r: 'release', geedim-version: '1.9.0', python-version: '3.12', authenticate: false}
+          - {os: ubuntu-latest,   r: 'release', geedim-version: '1.9.0', python-version: '3.12', authenticate: true}
           - {os: ubuntu-22.04,   r: '3.6', geedim-version: 'latest', python-version: '3.11', authenticate: false}
 
     env:
