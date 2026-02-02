@@ -165,31 +165,21 @@ gd_region <- function(x) {
     stop("package `terra` is required to convert R spatial objects to GeoJSON regions.\n         See `gd_bbox()` for a simpler region interface that takes numeric values (xmin/xmax/ymin/ymax) directly.", .call = FALSE)
   }
 
-  # convert non-terra to terra
+  # convert to terra SpatVector
   x <- .cast_spatial_object(x)
   
-  # terra
-  if (inherits(x, c('SpatVector',
-                    'SpatRaster',
-                    'SpatVectorCollection',
-                    'SpatRasterCollection'))) {
+  if (inherits(x, 'SpatVector')) {
     return(.gd_geojson(x))
   }
+  
+  # fallback for SpatExtent etc
   gd_bbox(x)
 }
 
 .gd_geojson <- function(x) {
-  # x is a terra vector object
-  if (inherits(x, 'SpatVectorProxy')) {
-    x <- terra::vect(terra::sources(x))
-  } else if (inherits(x, c("SpatVectorCollection", "SpatRasterCollection"))) {
-    cr <- terra::crs(x)
-    x <- terra::as.polygons(terra::ext(x))
-    if (nchar(cr) > 0) terra::crs(x) <- cr
-  } else if (inherits(x, c("SpatRaster", "SpatVector"))) {
-    x <- terra::as.polygons(x, extent = TRUE)
-  } else {
-    stop("`x` must be a SpatVector, SpatRaster or Collection", call. = FALSE)
+  # Assumes x is a terra SpatVector object in OGC:CRS84 (from .cast_spatial_object)
+  if (!inherits(x, 'SpatVector')) {
+    stop("`x` must be a SpatVector", call. = FALSE)
   }
   
   # aggregate to single geometry (union)
@@ -270,57 +260,58 @@ gd_region <- function(x) {
 #' @noRd
 .cast_spatial_object <- function(x, extent = FALSE) {
   
-  # wkt or geojson string
+  # 1. Coerce to terra native (SpatVector, SpatRaster, SpatExtent, or Collection)
   if (is.character(x)) {
     x <- suppressWarnings(terra::vect(x, crs = "OGC:CRS84"))
-  }
-  
-  # raster/sp support
-  if (inherits(x, 'Spatial')) {
+  } else if (inherits(x, 'Spatial')) {
     if (requireNamespace('raster', quietly = TRUE)) {
-      x <- terra::vect(as(x, 'Spatial'))
+      x <- terra::vect(methods::as(x, 'Spatial'))
     }
-  }
-  
-  if (inherits(x, c('RasterLayer', 'RasterStack'))) {
+  } else if (inherits(x, c('RasterLayer', 'RasterStack'))) {
     if (requireNamespace('raster', quietly = TRUE)) {
       x <- terra::rast(x)
     }
-  }
-  
-  # sf and sfc objects
-  if (inherits(x, c('sf', 'sfc'))) {
+  } else if (inherits(x, c('sf', 'sfc'))) {
     x <- terra::vect(x)
+  } else if (inherits(x, 'bbox')) {
+    x <- terra::ext(x)
+  } else if (inherits(x, 'Extent')) {
+    x <- terra::ext(x)
+  } else if (inherits(x, 'SpatVectorProxy')) {
+    x <- terra::vect(terra::sources(x))
   }
   
-  # convert to simple geometries if we only want extent
-  if (!inherits(x, 'SpatVector') && !extent) {
-    if (inherits(x, c("SpatRasterCollection", "SpatVectorCollection"))) {
-      cr <- terra::crs(x)
+  # 2. Convert to SpatExtent if requested
+  if (extent) {
+    if (!inherits(x, 'SpatExtent')) {
+      x <- terra::ext(x)
+    }
+    return(x)
+  }
+  
+  # 3. Convert non-vector types to bounding polygons (SpatVector)
+  #    If it is already a SpatVector, we preserve its geometry.
+  if (!inherits(x, 'SpatVector')) {
+    if (inherits(x, 'SpatExtent')) {
+      x <- terra::as.polygons(x)
+    } else if (inherits(x, c("SpatRasterCollection", "SpatVectorCollection"))) {
+      cr <- ""
+      if (length(x) > 0) cr <- terra::crs(x[1])
       x <- terra::as.polygons(terra::ext(x))
       if (nchar(cr) > 0) terra::crs(x) <- cr
-    } else {
+    } else if (inherits(x, "SpatRaster")) {
       x <- terra::as.polygons(x, extent = TRUE)
     }
   }
   
-  # project what we can to OGC:CRS84
+  # 4. Project to OGC:CRS84 if possible
   if (inherits(x, 'SpatVector') && nchar(terra::crs(x)) > 0) {
-    # will fail if CRS in x not defined
     x <- try(terra::project(x, "OGC:CRS84"), silent = TRUE)
     if (inherits(x, 'try-error')) {
       stop(x[1], call. = FALSE)
     }
   }
   
-  # raster Extent, sf bbox, extent=TRUE
-  # assume these are already in correct CRS
-  if (inherits(x, c('Extent', 'bbox')) || 
-      (extent && !inherits(x, 'SpatExtent') && !inherits(x, 'SpatVector'))) {
-    x <- terra::ext(x)
-  }
-  
-  # return object (possibly unchanged)
   x
 }
 
