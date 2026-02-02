@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -32,7 +32,25 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/daymet_example.html">Daymet Example</a>
+    </li>
+    <li>
       <a href="../articles/demo.html">`rgeedim` Demo</a>
+    </li>
+    <li>
+      <a href="../articles/ee_export_example.html">Earth Engine Export Example</a>
+    </li>
+    <li>
+      <a href="../articles/ee_vect_asset.html">Earth Engine Vector Asset Example</a>
+    </li>
+    <li>
+      <a href="../articles/hillshade_example.html">Hillshade Example</a>
+    </li>
+    <li>
+      <a href="../articles/landsat_example.html">Landsat Example</a>
+    </li>
+    <li>
+      <a href="../articles/lidar_example.html">LiDAR Example</a>
     </li>
   </ul></li>
 <li>
@@ -58,20 +76,38 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.3.0" id="rgeedim-030">rgeedim 0.3.0<a class="anchor" aria-label="anchor" href="#rgeedim-030"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.0" id="rgeedim-040">rgeedim 0.4.0<a class="anchor" aria-label="anchor" href="#rgeedim-040"></a></h2>
 <ul><li>
-<p>Support for geedim v2.0.0 and earthengine-api v1.6.15+</p>
-<ul><li>Updated API calls to use <code>ee.Image.gd</code> and <code>ee.ImageCollection.gd</code> accessors instead of deprecated <code>MaskedImage</code> and <code>MaskedCollection</code> classes</li>
+<p>Support for geedim v2.0.0 and earthengine-api v1.7+</p>
+<ul><li>Updated API calls to use <code>ee.Image.gd</code> and <code>ee.ImageCollection.gd</code> accessors</li>
+<li>Fixed <code><a href="../reference/from.html">gd_collection_from_list()</a></code> to correctly extract underlying <code>ee.Image</code> from <code>geedim</code> 2.0 accessor objects</li>
 <li>
 <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code> now defaults to <code>credentials = NULL</code>, using Application Default Credentials (ADC) by default</li>
+<li>
+<code><a href="../reference/gd_properties.html">gd_properties()</a></code> now correctly returns the full image ID (including collection path) for <code>geedim</code> 2.0.0+, fixing an issue where only the asset name was returned.</li>
+<li>Fix for <code><a href="../reference/gd_export.html">gd_export()</a></code> when <code>geedim &gt;= 2.0.0</code> where passing <code>overwrite</code> argument caused a <code>TypeError</code>.</li>
+<li>Consistent use of <code>ee.Geometry</code> for <code>region</code> argument in <code><a href="../reference/gd_search.html">gd_search()</a></code>, <code><a href="../reference/gd_composite.html">gd_composite()</a></code>, and <code><a href="../reference/gd_download.html">gd_download()</a></code> when <code>geedim &gt;= 2.0.0</code>.</li>
 </ul></li>
 <li>
-<p>Authentication improvements</p>
-<ul><li>
-<code>gd_initialize(private_key_file=...)</code> parameter has been deprecated. Use <code>GOOGLE_APPLICATION_CREDENTIALS</code> environment variable instead.</li>
-<li>Support for <code>EE_SERVICE_ACC_PRIVATE_KEY</code> environment variable has been deprecated. Use standard <code>GOOGLE_APPLICATION_CREDENTIALS</code> for all environments (local, CI/CD, containerized).</li>
+<p>Authentication and Headless Support</p>
+<ul><li>Standardized on <code>GOOGLE_CLOUD_QUOTA_PROJECT</code> environment variable for automatic project ID detection in <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>
+</li>
 <li>
-<code><a href="../reference/gd_initialize.html">gd_initialize()</a></code> now delegates authentication to Python’s native Application Default Credentials (ADC) logic for maximum robustness and compatibility with all credential types (service accounts, user ADC, workload identity federation, attached service accounts on Google Cloud)</li>
+<code>gd_initialize(private_key_file=...)</code> parameter and <code>EE_SERVICE_ACC_PRIVATE_KEY</code> environment variable are deprecated in favor of standard <code>GOOGLE_APPLICATION_CREDENTIALS</code>
+</li>
+<li>
+<code><a href="../reference/gd_authenticate.html">gd_authenticate()</a></code> and <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code> now support authentication in headless environments (e.g. CI/CD, Workload Identity Federation)</li>
+<li>Updated all vignettes and examples to use <code><a href="../reference/gd_initialize.html">gd_is_initialized()</a></code> and environment variable <code>R_RGEEDIM_RUN_EXAMPLES</code> for conditional evaluation</li>
+</ul></li>
+<li>
+<p><code><a href="../reference/gd_region.html">gd_region()</a></code> and <code><a href="../reference/gd_region.html">gd_region_to_vect()</a></code> improvements</p>
+<ul><li>
+<code><a href="../reference/gd_region.html">gd_region()</a></code> now correctly handles <code>SpatVector</code> objects with <code>MultiPolygon</code> geometries or holes by leveraging <code>terra::writeVector(..., filetype="GeoJSON")</code>
+</li>
+<li>Using Python’s native <code>json</code> module (via <code>reticulate</code>) for dependency-light GeoJSON serialization and parsing</li>
+<li>
+<code><a href="../reference/gd_region.html">gd_region_to_vect()</a></code> now supports complex GeoJSON-like lists, including <code>GeometryCollection</code>
+</li>
 </ul></li>
 </ul></div>
     <div class="section level2">

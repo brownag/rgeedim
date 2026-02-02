@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -32,7 +32,25 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/daymet_example.html">Daymet Example</a>
+    </li>
+    <li>
       <a href="../articles/demo.html">`rgeedim` Demo</a>
+    </li>
+    <li>
+      <a href="../articles/ee_export_example.html">Earth Engine Export Example</a>
+    </li>
+    <li>
+      <a href="../articles/ee_vect_asset.html">Earth Engine Vector Asset Example</a>
+    </li>
+    <li>
+      <a href="../articles/hillshade_example.html">Hillshade Example</a>
+    </li>
+    <li>
+      <a href="../articles/landsat_example.html">Landsat Example</a>
+    </li>
+    <li>
+      <a href="../articles/lidar_example.html">LiDAR Example</a>
     </li>
   </ul></li>
 <li>
@@ -103,13 +121,11 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_image_from_id</span><span class="op">(</span><span class="st">'CSP/ERGo/1_0/Global/SRTM_topoDiversity'</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;geedim.image.ImageAccessor object at 0x7f893da7ec90&gt;</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -123,10 +139,20 @@
 <span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="gd_search.html">gd_search</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">r</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                        id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                  USGS/3DEP/1m/USGS_1M_10_x64y416_CA_SanJoaquin_2021_A21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                  USGS/3DEP/1m/USGS_1M_10_x64y417_CA_SanJoaquin_2021_A21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 USGS/3DEP/1m/USGS_1M_10_x64y417_CA_UpperSouthAmerican_Eldorado_2019_B19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  USGS/3DEP/1m/USGS_one_meter_x64y417_CA_Sacramento_2017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         date</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2006-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2006-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2006-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 2006-01-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 2006-01-01</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="co"># Find 1m DEM in arbitrary extent</span></span></span>
@@ -146,8 +172,10 @@
 <span class="r-in"><span>  <span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">z</span><span class="op">$</span><span class="va">id</span>, <span class="va">gd_image_from_id</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># create a new collection from the list of images</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span>  <span class="va">l2</span> <span class="op">&lt;-</span> <span class="fu">gd_collection_from_list</span><span class="op">(</span><span class="va">l</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">l2</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### download composite of custom collection</span></span></span>
 <span class="r-in"><span><span class="co">#  gd_download(gd_composite(l2),</span></span></span>
@@ -157,19 +185,14 @@
 <span class="r-in"><span><span class="co">#              scale = 30)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">gd_asset_id</span><span class="op">(</span><span class="st">"RGEEDIM_TEST"</span>, <span class="st">"your-project-name"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span>  <span class="fu">gd_asset_id</span><span class="op">(</span><span class="st">"RGEEDIM_TEST"</span>, <span class="st">"rgeedim-demo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu">gd_list_assets</span><span class="op">(</span><span class="st">"projects/your-project-name"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="fu">gd_list_assets</span><span class="op">(</span><span class="st">"projects/rgeedim-demo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>

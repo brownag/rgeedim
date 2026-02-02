@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -32,7 +32,25 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/daymet_example.html">Daymet Example</a>
+    </li>
+    <li>
       <a href="../articles/demo.html">`rgeedim` Demo</a>
+    </li>
+    <li>
+      <a href="../articles/ee_export_example.html">Earth Engine Export Example</a>
+    </li>
+    <li>
+      <a href="../articles/ee_vect_asset.html">Earth Engine Vector Asset Example</a>
+    </li>
+    <li>
+      <a href="../articles/hillshade_example.html">Hillshade Example</a>
+    </li>
+    <li>
+      <a href="../articles/landsat_example.html">Landsat Example</a>
+    </li>
+    <li>
+      <a href="../articles/lidar_example.html">LiDAR Example</a>
     </li>
   </ul></li>
 <li>
@@ -73,7 +91,7 @@
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">gd_is_initialized</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gd_is_initialized</span><span class="op">(</span><span class="va">...</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -101,11 +119,11 @@
 
 
 <dt id="arg-project">project<a class="anchor" aria-label="anchor" href="#arg-project"></a></dt>
-<dd><p>The client project ID or number to use when making API calls. Default: <code>NULL</code></p></dd>
+<dd><p>The client project ID or number to use when making API calls. Default: <code>NULL</code> will check <code>GOOGLE_CLOUD_QUOTA_PROJECT</code>, <code>GOOGLE_CLOUD_PROJECT</code> then <code>GCLOUD_PROJECT</code> environment variables.</p></dd>
 
 
 <dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
-<dd><p>Suppress error messages on load? Default: <code>FALSE</code></p></dd>
+<dd><p>Suppress error messages? Default: <code>TRUE</code></p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -122,7 +140,8 @@
     <p>Authentication is handled automatically by Google Application Default Credentials (ADC). When <code>credentials</code> is <code>NULL</code> (the default), the underlying Python libraries will automatically search for credentials in the following order:</p><ol><li><p><code>GOOGLE_APPLICATION_CREDENTIALS</code> environment variable (if set)</p></li>
 <li><p>User credentials from <code>gcloud auth application-default login</code></p></li>
 <li><p>Attached service account (when running on Google Cloud infrastructure)</p></li>
-</ol><p>The deprecated <code>private_key_file</code> parameter is provided for backward compatibility. If specified and <code>GOOGLE_APPLICATION_CREDENTIALS</code> is not already set, the file path will be used to set that environment variable for the Python libraries to discover.</p>
+</ol><p>In a headless environment (e.g. CI/CD), use <code>GOOGLE_APPLICATION_CREDENTIALS</code> to specify the service account key file path and <code>GOOGLE_CLOUD_QUOTA_PROJECT</code> to specify the project ID responsible for quota and billing.</p>
+<p>The deprecated <code>private_key_file</code> parameter is provided for backward compatibility. If specified and <code>GOOGLE_APPLICATION_CREDENTIALS</code> is not already set, the file path will be used to set that environment variable for the Python libraries to discover.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -135,7 +154,7 @@
 <span class="r-in"><span><span class="fu">gd_initialize</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="fu">gd_is_initialized</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>
   </div>

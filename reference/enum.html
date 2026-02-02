@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -32,7 +32,25 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/daymet_example.html">Daymet Example</a>
+    </li>
+    <li>
       <a href="../articles/demo.html">`rgeedim` Demo</a>
+    </li>
+    <li>
+      <a href="../articles/ee_export_example.html">Earth Engine Export Example</a>
+    </li>
+    <li>
+      <a href="../articles/ee_vect_asset.html">Earth Engine Vector Asset Example</a>
+    </li>
+    <li>
+      <a href="../articles/hillshade_example.html">Hillshade Example</a>
+    </li>
+    <li>
+      <a href="../articles/landsat_example.html">Landsat Example</a>
+    </li>
+    <li>
+      <a href="../articles/lidar_example.html">LiDAR Example</a>
     </li>
   </ul></li>
 <li>
@@ -99,49 +117,67 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_enum_names</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CloudMaskMethod"        "CloudScoreBand"         "CompositeMethod"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Driver"                 "ExportType"             "ResamplingMethod"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7] "SpectralDistanceMetric" "SplitType"             </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_enum_elements</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CloudMaskMethod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cloud-prob"  "cloud-score" "qa"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CloudScoreBand</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cs"     "cs_cdf"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CompositeMethod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mean"     "median"   "medoid"   "mode"     "mosaic"   "q-mosaic"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Driver</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cog"   "gtiff"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ExportType</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "asset" "cloud" "drive"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ResamplingMethod</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "average"  "bicubic"  "bilinear" "near"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SpectralDistanceMetric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "emd" "sam" "sed" "sid"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $SplitType</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bands"  "images"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_resampling_methods</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "average"  "bicubic"  "bilinear" "near"    </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_cloud_mask_methods</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cloud-prob"  "cloud-score" "qa"         </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_composite_methods</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mean"     "median"   "medoid"   "mode"     "mosaic"   "q-mosaic"</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_export_types</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "asset" "cloud" "drive"</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># gd_is_initialized()</span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="gd_initialize.html">gd_is_initialized</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">gd_spectral_distance_metrics</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "emd" "sam" "sed" "sid"</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>

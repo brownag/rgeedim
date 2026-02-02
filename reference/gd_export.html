@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -32,7 +32,25 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/daymet_example.html">Daymet Example</a>
+    </li>
+    <li>
       <a href="../articles/demo.html">`rgeedim` Demo</a>
+    </li>
+    <li>
+      <a href="../articles/ee_export_example.html">Earth Engine Export Example</a>
+    </li>
+    <li>
+      <a href="../articles/ee_vect_asset.html">Earth Engine Vector Asset Example</a>
+    </li>
+    <li>
+      <a href="../articles/hillshade_example.html">Hillshade Example</a>
+    </li>
+    <li>
+      <a href="../articles/landsat_example.html">Landsat Example</a>
+    </li>
+    <li>
+      <a href="../articles/lidar_example.html">LiDAR Example</a>
     </li>
   </ul></li>
 <li>
@@ -70,6 +88,7 @@
 <span>  folder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span>,</span>
 <span>  <span class="va">region</span>,</span>
 <span>  wait <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -100,6 +119,10 @@
 
 <dt id="arg-wait">wait<a class="anchor" aria-label="anchor" href="#arg-wait"></a></dt>
 <dd><p>Wait for completion? Default: <code>TRUE</code></p></dd>
+
+
+<dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
+<dd><p>Overwrite existing? Default: <code>TRUE</code>. Only supported for <code>geedim</code> &gt;= 2.0.0.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -136,11 +159,11 @@
 <span class="r-in"><span> <span class="co">#   i,</span></span></span>
 <span class="r-in"><span> <span class="co">#   "RGEEDIM_TEST",</span></span></span>
 <span class="r-in"><span> <span class="co">#   type = "asset",</span></span></span>
-<span class="r-in"><span> <span class="co">#   folder = "your-project-name",</span></span></span>
+<span class="r-in"><span> <span class="co">#   folder = "rgeedim-demo",</span></span></span>
 <span class="r-in"><span> <span class="co">#   scale = 100,</span></span></span>
 <span class="r-in"><span> <span class="co">#   region = r</span></span></span>
 <span class="r-in"><span> <span class="co"># )</span></span></span>
-<span class="r-in"><span> <span class="co"># gd_download("projects/your-project-name/assets/RGEEDIM_TEST", filename = "test.tif")</span></span></span>
+<span class="r-in"><span> <span class="co"># gd_download("projects/rgeedim-demo/assets/RGEEDIM_TEST", filename = "test.tif")</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co">## export to Google Cloud Bucket with `type="cloud"`,</span></span></span>
 <span class="r-in"><span> <span class="co">##   where `folder` is the bucket path without `"gs://"`</span></span></span>

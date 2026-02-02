@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgeedim</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -49,7 +49,25 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/daymet_example.html">Daymet Example</a>
+    </li>
+    <li>
       <a href="../articles/demo.html">`rgeedim` Demo</a>
+    </li>
+    <li>
+      <a href="../articles/ee_export_example.html">Earth Engine Export Example</a>
+    </li>
+    <li>
+      <a href="../articles/ee_vect_asset.html">Earth Engine Vector Asset Example</a>
+    </li>
+    <li>
+      <a href="../articles/hillshade_example.html">Hillshade Example</a>
+    </li>
+    <li>
+      <a href="../articles/landsat_example.html">Landsat Example</a>
+    </li>
+    <li>
+      <a href="../articles/lidar_example.html">LiDAR Example</a>
     </li>
   </ul>
 </li>
@@ -93,6 +111,7 @@ name for an arbitrary extent and visualize it in R.</p>
 <p>First, we load {rgeedim}.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## rgeedim v0.4.0 -- using geedim 2.0.0 w/ earthengine-api 1.7.10</span></span></code></pre>
 <p>If you have the necessary Python dependencies installed (geedim,
 earthengine-api), you will see the versions printed out when the package
 is loaded.</p>
@@ -104,17 +123,19 @@ in that does not rely on an existing
 <code>GOOGLE_APPLICATION_CREDENTIALS</code> file nor an installation of
 the <code>gcloud</code> CLI tools. However, the other options are better
 for non-interactive use.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gd_authenticate.html">gd_authenticate</a></span><span class="op">(</span>auth_mode <span class="op">=</span> <span class="st">"notebook"</span><span class="op">)</span></span></code></pre></div>
 <p>You only need to authenticate periodically, depending on the method
 you used.</p>
 <p>In each session we need to call <code><a href="../reference/gd_initialize.html">gd_initialize()</a></code>. This is
 a wrapper function around <code>geedim.Initialize()</code> that must be
 run before using the Python Google Earth Engine API.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Note that with <code>auth_mode="gcloud"</code> you need to specify
-the project via <code>project=</code> argument, in your default
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">project_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"GOOGLE_CLOUD_QUOTA_PROJECT"</span>, <span class="st">"rgeedim-demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="va">project_id</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Using Application Default Credentials (ADC)</span></span></code></pre>
+<p>Note that with default <code>auth_mode="gcloud"</code> you need to
+specify the project via <code>project=</code> argument, in your default
 configuration file or via system environment variable
 <code>GOOGLE_CLOUD_QUOTA_PROJECT</code>. The authorization tokens
 generated for <code>auth_mode="notebook"</code> are always associated
@@ -127,7 +148,7 @@ is interchangeably represented as a simple <code>list</code> object in
 <div class="section level2">
 <h2 id="determine-target-region">Determine Target Region<a class="anchor" aria-label="anchor" href="#determine-target-region"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">121</span>,</span>
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5</span>,</span>
@@ -150,7 +171,7 @@ SRTM Topographic Diversity</a>:</p>
 <div class="section level3">
 <h3 id="download-srtm-topographic-diversity-product">Download SRTM Topographic Diversity product<a class="anchor" aria-label="anchor" href="#download-srtm-topographic-diversity-product"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/from.html">gd_image_from_id</a></span><span class="op">(</span><span class="st">'CSP/ERGo/1_0/Global/SRTM_topoDiversity'</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/from.html">gd_image_from_id()</a></code> will return
 <code>geedim.mask.MaskedImage</code> and
@@ -165,7 +186,7 @@ of making a region argument from bounding coordinates or a {terra}
 <code>BaseImage.download()</code> method include <code>scale</code>
 which allows warping of the result to a target resolution. Try modifying
 this example to use <code>scale=90</code> (~native SRTM resolution):</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_download.html">gd_download</a></span><span class="op">(</span><span class="va">x</span>, filename <span class="op">=</span> <span class="st">'image.tif'</span>,</span>
 <span>                   region <span class="op">=</span> <span class="va">r</span>, scale <span class="op">=</span> <span class="fl">900</span>,</span>
 <span>                   overwrite <span class="op">=</span> <span class="cn">TRUE</span>, silent <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -175,15 +196,25 @@ this example to use <code>scale=90</code> (~native SRTM resolution):</p>
 functions that might read the result.</p>
 <p>So we can use the {terra} <code><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast()</a></code> function to read the
 GeoTIFF <code><a href="../reference/gd_download.html">gd_download()</a></code> result.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## terra 1.8.97</span></span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># inspect object</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">f</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="demo_files/figure-html/inspect-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># inspect object</span></span>
 <span><span class="va">f</span></span></code></pre></div>
+<pre><code><span><span class="co">## class       : SpatRaster </span></span>
+<span><span class="co">## size        : 63, 63, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">## resolution  : 0.008084838, 0.008084838  (x, y)</span></span>
+<span><span class="co">## extent      : -121.005, -120.4956, 38.49434, 39.00368  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">## coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
+<span><span class="co">## source      : image.tif </span></span>
+<span><span class="co">## name        : constant</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="create-a-local-hillshade-from-dem">Create a local Hillshade from DEM<a class="anchor" aria-label="anchor" href="#create-a-local-hillshade-from-dem"></a>
@@ -191,13 +222,15 @@ GeoTIFF <code><a href="../reference/gd_download.html">gd_download()</a></code> r
 <p>This example demonstrates the download of a section of the USGS NED
 seamless 10m grid. This DEM is processed locally with {terra} to
 calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
+<span><span class="va">project_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"GOOGLE_CLOUD_QUOTA_PROJECT"</span>, <span class="st">"rgeedim-demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="va">project_id</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Using Application Default Credentials (ADC)</span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">120.296</span>,</span>
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.227</span>,</span>
 <span>  ymin <span class="op">=</span> <span class="fl">37.9824</span>,</span>
@@ -227,6 +260,7 @@ calculate some terrain derivatives (slope, aspect) and a hillshade.</p>
 <span></span>
 <span><span class="co"># compare elevation v.s. hillshade</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">dem</span>, hillshade <span class="op">=</span> <span class="va">hsd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="demo_files/figure-html/dem10-hillshade-1.png" class="r-plt" alt="" width="700"></p>
 <p>Subsets of the <code>"USGS/SRTMGL1_003"</code> image result in
 multi-band GeoTIFF with <code>"elevation"</code> and
 <code>"FILL_MASK"</code> bands. In the contiguous US we know the DEM is
@@ -265,14 +299,16 @@ USGS 3D Elevation Program (3DEP). LiDAR data are not available
 everywhere, and are generally available as collections of tiles for
 specific dates. We will use <code><a href="../reference/gd_search.html">gd_search()</a></code> to narrow down the
 options.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># search and download composite from USGS 1m lidar data collection</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># wkt-&gt;SpatVector-&gt;GeoJSON</span></span>
+<span><span class="va">project_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"GOOGLE_CLOUD_QUOTA_PROJECT"</span>, <span class="st">"rgeedim-demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="va">project_id</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Using Application Default Credentials (ADC)</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># wkt-&gt;SpatVector-&gt;GeoJSON</span></span>
 <span><span class="va">b</span> <span class="op">&lt;-</span> <span class="st">'POLYGON((-121.355 37.56,-121.355 37.555,</span></span>
 <span><span class="st">          -121.35 37.555,-121.35 37.56,</span></span>
 <span><span class="st">          -121.355 37.56))'</span> <span class="op">|&gt;</span></span>
@@ -288,9 +324,15 @@ options.</p>
 <span>  <span class="fu"><a href="../reference/gd_search.html">gd_search</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">r</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># inspect individual image metadata in the collection</span></span>
-<span><span class="fu"><a href="../reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># resampling images as part of composite; before download</span></span>
+<span><span class="fu"><a href="../reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                                                        id</span></span>
+<span><span class="co">## 1                  USGS/3DEP/1m/USGS_1M_10_x64y416_CA_SanJoaquin_2021_A21</span></span>
+<span><span class="co">## 2 USGS/3DEP/1m/USGS_1M_10_x64y416_CA_UpperSouthAmerican_Eldorado_2019_B19</span></span>
+<span><span class="co">##         date</span></span>
+<span><span class="co">## 1 2006-01-01</span></span>
+<span><span class="co">## 2 2006-01-01</span></span></code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># resampling images as part of composite; before download</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">a</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/gd_composite.html">gd_composite</a></span><span class="op">(</span>resampling <span class="op">=</span> <span class="st">"bilinear"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/gd_download.html">gd_download</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">r</span>,</span>
@@ -304,6 +346,7 @@ options.</p>
 <span><span class="co"># inspect</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/terrain.html" class="external-link">terrain</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">elevation</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/project.html" class="external-link">project</a></span><span class="op">(</span><span class="va">b</span>, <span class="va">x</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="demo_files/figure-html/lidar-composite-1.png" class="r-plt" alt="" width="700"></p>
 <p>The small sample extent covers only one tile, but in larger examples
 LiDAR data sources co-occur or span larger extents with variable
 coverage.</p>
@@ -315,14 +358,16 @@ coverage.</p>
 collection “daily precipitation” layers into a temporary folder as
 separate GeoTIFFs. These individual images can be further aggregated or
 processed outside of Google Earth Engine.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># search and download individual images from daymet V4</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://humus.rocks/rgeedim/" class="external-link">rgeedim</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
+<span><span class="va">project_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"GOOGLE_CLOUD_QUOTA_PROJECT"</span>, <span class="st">"rgeedim-demo"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/gd_initialize.html">gd_initialize</a></span><span class="op">(</span>project <span class="op">=</span> <span class="va">project_id</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Using Application Default Credentials (ADC)</span></span></code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_bbox.html">gd_bbox</a></span><span class="op">(</span></span>
 <span>  xmin <span class="op">=</span> <span class="op">-</span><span class="fl">121</span>,</span>
 <span>  xmax <span class="op">=</span> <span class="op">-</span><span class="fl">120.5</span>,</span>
 <span>  ymin <span class="op">=</span> <span class="fl">38.5</span>,</span>
@@ -330,19 +375,27 @@ processed outside of Google Earth Engine.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># search collection for spatial and date range (one week in January 2020)</span></span>
-<span><span class="fu"><a href="../reference/from.html">gd_collection_from_name</a></span><span class="op">(</span><span class="st">'NASA/ORNL/DAYMET_V4'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/from.html">gd_collection_from_name</a></span><span class="op">(</span><span class="st">'NASA/ORNL/DAYMET_V4'</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/gd_search.html">gd_search</a></span><span class="op">(</span>region <span class="op">=</span> <span class="va">r</span>,</span>
 <span>            start_date <span class="op">=</span> <span class="st">"2020-01-21"</span>,</span>
-<span>            end_date <span class="op">=</span> <span class="st">"2020-01-27"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">res</span></span>
+<span>            end_date <span class="op">=</span> <span class="st">"2020-01-27"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># get table of IDs and dates</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gd_properties.html">gd_properties</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span><span class="va">td</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"DAYMET_V4"</span><span class="op">)</span></span>
+<span><span class="va">p</span></span></code></pre></div>
+<pre><code><span><span class="co">##                             id       date</span></span>
+<span><span class="co">## 1 NASA/ORNL/DAYMET_V4/20200121 2020-01-21</span></span>
+<span><span class="co">## 2 NASA/ORNL/DAYMET_V4/20200122 2020-01-22</span></span>
+<span><span class="co">## 3 NASA/ORNL/DAYMET_V4/20200123 2020-01-23</span></span>
+<span><span class="co">## 4 NASA/ORNL/DAYMET_V4/20200124 2020-01-24</span></span>
+<span><span class="co">## 5 NASA/ORNL/DAYMET_V4/20200125 2020-01-25</span></span>
+<span><span class="co">## 6 NASA/ORNL/DAYMET_V4/20200126 2020-01-26</span></span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">td</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># create a new collection using gd_collection_from_list()</span></span>
 <span><span class="co"># download each image as separate GeoTIFF (no compositing)</span></span>
 <span><span class="co"># Note: `filename` is a directory</span></span>
-<span><span class="fu"><a href="../reference/from.html">gd_collection_from_list</a></span><span class="op">(</span><span class="va">p</span><span class="op">$</span><span class="va">id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="va">res</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/gd_download.html">gd_download</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="va">td</span>,</span>
 <span>    composite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -351,16 +404,18 @@ processed outside of Google Earth Engine.</p>
 <span>    bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"prcp"</span><span class="op">)</span>,</span>
 <span>    crs <span class="op">=</span> <span class="st">"EPSG:5070"</span>,</span>
 <span>    scale <span class="op">=</span> <span class="fl">1000</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">x2</span></span>
+<span>  <span class="op">)</span> </span>
 <span></span>
-<span><span class="co"># filter to bands of interest (if neeeded)</span></span>
+<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">res2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># filter to bands of interest (if needed)</span></span>
 <span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[[</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">==</span> <span class="st">"prcp"</span><span class="op">]</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># set time for each layer</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/time.html" class="external-link">time</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">p</span><span class="op">$</span><span class="va">date</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/panel.html" class="external-link">panel</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Daily Precipitation (mm)"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="demo_files/figure-html/daymet-nocomposite-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
   </div>
