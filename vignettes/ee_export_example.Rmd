@@ -65,7 +65,7 @@ plot(yellowstone)
   )
 
 # create a local GeoTIFF from the above created asset
-x <- sprintf("projects/%s/assets/Yellowstone", project_id) |>
+x_path <- sprintf("projects/%s/assets/Yellowstone", project_id) |>
   gd_image_from_id() |>
   gd_download(
     bands = list("elevation"),
@@ -73,24 +73,28 @@ x <- sprintf("projects/%s/assets/Yellowstone", project_id) |>
     region = g,
     scale = 250,
     crs = "EPSG:5070"
-  ) |> 
-  rast()
+  )
 
-plot(x)
+if (!inherits(x_path, "try-error")) {
+  x <- rast(x_path)
+  plot(x)
 
-# calculate hillshade locally
-slp <- terrain(x, unit = "radians")
-asp <- terrain(x, "aspect", unit = "radians")
-shd <- shade(slp, asp)
+  # calculate hillshade locally
+  slp <- terrain(x, unit = "radians")
+  asp <- terrain(x, "aspect", unit = "radians")
+  shd <- shade(slp, asp)
 
-# plot with boundary
-plot(shd)
-plot(yellowstone, add = TRUE)
-
-# # write in-memory hillshade to local GeoTIFF
-# writeRaster(shd, "yellowstone_hillshade.tif",overwrite = TRUE)
+  # plot with boundary
+  plot(shd)
+  plot(yellowstone, add = TRUE)
+  
+  # clean up
+  unlink(sources(x))
+}
 ```
 
 ```{r, include=FALSE, eval=EVAL}
-unlink(sources(x))
+if (exists("x") && inherits(x, "SpatRaster")) {
+  unlink(sources(x))
+}
 ```

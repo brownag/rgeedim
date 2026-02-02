@@ -73,12 +73,16 @@ gd_export <- function(x, filename, type = "drive", folder = dirname(filename), r
     }
     
     # Call prepareForExport if we have relevant arguments
-    # resulting object is an ee.Image, but geedim monkey-patches .gd property to get ImageAccessor back
     if (length(prepare_args) > 0) {
        x <- do.call(x$prepareForExport, prepare_args)$gd
     }
     
-    # Call toGoogleCloud
+    # Use toGoogleCloud for all export types in geedim >= 2.0.0
+    if (type == "asset") {
+      filename <- gd_asset_id(filename, folder)
+      folder <- NULL
+    }
+    
     do.call(x$toGoogleCloud, c(list(filename = filename, type = type, folder = folder, wait = wait, overwrite = overwrite), cloud_args))
 
   } else {

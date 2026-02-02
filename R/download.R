@@ -50,6 +50,13 @@ gd_download <- function(x,
                         silent = TRUE,
                         ...) {
 
+  if (inherits(x, 'try-error')) {
+    if (!silent) {
+      stop(x, call. = FALSE)
+    }
+    return(invisible(x))
+  }
+
   filename <- path.expand(filename)
   if (!dir.exists(dirname(filename))) {
     dir.create(dirname(filename), recursive = TRUE)
