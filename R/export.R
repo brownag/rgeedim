@@ -47,6 +47,10 @@
 gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, overwrite = TRUE, ...) {
   .inform_missing_module(x, "geedim")
   
+  if (isTRUE(overwrite) && type == "asset") {
+    gd_delete_asset(gd_asset_id(filename, folder), silent = TRUE)
+  }
+
   args <- list(...)
   
   if (.gd_version_ge("2.0.0")) {
@@ -73,16 +77,6 @@ gd_export <- function(x, filename, type = "drive", folder = dirname(filename), r
   } else {
     # remove overwrite if present as it causes TypeError in geedim 1.x.x export()
     args$overwrite <- NULL
-    
-    # if overwrite is TRUE and type is asset, we need to manually handle it for geedim 1.x.x
-    if (isTRUE(overwrite) && type == "asset") {
-      asset_id <- gd_asset_id(filename, folder)
-      # check if asset exists
-      # we can try to get its properties, if it fails it probably doesn't exist
-      try({
-        earthengine()$data$deleteAsset(asset_id)
-      }, silent = TRUE)
-    }
     
     do.call(x$export, c(list(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait), args))
   }
