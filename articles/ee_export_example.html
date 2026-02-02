@@ -98,7 +98,7 @@
       <h1 data-toc-skip>Earth Engine Export Example</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/brownag/rgeedim/blob/0.4.0/vignettes/ee_export_example.Rmd" class="external-link"><code>vignettes/ee_export_example.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/brownag/rgeedim/blob/main/vignettes/ee_export_example.Rmd" class="external-link"><code>vignettes/ee_export_example.Rmd</code></a></small>
       <div class="hidden name"><code>ee_export_example.Rmd</code></div>
 
     </div>
@@ -153,7 +153,7 @@
 <span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    crs <span class="op">=</span> <span class="st">"EPSG:5070"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## &lt;Task IQQ2R4E7PQB5NWYXB62GWSUA Type.EXPORT_IMAGE: USGS-SRTMGL1_003 (State.UNSUBMITTED)&gt;</span></span></code></pre>
+<pre><code><span><span class="co">## &lt;Task NMPBXBIINRYL7DSRFB6HX4VT Type.EXPORT_IMAGE: USGS-SRTMGL1_003 (State.UNSUBMITTED)&gt;</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create a local GeoTIFF from the above created asset</span></span>
 <span><span class="va">x_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"projects/%s/assets/Yellowstone"</span>, <span class="va">project_id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -164,9 +164,12 @@
 <span>    region <span class="op">=</span> <span class="va">g</span>,</span>
 <span>    scale <span class="op">=</span> <span class="fl">250</span>,</span>
 <span>    crs <span class="op">=</span> <span class="st">"EPSG:5070"</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">x_path</span>, <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Error in py_call_impl(callable, call_args$unnamed, call_args$named) : </span></span>
+<span><span class="co">##   ee.ee_exception.EEException: Image.load: Image asset 'projects/rgeedim-demo/assets/Yellowstone' not found (does not exist or caller does not have access).</span></span>
+<span><span class="co">## Run `reticulate::py_last_error()` for details.</span></span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">x_path</span>, <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">x_path</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
@@ -182,7 +185,6 @@
 <span>  <span class="co"># clean up</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/sources.html" class="external-link">sources</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p><img src="ee_export_example_files/figure-html/unnamed-chunk-2-2.png" class="r-plt" alt="" width="700"><img src="ee_export_example_files/figure-html/unnamed-chunk-2-3.png" class="r-plt" alt="" width="700"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
