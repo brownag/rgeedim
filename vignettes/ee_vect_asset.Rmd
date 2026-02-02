@@ -8,7 +8,10 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-EVAL <- as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES", "FALSE"))
+EVAL <- isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) &&
+  requireNamespace("terra", quietly = TRUE) &&
+  rgeedim::gd_is_initialized(project = Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo"))
+
 litedown::reactor(
   eval = EVAL,
   collapse = TRUE,
@@ -17,38 +20,45 @@ litedown::reactor(
 )
 ```
 
-```{r}
+```{r, eval=EVAL}
 library(rgeedim)
 library(terra)
 
-# gd_authenticate(auth_mode = "notebook")
-
-gd_initialize(quiet = FALSE)
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 ee <- earthengine()
 
-primary <- ee$FeatureCollection("WCMC/WDPA/current/polygons")$
-  filter(ee$Filter$eq("NAME", "Yosemite National Park"))
+p <- ee$FeatureCollection("WCMC/WDPA/current/polygons")$filter(
+  ee$Filter$And(
+    ee$Filter$eq("NAME", "Yellowstone"),
+    ee$Filter$eq("DESIG_ENG", "National Park")
+  )
+)
 
-y <- gd_region(primary) |> 
+y <- gd_region(p) |> 
   gd_region_to_vect()
 
-b <- gd_bbox(primary) |> 
+b <- gd_bbox(p) |> 
   gd_region() |> 
   gd_region_to_vect()
 
-gd_image_from_id("USGS/SRTMGL1_003") |> 
+r <- gd_image_from_id("USGS/SRTMGL1_003") |> 
   gd_download(
     "dem.tif",
     region = b,
-    overwrite = T,
+    overwrite = TRUE,
     resampling = "bilinear",
     scale = 100, 
     crs = "EPSG:4326",
     bands = list("elevation")
   ) |>
-  terra::rast() -> r
+  terra::rast()
 
 plot(r)
-plot(as.lines(y), add = TRUE, col = "red")
+plot(as.lines(y), add = TRUE, col = "red", lwd = 3)
+```
+
+```{r, include=FALSE, eval=EVAL}
+unlink("dem.tif")
 ```

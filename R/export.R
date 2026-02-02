@@ -7,6 +7,7 @@
 #' @param folder Destination folder. Defaults to `dirname(filename)`.
 #' @param region Region e.g. from `gd_bbox()` or `gd_region()`
 #' @param wait Wait for completion? Default: `TRUE`
+#' @param overwrite Overwrite existing? Default: `TRUE`. Only supported for `geedim` >= 2.0.0.
 #' @param ... Additional arguments to `geedim.image.ImageAccessor.toGoogleCloud()` (geedim >= 2.0.0) or `geedim.download.BaseImage.export()` (geedim 1.x.x)
 #'
 #' @return an `ee.batch.Task` object
@@ -31,11 +32,11 @@
 #'  #   i,
 #'  #   "RGEEDIM_TEST",
 #'  #   type = "asset",
-#'  #   folder = "your-project-name",
+#'  #   folder = "rgeedim-demo",
 #'  #   scale = 100,
 #'  #   region = r
 #'  # )
-#'  # gd_download("projects/your-project-name/assets/RGEEDIM_TEST", filename = "test.tif")
+#'  # gd_download("projects/rgeedim-demo/assets/RGEEDIM_TEST", filename = "test.tif")
 #'
 #'  ## export to Google Cloud Bucket with `type="cloud"`,
 #'  ##   where `folder` is the bucket path without `"gs://"`
@@ -43,11 +44,51 @@
 #'  #                  folder = "your-bucket-name", scale = 100, region = r)
 #' }
 #' }
-gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, ...) {
+gd_export <- function(x, filename, type = "drive", folder = dirname(filename), region, wait = TRUE, overwrite = TRUE, ...) {
   .inform_missing_module(x, "geedim")
-  if (gd_version() >= "2.0.0") {
-    x$toGoogleCloud(filename = filename, type = type, folder = folder, region = earthengine()$Geometry(gd_region(region)), wait = wait, ...)
+  
+  if (isTRUE(overwrite) && type == "asset") {
+    asset_id <- gd_asset_id(filename, folder)
+    gd_delete_asset(asset_id, silent = TRUE)
+    
+    # wait up to 10 seconds for deletion to propagate in EE
+    for (i in 1:10) {
+      if (inherits(gd_get_asset(asset_id, silent = TRUE), "try-error")) break
+      Sys.sleep(1)
+    }
+  }
+
+  args <- list(...)
+  
+  if (.gd_version_ge("2.0.0")) {
+    
+    # Identify arguments for prepareForExport
+    # https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.image.ImageAccessor.prepareForExport
+    prepare_params <- c("crs", "crs_transform", "shape", "scale", "resampling", "dtype", "scale_offset", "bands")
+    prepare_args <- args[names(args) %in% prepare_params]
+    cloud_args <- args[!names(args) %in% prepare_params]
+    # If region is provided, add it to prepare_args
+    if (!missing(region) && !is.null(region)) {
+       prepare_args$region <- earthengine()$Geometry(gd_region(region))
+    }
+    
+    # Call prepareForExport if we have relevant arguments
+    if (length(prepare_args) > 0) {
+       x <- do.call(x$prepareForExport, prepare_args)$gd
+    }
+    
+    # Use toGoogleCloud for all export types in geedim >= 2.0.0
+    if (type == "asset") {
+      filename <- gd_asset_id(filename, folder)
+      folder <- NULL
+    }
+    
+    do.call(x$toGoogleCloud, c(list(filename = filename, type = type, folder = folder, wait = wait, overwrite = overwrite), cloud_args))
+
   } else {
-    x$export(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait, ...)
+    # remove overwrite if present as it causes TypeError in geedim 1.x.x export()
+    args$overwrite <- NULL
+    
+    do.call(x$export, c(list(filename = filename, type = type, folder = folder, region = gd_region(region), wait = wait), args))
   }
 }

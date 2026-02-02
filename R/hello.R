@@ -6,7 +6,7 @@
 #' @param cloud_api_key An optional API key to use the Cloud API. Default: `NULL`.
 #' @param url The base url for the EarthEngine REST API to connect to. Defaults to "High Volume" endpoint: `"https://earthengine-highvolume.googleapis.com"`
 #' @param http_transport The HTTP transport method to use when making requests. Default: `NULL`
-#' @param project The client project ID or number to use when making API calls. Default: `NULL`
+#' @param project The client project ID or number to use when making API calls. Default: `NULL` will check `GOOGLE_CLOUD_QUOTA_PROJECT`, `GOOGLE_CLOUD_PROJECT` then `GCLOUD_PROJECT` environment variables.
 #' @param quiet Suppress error messages on load? Default: `FALSE`
 #'
 #' @details Authentication is handled automatically by Google Application Default Credentials (ADC). When `credentials` is `NULL` (the default), the underlying Python libraries will automatically search for credentials in the following order:
@@ -15,6 +15,8 @@
 #'   \item User credentials from `gcloud auth application-default login`
 #'   \item Attached service account (when running on Google Cloud infrastructure)
 #' }
+#'
+#' In a headless environment (e.g. CI/CD), use `GOOGLE_APPLICATION_CREDENTIALS` to specify the service account key file path and `GOOGLE_CLOUD_QUOTA_PROJECT` to specify the project ID responsible for quota and billing.
 #'
 #' The deprecated `private_key_file` parameter is provided for backward compatibility. If specified and `GOOGLE_APPLICATION_CREDENTIALS` is not already set, the file path will be used to set that environment variable for the Python libraries to discover.
 #'
@@ -56,7 +58,29 @@ gd_initialize <- function(private_key_file = NULL,
   # python 3.10.x compatibility:
   try(collections_module$Callable <- collections_module$abc$Callable, silent = TRUE)
 
-  .inform_missing_module(gd, "geedim")
+  if (is.null(project)) {
+    project <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", unset = "")
+    if (project == "") {
+      project <- Sys.getenv("GOOGLE_CLOUD_PROJECT", unset = "")
+    }
+    if (project == "") {
+      project <- Sys.getenv("GCLOUD_PROJECT", unset = "")
+    }
+    if (project == "") {
+      project <- Sys.getenv("GCP_PROJECT", unset = "")
+    }
+    if (project == "") {
+      project <- Sys.getenv("CLOUDSDK_CORE_PROJECT", unset = "")
+    }
+    if (project == "") {
+      project <- NULL
+    }
+  }
+
+  res <- .inform_missing_module(gd, "geedim", quiet = quiet)
+  if (inherits(res, "try-error")) {
+    return(invisible(res))
+  }
 
   eev <- gd$utils$ee$`__version__`
 
@@ -70,9 +94,36 @@ gd_initialize <- function(private_key_file = NULL,
   # Only add credentials if not NULL.
   # When credentials is NULL, Python's ee.Initialize() will automatically use
   # Google Application Default Credentials (ADC) logic via google.auth.default().
+  if (is.null(credentials)) {
+    try({
+      if (!is.null(google_auth_module)) {
+        # Request Earth Engine scope explicitly; this is required for many 
+        # headless/CI environments to successfully initialize.
+        ee_scopes <- c("https://www.googleapis.com/auth/earthengine", 
+                       "https://www.googleapis.com/auth/cloud-platform")
+        adc <- google_auth_module$default(scopes = ee_scopes, quota_project_id = project)
+        if (!is.null(adc) && length(adc) >= 1) {
+          credentials <- adc[[1]]
+          if (!quiet) {
+            message("Using Application Default Credentials (ADC)")
+          }
+          if (is.null(project) && length(adc) >= 2 && !is.null(adc[[2]])) {
+            project <- adc[[2]]
+            if (!quiet) {
+              message("Project ID '", project, "' found in ADC")
+            }
+          }
+        }
+      }
+    }, silent = TRUE)
+  }
+
   if (!is.null(credentials)) {
     args$credentials <- credentials
   }
+
+  # Update project if it was found via ADC
+  args$project <- project
 
   # reticulate does not work w/ opt_ prefix decorators introduced in 0.1.381
   if (!is.null(eev) && eev >= "0.1.381") {
@@ -86,12 +137,13 @@ gd_initialize <- function(private_key_file = NULL,
 
 #' @export
 #' @param ... Additional arguments passed to `gd_initialize()`
+#' @param quiet Suppress error messages? Default: `TRUE`
 #' @return `gd_is_initialized()`: logical. `TRUE` if initialized successfully.
 #' @rdname gd_initialize
 #' @examples
 #' gd_is_initialized()
-gd_is_initialized <- function(...) {
-  return(length(geedim()) > 0 && !inherits(gd_initialize(...), "try-error"))
+gd_is_initialized <- function(..., quiet = TRUE) {
+  return(!is.null(geedim()) && !inherits(gd_initialize(..., quiet = quiet), "try-error"))
 }
 
 #' Authenticate with Google Earth Engine using `gcloud`, "Notebook Authenticator" or other method
@@ -126,6 +178,15 @@ gd_authenticate <- function(authorization_code = NULL,
                             scopes = NULL,
                             force = TRUE) {
   .inform_missing_module(gd, "geedim")
+
+  # In headless/CI environments with ADC already configured via environment variable,
+  # ee.Authenticate() is generally not required and can cause hangs/failures
+  # because it tries to open a browser or run interactive gcloud commands.
+  if (is.null(auth_mode) && 
+      Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS") != "" && 
+      (quiet || !interactive() || isTRUE(as.logical(Sys.getenv("GITHUB_ACTIONS"))))) {
+    return(invisible(NULL))
+  }
 
   eev <- gd$utils$ee$`__version__`
 

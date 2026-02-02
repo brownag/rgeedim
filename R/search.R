@@ -9,7 +9,7 @@
 #' @param ... additional arguments to `geedim.MaskedCollection.search()` e.g. `cloudless_portion`, `fill_portion`
 #' @return A `geedim.collection.ImageCollectionAccessor` (for geedim >= 2.0.0) or `geedim.MaskedCollection` (for geedim < 2.0.0) object suitable for querying properties. See `\link{geedim-versions}` for more details.
 #' @export
-#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
 #' b <- terra::vect('POLYGON((-121.355 37.56,-121.355 37.555,
 #'                     -121.35 37.555,-121.35 37.56,
@@ -23,10 +23,11 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
   FUN <- NULL
   if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
     FUN <- x$filter
+    y <- try(FUN(start_date = start_date, end_date = end_date, region = earthengine()$Geometry(gd_region(region)),  ...), silent = TRUE)
   } else {
     FUN <- x$search
+    y <- try(FUN(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
   }
-  y <- try(FUN(start_date = start_date, end_date = end_date, region = gd_region(region),  ...), silent = TRUE)
   if (inherits(y, "try-error")) {
     message(y[1])
     return(invisible(y))
@@ -44,7 +45,7 @@ gd_search <- function(x, region, start_date = '2000-01-01', end_date = as.charac
 #' @return `data.frame` containing properties table from `x`; `NULL` if no properties table.
 #' @importFrom utils read.table
 #' @export
-#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
 #' library(terra)
 #' 
@@ -88,12 +89,28 @@ gd_properties <- function(x) {
   h <- as.character(read.table(text = y[1], header = FALSE)[1,])[-(1:2)]
 
   # skip header and delimiter, read date/time separately
-  z <- read.table(text = y[!grepl("^---", y)][-1], header = FALSE)
-  colnames(z) <- c("id", "date", "time", tolower(h))
+  z <- read.table(text = y[!grepl("^---", y)][-1], header = FALSE, stringsAsFactors = FALSE)
+  z[, 1] <- as.character(z[, 1])
+  
+  if (ncol(z) >= 3) {
+    colnames(z) <- c("id", "date", "time", tolower(h))
+    z$date <- as.POSIXct(as.Date(paste(trimws(z$date), trimws(z$time))), tz = "UTC")
+    z$time <- NULL
+  } else if (ncol(z) == 2) {
+    colnames(z) <- c("id", "date")
+  } else if (ncol(z) == 1) {
+    colnames(z) <- "id"
+  }
 
-  # recombine date as object
-  z$date <- as.POSIXct(as.Date(paste(trimws(z$date), trimws(z$time))), tz = "UTC")
-  z$time <- NULL
+  if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+    cid <- try(x$id, silent = TRUE)
+    if (!inherits(cid, "try-error") && !is.null(cid) && cid != "") {
+      prefix <- paste0(cid, "/")
+      if (nrow(z) > 0 && !startsWith(z$id[1], prefix)) {
+        z$id <- paste0(prefix, z$id)
+      }
+    }
+  }
 
   return(z)
 }
@@ -106,7 +123,7 @@ gd_properties <- function(x) {
 #'
 #' @return character. Vector of names of each layer in an image.
 #' @export
-#' @examplesIf gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_band_names(gd_image_from_id("USGS/SRTMGL1_003"))
@@ -133,7 +150,7 @@ gd_band_names <- function(x) {
 #'
 #' @return list. Each element is a list that corresponds to a layer in `x`, each with one or more elements for properties of that layer.
 #' @export
-#' @examplesIf gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_band_properties(gd_image_from_id("USGS/SRTMGL1_003"))
@@ -161,7 +178,7 @@ gd_band_properties <- function(x) {
 #' @param x a `geedim.image.ImageAccessor` (for geedim >= 2.0.0) or `geedim.mask.MaskedImage` (for geedim < 2.0.0) object. See `\link{geedim-versions}` for more details.
 #' @return list.
 #' @export
-#' @examplesIf gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_footprint(gd_image_from_id("USGS/SRTMGL1_003"))

@@ -16,7 +16,7 @@ list.
 Gets GeoJSON-style list containing footprint of a \code{geedim.image.ImageAccessor} (for geedim >= 2.0.0) or \code{geedim.mask.MaskedImage} (for geedim < 2.0.0) object. See \verb{\link{geedim-versions}} for more details.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_footprint(gd_image_from_id("USGS/SRTMGL1_003"))

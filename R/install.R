@@ -48,7 +48,7 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, version = NULL
           shQuote(fp),
           "-m pip install --user",
           ifelse(force, "-U --force", ""),
-          paste0("geedim", if (!is.null(version)) paste0("==", version) else ""), "earthengine-api numpy"
+          paste0("geedim", if (!is.null(version)) paste0("==", version) else ""), "earthengine-api google-auth numpy"
         )
       )))
     }
@@ -78,7 +78,7 @@ gd_install <- function(pip = TRUE, system = FALSE, force = FALSE, version = NULL
 
   invisible(try({
     do.call(reticulate::py_install, c(list(
-      c("numpy", "earthengine-api", paste0("geedim", if (!is.null(version)) paste0("==", version) else "")),
+      c("numpy", "earthengine-api", "google-auth", paste0("geedim", if (!is.null(version)) paste0("==", version) else "")),
       pip = pip,
       pip_ignore_installed = force
     ), args))

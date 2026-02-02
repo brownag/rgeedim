@@ -16,7 +16,7 @@ list. Each element is a list that corresponds to a layer in \code{x}, each with 
 Gets combined Earth Engine and STAC properties.
 }
 \examples{
-\dontshow{if (gd_is_initialized()) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()) withAutoprint(\{ # examplesIf}
 \donttest{
 if (gd_is_initialized())
   gd_band_properties(gd_image_from_id("USGS/SRTMGL1_003"))

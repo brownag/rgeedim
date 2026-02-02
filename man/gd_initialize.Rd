@@ -15,7 +15,7 @@ gd_initialize(
   quiet = FALSE
 )
 
-gd_is_initialized(...)
+gd_is_initialized(..., quiet = TRUE)
 }
 \arguments{
 \item{private_key_file}{character. Optional: Path to JSON file containing service account credentials. (Deprecated in v0.3.0: use \code{GOOGLE_APPLICATION_CREDENTIALS} environment variable instead. If provided and \code{GOOGLE_APPLICATION_CREDENTIALS} is not set, the file path will be used to set that environment variable.)}
@@ -28,9 +28,9 @@ gd_is_initialized(...)
 
 \item{http_transport}{The HTTP transport method to use when making requests. Default: \code{NULL}}
 
-\item{project}{The client project ID or number to use when making API calls. Default: \code{NULL}}
+\item{project}{The client project ID or number to use when making API calls. Default: \code{NULL} will check \code{GOOGLE_CLOUD_QUOTA_PROJECT}, \code{GOOGLE_CLOUD_PROJECT} then \code{GCLOUD_PROJECT} environment variables.}
 
-\item{quiet}{Suppress error messages on load? Default: \code{FALSE}}
+\item{quiet}{Suppress error messages? Default: \code{TRUE}}
 
 \item{...}{Additional arguments passed to \code{gd_initialize()}}
 }
@@ -49,6 +49,8 @@ Authentication is handled automatically by Google Application Default Credential
 \item User credentials from \verb{gcloud auth application-default login}
 \item Attached service account (when running on Google Cloud infrastructure)
 }
+
+In a headless environment (e.g. CI/CD), use \code{GOOGLE_APPLICATION_CREDENTIALS} to specify the service account key file path and \code{GOOGLE_CLOUD_QUOTA_PROJECT} to specify the project ID responsible for quota and billing.
 
 The deprecated \code{private_key_file} parameter is provided for backward compatibility. If specified and \code{GOOGLE_APPLICATION_CREDENTIALS} is not already set, the file path will be used to set that environment variable for the Python libraries to discover.
 }

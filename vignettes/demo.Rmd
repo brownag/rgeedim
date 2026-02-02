@@ -8,7 +8,10 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
-EVAL <- as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES", "FALSE"))
+EVAL <- isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) &&
+  requireNamespace("terra", quietly = TRUE) &&
+  rgeedim::gd_is_initialized(project = Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo"))
+
 litedown::reactor(
   eval = EVAL,
   collapse = TRUE,
@@ -41,10 +44,11 @@ You only need to authenticate periodically, depending on the method you used.
 In each session we need to call `gd_initialize()`. This is a wrapper function around `geedim.Initialize()` that must be run before using the Python Google Earth Engine API.
 
 ```{r setup, eval = EVAL}
-gd_initialize()
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
+gd_initialize(project = project_id)
 ```
 
-Note that with `auth_mode="gcloud"` you need to specify the project via `project=` argument, in your default configuration file or via system environment variable `GOOGLE_CLOUD_QUOTA_PROJECT`. The authorization tokens generated for `auth_mode="notebook"` are always associated with a specific project.
+Note that with default `auth_mode="gcloud"` you need to specify the project via `project=` argument, in your default configuration file or via system environment variable `GOOGLE_CLOUD_QUOTA_PROJECT`. The authorization tokens generated for `auth_mode="notebook"` are always associated with a specific project.
 
 Perhaps the _simplest_ way to specify the target extent is using the xmin/xmax/ymin/ymax arguments to `gd_bbox()`. This function returns a Python object equivalent to _GeoJSON_, which is interchangeably represented as a simple `list` object in **R** using {reticulate}. 
 
@@ -90,7 +94,7 @@ img <- gd_download(x, filename = 'image.tif',
 
 So we can use the {terra} `rast()` function to read the GeoTIFF `gd_download()` result. 
 
-```{r terrarast, eval = FALSE, fig.align='center', fig.width=4}
+```{r terrarast, eval = EVAL, fig.align='center', fig.width=4}
 library(terra)
 f <- rast(img)
 ```
@@ -111,7 +115,8 @@ This example demonstrates the download of a section of the USGS NED seamless 10m
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 b <- gd_bbox(
   xmin = -120.296,
@@ -164,7 +169,8 @@ This example demonstrates how to access 1-meter LiDAR data from the USGS 3D Elev
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 # wkt->SpatVector->GeoJSON
 b <- 'POLYGON((-121.355 37.56,-121.355 37.555,
@@ -211,7 +217,8 @@ This example downloads each component image of the DAYMET climate collection "da
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 r <- gd_bbox(
   xmin = -121,
@@ -221,19 +228,20 @@ r <- gd_bbox(
 )
 
 # search collection for spatial and date range (one week in January 2020)
-gd_collection_from_name('NASA/ORNL/DAYMET_V4') |> 
+res <- gd_collection_from_name('NASA/ORNL/DAYMET_V4') |> 
   gd_search(region = r,
             start_date = "2020-01-21",
-            end_date = "2020-01-27") -> res
+            end_date = "2020-01-27")
 
 # get table of IDs and dates
 p <- gd_properties(res)
-td <- file.path(tempdir(), "DAYMET_V4")
+p
 
-# create a new collection using gd_collection_from_list()
+td <- tempdir()
+
 # download each image as separate GeoTIFF (no compositing)
 # Note: `filename` is a directory
-gd_collection_from_list(p$id) |>
+res2 <- res |>
   gd_download(
     filename = td,
     composite = FALSE,
@@ -242,10 +250,11 @@ gd_collection_from_list(p$id) |>
     bands = list("prcp"),
     crs = "EPSG:5070",
     scale = 1000
-  ) |> 
-  rast() -> x2
+  ) 
 
-# filter to bands of interest (if neeeded)
+x2 <- rast(res2)
+
+# filter to bands of interest (if needed)
 x2 <- x2[[names(x2) == "prcp"]]
 
 # set time for each layer

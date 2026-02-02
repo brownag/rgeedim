@@ -6,7 +6,7 @@
 #' @param ... [additional arguments](https://geedim.readthedocs.io/en/stable/reference/api.html#geedim.collection.ImageCollectionAccessor.composite) to `geedim.collection.ImageCollectionAccessor$composite()`
 #' @return a composite `ee.image.Image` object
 #' @export
-#' @examplesIf gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')
 #' \donttest{
 #' library(terra)
 #' 
@@ -29,7 +29,11 @@ gd_composite <- function(x, ...) {
   }
   args <- list(...)
   if (!is.null(args$region)) {
-    args$region <- gd_region(args$region)
+    if (inherits(x, 'geedim.collection.ImageCollectionAccessor')) {
+      args$region <- earthengine()$Geometry(gd_region(args$region))
+    } else {
+      args$region <- gd_region(args$region)
+    }
   }
   y <- try(do.call(x$composite, args), silent = TRUE)
   if (inherits(y, 'try-error')) {

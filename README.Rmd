@@ -9,7 +9,7 @@ knit: (function(input, ...) { source("misc/knit_readme.R"); knit_readme(input, .
 
 ```{r, include = FALSE}
 litedown::reactor(
-  eval = !inherits(rgeedim::gd_version(), 'try-error'),
+  eval = rgeedim::gd_is_initialized(),
   collapse = TRUE,
   dev = 'jpeg',
   fig.path = "man/figures/README-",
@@ -113,7 +113,8 @@ gd_authenticate(auth_mode = "gcloud")
 In each R session you will need to initialize the Earth Engine library.
 
 ```{r}
-gd_initialize(project = "rgeedim-demo")
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
+gd_initialize(project = project_id)
 ```
 
 Note that with `auth_mode="gcloud"` you need to specify the project via `project=` argument, in your default configuration file or via system environment variable `GOOGLE_CLOUD_QUOTA_PROJECT`. The authorization tokens generated for `auth_mode="notebook"` are always associated with a specific project.

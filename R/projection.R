@@ -4,7 +4,7 @@
 #'
 #' @return `ee.Projection` object
 #' @export
-#' @examplesIf gd_is_initialized()
+#' @examplesIf isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized()
 #' \donttest{
 #' if (gd_is_initialized())
 #'   gd_projection(gd_image_from_id('CSP/ERGo/1_0/Global/SRTM_topoDiversity'))
@@ -20,7 +20,7 @@ gd_projection <- function(x) {
     if (inherits(x, 'geedim.download.BaseImage')) {
       return(gd$utils$get_projection(x$ee_image))
     } else {
-      if (gd_version() >= "2.0.0") {
+      if (.gd_version_ge("2.0.0")) {
         return(x$projection())
       } else {
         return(gd$utils$get_projection(gd$utils$ee$Image(x)))

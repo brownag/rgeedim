@@ -7,8 +7,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-EVAL <- as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES", "FALSE"))
+```{r setup, include=FALSE}
+EVAL <- isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) &&
+  requireNamespace("terra", quietly = TRUE) &&
+  rgeedim::gd_is_initialized(project = Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo"))
+
 litedown::reactor(
   eval = EVAL,
   collapse = TRUE,
@@ -17,11 +20,12 @@ litedown::reactor(
 )
 ```
 
-```{r}
+```{r, eval=EVAL}
 library(rgeedim)
 library(terra)
 
-gd_initialize()
+project_id <- Sys.getenv("GOOGLE_CLOUD_QUOTA_PROJECT", "rgeedim-demo")
+gd_initialize(project = project_id)
 
 ## Sacramento county area
 # b <- soilDB::fetchSDA_spatial("CA067", "areasymbol", geom="sapolygon")
@@ -34,20 +38,22 @@ b <- gd_bbox(
   ymin = 38.0
 )
 
+collection_name <- "NASA/ORNL/DAYMET_V4"
+
 # search collection for spatial and date range
-'NASA/ORNL/DAYMET_V4' |> 
+res <- collection_name |> 
   gd_collection_from_name() |> 
   gd_search(region = b,
             start_date = "2020-01-01", 
-            end_date = "2020-02-01") -> res
+            end_date = "2020-02-01")
 
-# get table of IDs and dates
-p <- gd_properties(res)
+# inspect table of IDs and dates
+gd_properties(res)
 td <- tempdir()
 
 # download each daily image in collection as separate GeoTIFF (no compositing)
 # Note: `filename` is a directory
-gd_collection_from_list(p$id) |>
+res |>
   gd_download(filename = td, 
               composite = FALSE, 
               region = b, 
@@ -80,4 +86,8 @@ plot(sum(r2))
 #    height = 400)
 #    
 # browseURL("animation.gif")
+```
+
+```{r, include=FALSE, eval=EVAL}
+unlink(list.files(td, pattern = "\\d{8}_1km.tif$", full.names = TRUE))
 ```

@@ -10,11 +10,11 @@ gd_region(x)
 gd_region_to_vect(x, crs = "OGC:CRS84", as_wkt = FALSE, ...)
 }
 \arguments{
-\item{x}{either a WKT string (character), a SpatRaster(Collection)/SpatVector(Collection)/SpatExtent, an sf object, an Spatial* object or a RasterLayer/RasterStack.}
+\item{x}{list. A GeoJSON-like list object (e.g. from \code{gd_region()}).}
 
 \item{crs}{character. Default for GeoJSON sources is \code{"OGC:CRS84"}.}
 
-\item{as_wkt}{logical. Return Well-Known Text (WKT) string as character? Default: \code{FALSE} returns a 'terra' \emph{SpatRaster}.}
+\item{as_wkt}{logical. Return Well-Known Text (WKT) string as character? Default: \code{FALSE} returns a 'terra' \emph{SpatVector}.}
 
 \item{...}{Additional arguments to \code{gd_region_to_vect()} are passed to \code{terra::vect()} when \code{as_wkt=FALSE} (default).}
 }
@@ -30,9 +30,11 @@ Creates a suitable input for the \code{region} argument to \verb{gd_download(<Im
 }
 \details{
 If \code{x} is an R spatial object, each vertex (possibly after converting object extent to vector) is used to create the GeoJSON object. Otherwise, the extent is determined and passed to \code{gd_bbox()}.
+
+\code{gd_region_to_vect()} uses Python's \code{json} module (via \code{reticulate}) to parse the GeoJSON list and \code{terra} to create the spatial vector object. It supports all geometry types handled by \code{terra::vect} (e.g., Polygon, MultiPolygon).
 }
 \examples{
-\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
 \donttest{
 library(terra)
 

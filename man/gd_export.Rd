@@ -11,6 +11,7 @@ gd_export(
   folder = dirname(filename),
   region,
   wait = TRUE,
+  overwrite = TRUE,
   ...
 )
 }
@@ -26,6 +27,8 @@ gd_export(
 \item{region}{Region e.g. from \code{gd_bbox()} or \code{gd_region()}}
 
 \item{wait}{Wait for completion? Default: \code{TRUE}}
+
+\item{overwrite}{Overwrite existing? Default: \code{TRUE}. Only supported for \code{geedim} >= 2.0.0.}
 
 \item{...}{Additional arguments to \code{geedim.image.ImageAccessor.toGoogleCloud()} (geedim >= 2.0.0) or \code{geedim.download.BaseImage.export()} (geedim 1.x.x)}
 }
@@ -58,11 +61,11 @@ if (gd_is_initialized()) {
  #   i,
  #   "RGEEDIM_TEST",
  #   type = "asset",
- #   folder = "your-project-name",
+ #   folder = "rgeedim-demo",
  #   scale = 100,
  #   region = r
  # )
- # gd_download("projects/your-project-name/assets/RGEEDIM_TEST", filename = "test.tif")
+ # gd_download("projects/rgeedim-demo/assets/RGEEDIM_TEST", filename = "test.tif")
 
  ## export to Google Cloud Bucket with `type="cloud"`,
  ##   where `folder` is the bucket path without `"gs://"`

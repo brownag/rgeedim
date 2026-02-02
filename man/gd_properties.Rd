@@ -16,7 +16,7 @@ gd_properties(x)
 Get Properties of an Image Collection
 }
 \examples{
-\dontshow{if (gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
+\dontshow{if (isTRUE(as.logical(Sys.getenv("R_RGEEDIM_RUN_EXAMPLES"))) && gd_is_initialized() && !inherits(requireNamespace("terra", quietly=TRUE), 'try-error')) withAutoprint(\{ # examplesIf}
 \donttest{
 library(terra)
 

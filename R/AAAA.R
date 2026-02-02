@@ -53,6 +53,15 @@ gd_ee_version <- function() {
   try(reticulate::py_eval("version('earthengine-api')"), silent = TRUE)
 }
 
+.gd_version_ge <- function(ver) {
+  res <- gd_version()
+  if (inherits(res, "try-error")) {
+    # second attempt with geedim.__version__ if module already loaded
+    res <- try(reticulate::py_eval("geedim.__version__"), silent = TRUE)
+  }
+  if (inherits(res, "try-error")) return(FALSE)
+  return(numeric_version(res) >= numeric_version(ver))
+}
 
 #' @importFrom reticulate import
 #' @importFrom reticulate py_run_string
@@ -63,10 +72,6 @@ gd_ee_version <- function() {
     reticulate::use_virtualenv(envname, required = FALSE)
   } else if (reticulate::condaenv_exists(envname)) {
     reticulate::use_condaenv(envname, required = FALSE)
-  }
-  
-  if (packageVersion("reticulate") >= "1.41.0") {
-    reticulate::py_require(c("earthengine-api", "geedim"))
   }
   
   suppressWarnings({
@@ -110,24 +115,31 @@ gd_ee_version <- function() {
 
 #' @importFrom reticulate configure_environment
 .onLoad <- function(libname, pkgname) {
-  if (.has_python3()) {
-    if (!.loadModules()) {
-      # x <- try(reticulate::configure_environment(pkgname), silent = TRUE)
-      # if (!inherits(x, 'try-error')) {
-      #  .loadModules()
-      # }
-    }
+  if (packageVersion("reticulate") >= "1.41.0") {
+    reticulate::py_require(c("earthengine-api", "geedim", "google-auth"))
   }
+  .loadModules()
 }
 
 #' @importFrom utils packageVersion
 .onAttach <- function(libname, pkgname) {
-  gdv <- suppressWarnings(gd_version())
-  gev <- suppressWarnings(gd_ee_version())
-  if (inherits(gdv, 'try-error'))
-    gdv <- "<Not Found>"
-  if (inherits(gev, 'try-error'))
-    gev <- "<Not Found>"
+  # Only attempt to fetch versions if Python is already initialized or we are in a session
+  # where a long timeout for discovery/auto-install is acceptable (interactive/CI).
+  # This prevents 70s+ delays on CRAN checks when geedim is missing.
+  do_check <- reticulate::py_available() || 
+              interactive() || 
+              isTRUE(as.logical(Sys.getenv("NOT_CRAN")))
+  
+  gdv <- gev <- "<Not Initialized>"
+  if (do_check) {
+    gdv <- suppressWarnings(gd_version())
+    gev <- suppressWarnings(gd_ee_version())
+    if (inherits(gdv, 'try-error'))
+      gdv <- "<Not Found>"
+    if (inherits(gev, 'try-error'))
+      gev <- "<Not Found>"
+  }
+  
   packageStartupMessage(
     "rgeedim v",
     utils::packageVersion("rgeedim"),
@@ -147,8 +159,23 @@ gd_ee_version <- function() {
   py_path
 }
 
-.inform_missing_module <- function(object, module_name = "geedim") {
+.inform_missing_module <- function(object, module_name = "geedim", quiet = FALSE) {
+  
+  check_failed <- FALSE
   if (is.null(object) || inherits(object, 'try-error')) {
+    check_failed <- TRUE
+  } else {
+    # Verify we can access the module (triggers delay load)
+    # Using py_module_available is safer than accessing attributes on the proxy
+    if (!reticulate::py_module_available(module_name)) {
+      check_failed <- TRUE
+    }
+  }
+
+  if (check_failed) {
+    if (quiet) {
+      return(invisible(structure(list(message = sprintf("Failed to load '%s' Python module", module_name)), class = "try-error")))
+    }
     stop(sprintf("Failed to load '%s' Python module. Check reticulate environment settings and ensure '%s' module is installed. If prompted to set up a default reticulate environment, choose 'Yes'. See `gd_install()` for more details.", module_name, module_name), call. = FALSE)
   }
 }

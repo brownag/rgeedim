@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 *.tif
+*.tif.aux.xml
+gha-creds-*.json
 rgeedim.Rproj
 inst/doc
 .github/*.html

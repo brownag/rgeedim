@@ -13,11 +13,21 @@ on:
 
 name: pkgdown
 
+permissions:
+  contents: 'write'
+  id-token: 'write'
+
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      GOOGLE_CLOUD_QUOTA_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+      WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
+      GCP_SA_EMAIL: ${{ secrets.GCP_SA_EMAIL }}
+      R_RGEEDIM_RUN_EXAMPLES: 'TRUE'
+      R_RGEEDIM_PYTHON_ENVNAME: "r-rgeedim"
+
     steps:
       - uses: actions/checkout@v3
 
@@ -27,10 +37,10 @@ jobs:
         with:
           use-public-rspm: true
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          python-version: '3.11'
+          architecture: 'x64'
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -41,11 +51,37 @@ jobs:
         run: |
           reticulate::virtualenv_create("r-rgeedim")
           reticulate::virtualenv_install("r-rgeedim", "geedim")
+          print(reticulate::py_config())
         shell: Rscript {0}
 
       - name: Install terra from r-universe
         run: |
           install.packages('terra', repos='https://rspatial.r-universe.dev')
+        shell: Rscript {0}
+
+      - name: Authenticate to Google Cloud (WIF)
+        uses: 'google-github-actions/auth@v3'
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+
+      - name: Set up Google Application Credentials for rgeedim
+        run: |
+          creds_file <- Sys.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+          if (creds_file == "" || !file.exists(creds_file)) {
+            stop("GOOGLE_APPLICATION_CREDENTIALS not set or file does not exist")
+          }
+        shell: Rscript {0}
+
+      - name: Authenticate with Earth Engine
+        run: | 
+          rgeedim::gd_authenticate(quiet = TRUE)
+          rgeedim::gd_initialize(quiet = FALSE)
+          if (rgeedim::gd_is_initialized()) {
+            cat("Earth Engine successfully initialized!\n")
+          } else {
+            cat("Earth Engine failed to initialize.\n")
+          }
         shell: Rscript {0}
 
       - name: Install package
