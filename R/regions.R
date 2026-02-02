@@ -189,13 +189,35 @@ gd_region <- function(x) {
     x$id <- seq_len(nrow(x))
   }
 
+  # specialized manual conversion for simple rectangles (often used in vignettes/examples)
+  # this avoids issues with terra::writeVector/GDAL GeoJSON driver
+  geom_info <- terra::geom(x)
+  if (nrow(geom_info) %in% c(4, 5) && length(unique(geom_info[,"part"])) == 1) {
+    # check if it's a simple polygon part
+    m <- geom_info[, c("x", "y")]
+    # ensure it's closed for GeoJSON
+    if (!all(m[1,] == m[nrow(m),])) {
+      m <- rbind(m, m[1,])
+    }
+    if (nrow(m) == 5) {
+       return(list(
+         type = "Polygon",
+         coordinates = list(lapply(seq_len(nrow(m)), function(i) as.numeric(m[i, ])))
+       ))
+    }
+  }
+
   # export to GeoJSON via temporary file
   f <- tempfile(fileext = ".geojson")
   on.exit(unlink(f), add = TRUE)
-  res <- try(terra::writeVector(x, f, overwrite = TRUE), silent = TRUE)
+  
+  # first attempt with explicit filetype
+  res <- try(terra::writeVector(x, f, filetype = "GeoJSON", overwrite = TRUE), silent = TRUE)
+  
   if (inherits(res, "try-error") || !file.exists(f)) {
-    # second attempt with different file type specification
-    res <- try(terra::writeVector(x, f, filetype = "GeoJSON", overwrite = TRUE), silent = TRUE)
+    # second attempt with default (driver inferred from extension)
+    res <- try(terra::writeVector(x, f, overwrite = TRUE), silent = TRUE)
+    
     if (inherits(res, "try-error") || !file.exists(f)) {
        stop("Failed to convert SpatVector to GeoJSON: ", 
          ifelse(inherits(res, "try-error"), res[1], "could not create temporary file"), 

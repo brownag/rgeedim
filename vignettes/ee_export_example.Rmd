@@ -59,13 +59,13 @@ plot(yellowstone)
     resampling = "bilinear",
     type = "asset",
     filename = "Yellowstone",
-    folder = "rgeedim-demo",
+    folder = project_id,
     overwrite = TRUE,
     crs = "EPSG:5070"
   )
 
 # create a local GeoTIFF from the above created asset
-x <- "projects/rgeedim-demo/assets/Yellowstone" |>
+x <- sprintf("projects/%s/assets/Yellowstone", project_id) |>
   gd_image_from_id() |>
   gd_download(
     bands = list("elevation"),

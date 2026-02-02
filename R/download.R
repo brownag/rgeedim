@@ -103,6 +103,11 @@ gd_download <- function(x,
     # remove overwrite from ... if present to avoid passing it twice to download()
     args <- list(...)
     args$overwrite <- NULL
+    
+    if (overwrite && file.exists(filename)) {
+      unlink(filename)
+    }
+    
     if (is.null(region)) {
       res <- try(do.call(x$download, c(list(filename = filename, overwrite = overwrite), args)), silent = silent)
     } else {

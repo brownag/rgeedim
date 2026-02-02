@@ -48,7 +48,14 @@ gd_export <- function(x, filename, type = "drive", folder = dirname(filename), r
   .inform_missing_module(x, "geedim")
   
   if (isTRUE(overwrite) && type == "asset") {
-    gd_delete_asset(gd_asset_id(filename, folder), silent = TRUE)
+    asset_id <- gd_asset_id(filename, folder)
+    gd_delete_asset(asset_id, silent = TRUE)
+    
+    # wait up to 10 seconds for deletion to propagate in EE
+    for (i in 1:10) {
+      if (inherits(gd_get_asset(asset_id, silent = TRUE), "try-error")) break
+      Sys.sleep(1)
+    }
   }
 
   args <- list(...)
