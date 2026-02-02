@@ -29,7 +29,7 @@ jobs:
       R_RGEEDIM_PYTHON_ENVNAME: "r-rgeedim"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - uses: r-lib/actions/setup-pandoc@v2
 
