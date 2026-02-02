@@ -182,11 +182,13 @@ gd_region <- function(x) {
   # x is a terra vector object
   if (inherits(x, 'SpatVectorProxy')) {
     x <- terra::vect(terra::sources(x))
-  } else if (inherits(x, c("SpatVectorCollection", "SpatRasterCollection", "SpatRaster"))) {
+  } else if (inherits(x, c("SpatVectorCollection", "SpatRasterCollection"))) {
     cr <- terra::crs(x)
     x <- terra::as.polygons(terra::ext(x))
     if (nchar(cr) > 0) terra::crs(x) <- cr
-  } else if (!inherits(x, 'SpatVector')) {
+  } else if (inherits(x, c("SpatRaster", "SpatVector"))) {
+    x <- terra::as.polygons(x, extent = TRUE)
+  } else {
     stop("`x` must be a SpatVector, SpatRaster or Collection", call. = FALSE)
   }
   
@@ -293,9 +295,13 @@ gd_region <- function(x) {
   
   # convert to simple geometries if we only want extent
   if (!inherits(x, 'SpatVector') && !extent) {
-    cr <- terra::crs(x)
-    x <- terra::as.polygons(terra::ext(x))
-    if (nchar(cr) > 0) terra::crs(x) <- cr
+    if (inherits(x, c("SpatRasterCollection", "SpatVectorCollection"))) {
+      cr <- terra::crs(x)
+      x <- terra::as.polygons(terra::ext(x))
+      if (nchar(cr) > 0) terra::crs(x) <- cr
+    } else {
+      x <- terra::as.polygons(x, extent = TRUE)
+    }
   }
   
   # project what we can to OGC:CRS84
@@ -341,10 +347,10 @@ gd_region_to_vect <- function(x, crs = "OGC:CRS84", as_wkt = FALSE, ...) {
     if (is.null(x$geometries)) stop("GeometryCollection missing 'geometries' member.", call. = FALSE)
     
     if (as_wkt) {
-      res <- vapply(x$geometries, gd_region_to_vect, character(1), crs = crs, as_wkt = TRUE, ...) 
+      res <- vapply(x$geometries, gd_region_to_vect, character(1), crs = crs, as_wkt = TRUE, ...)
       return(sprintf("GEOMETRYCOLLECTION(%s)", paste(res, collapse = ",")))
     } else {
-      res <- lapply(x$geometries, gd_region_to_vect, crs = crs, as_wkt = FALSE, ...) 
+      res <- lapply(x$geometries, gd_region_to_vect, crs = crs, as_wkt = FALSE, ...)
       
       if (length(res) == 0) {
         if (!requireNamespace("terra", quietly = TRUE)) {
